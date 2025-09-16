@@ -21,7 +21,7 @@ void BattleSystem::battleState() {
 		break;
 
 	case PLAYERTURN:
-		std::cout << "1. Attack\n" << "2. Defend\n" << "3. Run" << std::endl;
+		std::cout << "\n1. Attack\n" << "2. Defend\n" << "3. Run" << std::endl;
 		std::cin >> userInput;
 		state = ACTIONRESOLUTION;
 		break;
