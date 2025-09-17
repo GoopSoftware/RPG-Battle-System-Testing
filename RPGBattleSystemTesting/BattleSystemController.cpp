@@ -1,18 +1,19 @@
-#include "BattleSystem.h"
+#include "BattleSystemController.h"
+#include "CombatSystem.h"
 
-
-BattleSystem::BattleSystem(Player* player, Enemy* enemy) :
+BattleSystemController::BattleSystemController(Entity player, Entity enemy) :
 	player(player), enemy(enemy)
 {
 	
 }
 
-BattleSystem::~BattleSystem() {
+BattleSystemController::~BattleSystemController() {
 
 }
 
 
-void BattleSystem::battleState() {
+void BattleSystemController::update() {
+
 	switch (state) {
 	case START:
 		std::cout << "--------------------Battle--------------------" << std::endl;
@@ -29,9 +30,7 @@ void BattleSystem::battleState() {
 	case ACTIONRESOLUTION:
 		std::cout << userInput << std::endl;
 		if (userInput == 1) {
-			std::cout << "Player attacks enemy HP: ";
-			enemy->health -= player->calculateDamage();
-			std::cout << enemy->health << std::endl;
+			attack(player, enemy);
 		}
 		else if (userInput == 2) {
 			std::cout << "Your input was: " << userInput << std::endl;
@@ -58,24 +57,29 @@ void BattleSystem::battleState() {
 	case ENEMYTURN:
 		break;
 	case CHECKBATTLESTATUS:
-		// This is where we hold turn order array for player and enemy
-		if (player->health <= 0) {
-			state = DEFEAT;
-		}
-		else if (enemy->health <= 0) {
-			state = VICTORY;
-		}
-		else {
-			state = PLAYERTURN;
-		}
+		
+		{
+		auto& playerHealth = healthStore[player];
+		auto& enemyHealth = healthStore[enemy];
+
+		if (playerHealth.hp <= 0) state = DEFEAT;
+		else if (enemyHealth.hp <= 0) state = VICTORY;
+		else state = (state == PLAYERTURN) ? ENEMYTURN : PLAYERTURN;
+
 		break;
+	}
 	case VICTORY:
+
 		std::cout << "Congratulations you won!";
 		state = END;
 		break;
+
 	case DEFEAT:
+
 		break;
+
 	case END:
+
 		// END LOGIC BREAK OUT OF LOOP END PROGRAM
 		battleActive = false;
 		break;

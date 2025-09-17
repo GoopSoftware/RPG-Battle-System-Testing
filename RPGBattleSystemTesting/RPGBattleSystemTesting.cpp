@@ -1,10 +1,14 @@
 #include <iostream>
 #include <raylib.h>
+#include <unordered_map>
 
 
-#include "Player.h"
-#include "Enemy.h"
-#include "BattleSystem.h"
+#include "Entity.h"
+#include "HealthComponent.h"
+#include "CombatStatsComponent.h"
+#include "BattleSystemController.h"
+#include "CombatSystem.h"
+#include "Tags.h"
 
 
 /*
@@ -20,31 +24,27 @@ The structure of
 
 int main() {
 
+	Entity player = createEntity();
+	healthStore[player] = { 100, 100 };
+	statsStore[player] = { 10, 5 };
 
+	Entity enemy = createEntity();
+	healthStore[enemy] = { 100, 100 };
+	statsStore[enemy] = { 8, 2 };
+
+	BattleSystemController battle(player, enemy);
 
 	const int windowWidth = 720;
 	const int windowHeight = 480;
 
 	float deltaTime{};
 
-	float waitTime = 5.f;
-	int prevIntWait = static_cast<int>(waitTime);
-
-	Player player;
-	Enemy enemy;
-
-	BattleSystem battleSystem(&player, &enemy);
-
-	SetRandomSeed(time(NULL));
-
-	bool overworldActive = true;
-	bool battleActive = false;
-	int userInput;
+	SetRandomSeed(static_cast<unsigned int>(time(NULL)));
 
 	InitWindow(windowWidth, windowHeight, "RPG Test");
 	SetTargetFPS(60);
 
-	std::cout << "You are walking around the overworld.";
+
 
 	while (!WindowShouldClose())
 	{
@@ -52,27 +52,12 @@ int main() {
 		deltaTime = GetFrameTime();
 		//std::cout << deltaTime;
 
-		int currentIntWait = static_cast<int>(waitTime);
 
-		if (currentIntWait < prevIntWait) {
-			std::cout << ".";
-			prevIntWait = currentIntWait;
+		while (battle.isActive()) {
+			battle.update();
 		}
 
-		if (waitTime > 0) {
-			waitTime -= deltaTime;
-			//std::cout << waitTime;
-		}
 
-		if (waitTime <= 0) {
-			battleActive = true;
-		}
-			
-		while (battleActive) {
-
-			battleSystem.battleState();
-
-		}
 
 		BeginDrawing();
 

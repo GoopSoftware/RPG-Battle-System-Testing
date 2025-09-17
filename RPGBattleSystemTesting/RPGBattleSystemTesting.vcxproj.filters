@@ -18,24 +18,33 @@
     <ClCompile Include="RPGBattleSystemTesting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="BattleSystemController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
+    <ClCompile Include="Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BattleSystem.cpp">
+    <ClCompile Include="CombatSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="BattleSystemController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
+    <ClInclude Include="Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BattleSystem.h">
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatStatsComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
