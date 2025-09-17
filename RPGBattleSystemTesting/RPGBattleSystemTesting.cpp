@@ -67,7 +67,7 @@ int main() {
 		if (waitTime <= 0) {
 			battleActive = true;
 		}
-
+			
 		while (battleActive) {
 
 			battleSystem.battleState();
