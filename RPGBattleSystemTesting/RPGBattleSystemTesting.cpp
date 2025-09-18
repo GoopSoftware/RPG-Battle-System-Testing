@@ -7,7 +7,7 @@
 #include "HealthComponent.h"
 #include "CombatStatsComponent.h"
 #include "BattleSystemController.h"
-#include "CombatSystem.h"
+#include "BattleSystem.h"
 #include "Tags.h"
 
 

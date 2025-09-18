@@ -1,4 +1,4 @@
-#include "CombatSystem.h"
+#include "BattleSystem.h"
 
 std::unordered_map<Entity, HealthComponent> healthStore;
 std::unordered_map<Entity, CombatStatsComponent> statsStore;

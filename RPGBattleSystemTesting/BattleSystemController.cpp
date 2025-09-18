@@ -1,5 +1,5 @@
 #include "BattleSystemController.h"
-#include "CombatSystem.h"
+#include "BattleSystem.h"
 
 BattleSystemController::BattleSystemController(Entity player, Entity enemy) :
 	player(player), enemy(enemy)
@@ -51,7 +51,9 @@ void BattleSystemController::update() {
 			std::cout << "Invalid input. Please enter 1, 2, or 3" << std::endl;
 		}
 
-		state = CHECKBATTLESTATUS;
+		if (state != END) {
+			state = CHECKBATTLESTATUS;
+		}
 		break;
 
 	case ENEMYTURN:
