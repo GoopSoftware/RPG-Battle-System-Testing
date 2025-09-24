@@ -6,7 +6,6 @@
 #include "Entity.h"
 #include "HealthComponent.h"
 #include "CombatStatsComponent.h"
-#include "BattleSystemController.h"
 #include "BattleSystem.h"
 #include "Tags.h"
 
@@ -26,25 +25,31 @@ int main() {
 
 	Entity player = createEntity();
 	healthStore[player] = { 100, 100 };
-	statsStore[player] = { 10, 5 };
+	statsStore[player] = { 10, 5, 9 };
 
 	Entity enemy = createEntity();
 	healthStore[enemy] = { 100, 100 };
-	statsStore[enemy] = { 8, 2 };
-
-	BattleSystemController battle(player, enemy);
+	statsStore[enemy] = { 8, 2, 10 };
+	
+	BattleSystem battle(player, enemy);
 
 	const int windowWidth = 720;
 	const int windowHeight = 480;
 
 	float deltaTime{};
 
+	float waitTime = 5.f;
+	int prevIntWait = static_cast<int>(waitTime);
+
+	bool overWorldActive = true;
+	
 	SetRandomSeed(static_cast<unsigned int>(time(NULL)));
 
 	InitWindow(windowWidth, windowHeight, "RPG Test");
 	SetTargetFPS(60);
 
 
+	std::cout << "Searching for a battle.";
 
 	while (!WindowShouldClose())
 	{
@@ -52,11 +57,24 @@ int main() {
 		deltaTime = GetFrameTime();
 		//std::cout << deltaTime;
 
+		int currentIntWait = static_cast<int>(waitTime);
 
+		// This just prints a . to console every second then when waitTime = 0
+		// battle starts
+		if (currentIntWait < prevIntWait) {
+			std::cout << ".";
+			prevIntWait = currentIntWait;
+		}
+		if (waitTime > 0) {
+			waitTime -= deltaTime;
+		}
+		if (waitTime <= 0) {
+			battle.battleActive = true;
+		}
 		while (battle.isActive()) {
 			battle.update();
 		}
-
+		// ------------------------------------------------------
 
 
 		BeginDrawing();

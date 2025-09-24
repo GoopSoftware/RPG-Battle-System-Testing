@@ -127,13 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BattleSystemController.cpp" />
+    <ClCompile Include="BattleSystem.cpp" />
     <ClCompile Include="CombatSystem.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BattleSystemController.h" />
     <ClInclude Include="CombatStatsComponent.h" />
     <ClInclude Include="BattleSystem.h" />
     <ClInclude Include="Entity.h" />
