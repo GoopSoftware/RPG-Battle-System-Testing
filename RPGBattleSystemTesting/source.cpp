@@ -8,6 +8,7 @@
 #include "CombatStatsComponent.h"
 #include "BattleSystem.h"
 #include "Tags.h"
+#include "nameComponent.h"
 
 
 /*
@@ -23,21 +24,33 @@ The structure of
 
 int main() {
 
-	Entity player = createEntity();
-	healthStore[player] = { 100, 100 };
-	statsStore[player] = { 10, 5, 9 };
+	std::unordered_map<Entity, HealthComponent> healthStore;
+	std::unordered_map<Entity, CombatStatsComponent> statsStore;
+	std::unordered_map<Entity, NameComponent> nameStore;
 
-	Entity enemy = createEntity();
-	healthStore[enemy] = { 100, 100 };
-	statsStore[enemy] = { 8, 2, 10 };
+	Entity player1 = createEntity();
+	nameStore[player1] = { "Dave" };
+	healthStore[player1] = { 100, 100 };
+	statsStore[player1] = { 10, 5, 15 };
+
+	Entity enemy1 = createEntity();
+	nameStore[enemy1] = { "Goblin" };
+	healthStore[enemy1] = { 100, 100 };
+	statsStore[enemy1] = { 8, 2, 10 };
+
+	Entity enemy2 = createEntity();
+	nameStore[enemy2] = { "Goblin 2" };
+	healthStore[enemy2] = { 100, 100 };
+	statsStore[enemy2] = { 8, 2, 10 };
 	
 	std::vector<Entity> players;
-	
+	players.push_back(player1);
 
 	std::vector<Entity>enemies;
+	enemies.push_back(enemy1);
+	enemies.push_back(enemy2);
 
-
-	BattleSystem battle(player, enemy);
+	BattleSystem battle(players, enemies, healthStore, statsStore, nameStore);
 
 	const int windowWidth = 720;
 	const int windowHeight = 480;
@@ -97,9 +110,3 @@ int main() {
 	
 
 }
-	
-
-	
-
-
-

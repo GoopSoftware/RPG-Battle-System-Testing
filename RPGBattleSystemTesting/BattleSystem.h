@@ -5,10 +5,8 @@
 #include "CombatStatsComponent.h"
 #include <unordered_map>
 #include <iostream>
-
-
-extern std::unordered_map<Entity, HealthComponent> healthStore;
-extern std::unordered_map<Entity, CombatStatsComponent> statsStore;
+#include <vector>
+#include "nameComponent.h"
 
 
 using Entity = std::uint32_t;
@@ -22,33 +20,52 @@ enum TurnOrder {
 class BattleSystem
 {
 public:
-	BattleSystem(Entity player, Entity enemy);
+	BattleSystem(std::vector<Entity> players,
+				 std::vector<Entity> enemies,
+				 std::unordered_map<Entity, HealthComponent>& healthStore,
+				 std::unordered_map<Entity, CombatStatsComponent>& statsStore,
+				 std::unordered_map<Entity, NameComponent>& nameStore
+
+	);
 	~BattleSystem();
 
 	void update();
 	bool isActive() const { return battleActive; }
 	bool battleActive = false;
 
-
 	void attack(Entity attacker, Entity defender);
-	void defend(Entity attacker, Entity defender);
-	void calculateTurnOrder(Entity player, Entity enemy);
+	void defend(Entity defender);
+
+	void calculateTurnOrder();
+	void turnResolution();
 
 	int calculateDamage(const CombatStatsComponent& attacker,
 						const CombatStatsComponent& defender);
-	void turnResolution(Entity player, Entity enemy);
 
 private:
 
-	Entity player;
-	Entity enemy;
+	void handlePlayerTurn(int userInput);
+
+	// actor currently making their move
+	Entity currentEntity{};
+
+	std::vector<Entity> players;
+	std::vector<Entity> livingPlayers;
+
+	std::vector<Entity> enemies;
+	std::vector<Entity> livingEnemies;
+
+
+	std::unordered_map<Entity, HealthComponent>& healthStore;
+	std::unordered_map<Entity, CombatStatsComponent>& statsStore;
+	std::unordered_map<Entity, NameComponent>& nameStore;
 
 	int userInput{};
+	bool validAction = false;
 
 	enum State {
 		START,
 		PLAYERTURN,
-		ACTIONRESOLUTION,
 		ENEMYTURN,
 		CHECKBATTLESTATUS,
 		VICTORY,
@@ -58,8 +75,8 @@ private:
 	State state{ START };
 	TurnOrder turn;
 
+
 	std::vector<Entity> turnOrder;
 	int currentTurnIndex = 0;
-
 };
 

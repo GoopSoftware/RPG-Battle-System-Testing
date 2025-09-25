@@ -137,6 +137,7 @@
     <ClInclude Include="BattleSystem.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="NameComponent.h" />
     <ClInclude Include="Tags.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
