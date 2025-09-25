@@ -86,6 +86,7 @@ void BattleSystem::update() {
 	case ENEMYTURN:
 		std::cout << "Enemy takes their turn" << std::endl;
 		attack(enemy, player);
+		state = CHECKBATTLESTATUS;
 		break;
 
 	case ACTIONRESOLUTION:
@@ -124,7 +125,9 @@ void BattleSystem::update() {
 		auto& enemyHealth = healthStore[enemy];
 
 		if (playerHealth.hp <= 0) state = DEFEAT;
+
 		else if (enemyHealth.hp <= 0) state = VICTORY;
+
 		else {
 
 			turnOrder.erase(
@@ -132,6 +135,9 @@ void BattleSystem::update() {
 					[](Entity e) { return healthStore[e].hp <= 0; }),
 				turnOrder.end()
 			);
+
+			currentTurnIndex = (currentTurnIndex + 1) % turnOrder.size();
+
 
 			if (currentTurnIndex >= turnOrder.size()) {
 				currentTurnIndex = 0;
