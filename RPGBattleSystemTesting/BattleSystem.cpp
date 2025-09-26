@@ -92,52 +92,116 @@ void BattleSystem::defend(Entity defender) {
 			  << " defends and raises defense!\n";
 }
 
-void BattleSystem::handlePlayerTurn(int userInput) {
-	if (userInput == 1) {
 
-		livingEnemies.clear();
-		for (auto e : enemies) {
-			if (healthStore[e].hp > 0) {
-				livingEnemies.push_back(e);
-				std::cout << "   " << livingEnemies.size() 
-                          << ") " << nameStore[e].name
-                          << " (HP: " << healthStore[e].hp << ")\n";
-			}
-		}
+void BattleSystem::handleAttackOption() {
 
-		if (livingEnemies.empty()) {
-			std::cout << "\n>>> No enemies left to attack!\n";
-			validAction = true;
-		}
-		else {
-			int choice = 0;
-			while (choice < 1 || choice > static_cast<int>(livingEnemies.size())) {
-				std::cout << "\nChoose a target (1-" << livingEnemies.size() << "): ";
-				std::cin >> choice;
-			}
-			attack(currentEntity, livingEnemies[choice - 1]);
-			validAction = true;
-		}
+	// Clear livingEnemies vector in case an enemy died
+	livingEnemies.clear();
+	// loop through enemeis and assign if hp > 0
+	for (auto e : enemies) {
+		if (healthStore[e].hp > 0) {
+			livingEnemies.push_back(e);
 
+			// Print out living enemies if user selected attack
+			std::cout << "   " << livingEnemies.size()
+				<< ") " << nameStore[e].name
+				<< " (HP: " << healthStore[e].hp << ")\n";
+		}
 	}
-	else if (userInput == 2) {
-		defend(currentEntity);
+
+	// Redundant but will show if for some reason game breaks
+	if (livingEnemies.empty()) {
+		std::cout << "\n>>> No enemies left to attack!\n";
+		std::cout << "\n>>> Something broke in the code to show this\n";
 		validAction = true;
+		return;
 	}
-	else if (userInput == 3) {
-		int runDecision = GetRandomValue(1, 3);
-		if (runDecision <= 2) {
-			std::cout << "\n>>> You successfully ran away!\n";
-			// Running logic
-			state = END;
-		}
-		else {
-			std::cout << "\n>>> You tried to run, but failed!\n";
-		}
-		validAction = true;
+
+	// seitialize choice to 0 and ask user for input on which enemy to attack
+	int choice = 0;
+	while (choice < 1 || choice > static_cast<int>(livingEnemies.size())) {
+		std::cout << "\nChoose a target (1-" << livingEnemies.size() << "): ";
+		std::cin >> choice;
+	}
+	// TODO: In future add option to cancel attack and go back a screen
+
+
+	attack(currentEntity, livingEnemies[choice - 1]);
+	validAction = true;
+
+}
+
+
+void BattleSystem::handleDefendOption() {
+	defend(currentEntity);
+	validAction = true;
+}
+
+void BattleSystem::handleRunOption() {
+
+	// 66% chance to run. This will change in the future
+	// TODO: Add calculation based on average speed values of enemies and players
+	int runDecision = GetRandomValue(1, 3);
+	if (runDecision <= 2) {
+		std::cout << "\n>>> You successfully ran away!\n";
+		state = END;
 	}
 	else {
-		std::cout << "\nInvalid choice. Please try again.\n";
+		std::cout << "\n>>> You tried to run, but failed!\n";
+	}
+	validAction = true;
+
+}
+
+void BattleSystem::handleInvalidOption() {
+	std::cout << "\nInvalid choice. Please try again.\n";
+}
+
+
+void BattleSystem::handlePlayerTurn(int userInput) {
+	std::cout << "\n" << nameStore[currentEntity].name << "'s turn\n";
+	std::cout << "1. Attack\n" << "2. Defend\n" << "3. Run" << std::endl;
+	std::cin >> userInput;
+
+	switch (userInput) {
+
+	case 1:
+		handleAttackOption();
+		break;
+
+	case 2:
+		handleDefendOption();
+		break;
+
+	case 3:
+		handleRunOption();
+		break;
+
+	default:
+		handleInvalidOption();
+		break;
+	}
+}
+
+void BattleSystem::printTurnOrder() {
+	std::cout << "\n-- Turn Order --\n";
+	for (size_t i = 0; i < turnOrder.size(); i++) {
+		Entity e = turnOrder[i];
+		std::cout << " " << (i + 1) << ") " << nameStore[e].name
+			<< " (Speed: " << statsStore[e].speed << ")\n";
+	}
+	std::cout << "----------------\n";
+}
+
+void BattleSystem::populateEnemyTargets() {
+	// Clears livingPlayers vector in case players died, 
+	// checks players vector, if hp > 0 add to livingPlayers vector
+
+	livingPlayers.clear();
+	for (auto p : players) {
+		if (healthStore[p].hp > 0) {
+			livingPlayers.push_back(p);
+		}
 	}
 }
 
@@ -148,17 +212,16 @@ void BattleSystem::update() {
 		std::cout << "\n==================== BATTLE START ====================\n";
 		// This is where we can run speed calculations to see who goes first
 		calculateTurnOrder();
+		// printTurnOrder();           This function is debug to ensure correct calculations
 		turnResolution();
+
 		break;
 
 	case PLAYERTURN:
 
-		std::cout << "\n1. Attack\n" << "2. Defend\n" << "3. Run" << std::endl;
-		std::cin >> userInput;
-
 		handlePlayerTurn(userInput);
 		
-
+		// Pretty sure this is redundant
 		if (state != END) {
 			state = CHECKBATTLESTATUS;
 		}
@@ -167,25 +230,18 @@ void BattleSystem::update() {
 
 	case ENEMYTURN:
 		// Placeholder enemy logic
+		// In future add enemy ai logic to decide healing/spells/attack/run
 
+		populateEnemyTargets();
 
-		// Picks a random living player
-		livingPlayers.clear();
-		for (auto p : players) {
-			if (healthStore[p].hp > 0) {
-				livingPlayers.push_back(p);
-			}
-		}
-		// if above vector isnt empty attack its current player
+		// if livingPlayers isnt empty Picks a random living player and attacks
 		if (!livingPlayers.empty()) {
 			Entity target = livingPlayers[GetRandomValue(0, livingPlayers.size() - 1)];
 			attack(currentEntity, target);
 		}
 
 		state = CHECKBATTLESTATUS;
-
 		break;
-
 
 	case CHECKBATTLESTATUS:
 	{
@@ -220,20 +276,21 @@ void BattleSystem::update() {
 	}
 	case VICTORY:
 		std::cout << "\n Victory! All enemies defeated!\n";
+		// TODO: Create victory boolean for future logic
 		state = END;
 		break;
 
 	case DEFEAT:
 		std::cout << "\n Defeat... Your party has fallen.\n";
+		// TODO: Create defeat boolean for future logic
 		state = END;
 		break;
 
 	case END:
 
-		// END LOGIC BREAK OUT OF LOOP END PROGRAM
+		// set battleActive to false and leave the combat system
 		battleActive = false;
 		break;
 	}
-
 
 }

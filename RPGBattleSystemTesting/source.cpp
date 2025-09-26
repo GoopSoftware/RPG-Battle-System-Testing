@@ -12,12 +12,11 @@
 
 
 /*
-This is a text based testing of an RPG battle system
+This is an rpg battle system programmed to explore ECS style of game development
 
-The initiation to the battle is bool battleActive.
-
-The structure of
-
+an Entity is just an ID then you assign values to the entity using unordered maps. These maps
+are then passed into Systems alongside the Entity ID. The idea is to prevent 100s of classes
+for different enemy types.
 */
 
 
@@ -30,8 +29,13 @@ int main() {
 
 	Entity player1 = createEntity();
 	nameStore[player1] = { "Dave" };
-	healthStore[player1] = { 100, 100 };
-	statsStore[player1] = { 10, 5, 15 };
+	healthStore[player1] = { 200, 200 };
+	statsStore[player1] = { 20, 5, 25 };
+	
+	Entity player2 = createEntity();
+	nameStore[player2] = { "Steve" };
+	healthStore[player2] = { 200, 200 };
+	statsStore[player2] = { 20, 5, 11 };
 
 	Entity enemy1 = createEntity();
 	nameStore[enemy1] = { "Goblin" };
@@ -45,6 +49,7 @@ int main() {
 	
 	std::vector<Entity> players;
 	players.push_back(player1);
+	players.push_back(player2);
 
 	std::vector<Entity>enemies;
 	enemies.push_back(enemy1);
@@ -74,12 +79,13 @@ int main() {
 	{
 
 		deltaTime = GetFrameTime();
-		//std::cout << deltaTime;
 
-		int currentIntWait = static_cast<int>(waitTime);
 
+		// Placeholder Code to simulate battle
 		// This just prints a . to console every second then when waitTime = 0
 		// battle starts
+		int currentIntWait = static_cast<int>(waitTime);
+
 		if (currentIntWait < prevIntWait) {
 			std::cout << ".";
 			prevIntWait = currentIntWait;
@@ -94,6 +100,7 @@ int main() {
 			battle.update();
 		}
 		// ------------------------------------------------------
+		
 
 
 		BeginDrawing();

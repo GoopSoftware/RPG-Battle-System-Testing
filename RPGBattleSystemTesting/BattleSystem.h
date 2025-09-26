@@ -38,13 +38,19 @@ public:
 
 	void calculateTurnOrder();
 	void turnResolution();
-
+	void printTurnOrder();
+	void populateEnemyTargets();
 	int calculateDamage(const CombatStatsComponent& attacker,
 						const CombatStatsComponent& defender);
 
 private:
 
 	void handlePlayerTurn(int userInput);
+	void handleAttackOption();
+	void handleDefendOption();
+	void handleRunOption();
+	void handleInvalidOption();
+
 
 	// actor currently making their move
 	Entity currentEntity{};
