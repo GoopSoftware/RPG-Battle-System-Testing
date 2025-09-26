@@ -45,12 +45,15 @@ public:
 
 private:
 
-	void handlePlayerTurn(int userInput);
+	void handlePlayerTurn();
 	void handleAttackOption();
 	void handleDefendOption();
 	void handleRunOption();
 	void handleInvalidOption();
 
+	void removeDefeatedFromTurnOrder();
+	bool checkDefeatCondition();
+	bool checkVictoryCondition();
 
 	// actor currently making their move
 	Entity currentEntity{};

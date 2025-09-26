@@ -2,6 +2,25 @@
 #include "raylib.h"
 #include <algorithm>
 
+
+/*
+Battle System Code:
+
+This was the first step created for the text based RPG
+
+Goals:
+	- Create a text based battle system mimicing early RPG games
+	- Learn to use components and entities inside a system
+
+TODO:
+	- Refactor console output to return strings
+	- Add magic
+	- Add items
+
+*/
+
+
+
 BattleSystem::BattleSystem( std::vector<Entity> players,
 							std::vector<Entity> enemies,
 							std::unordered_map<Entity, HealthComponent>& healthStore,
@@ -24,12 +43,14 @@ BattleSystem::~BattleSystem() {
 
 
 void BattleSystem::calculateTurnOrder() {
-
+	// Runs calculations and populates the turnOrder vector
+	// 
 	// Calculates the initial turn order of the battle based on speed values
 	turnOrder.clear();
 	turnOrder.insert(turnOrder.end(), players.begin(), players.end());
 	turnOrder.insert(turnOrder.end(), enemies.begin(), enemies.end());
 
+	// Sorts beginning to end based on statsStore.speed or entities
 	std::sort(turnOrder.begin(), turnOrder.end(), 
 		[this](Entity a, Entity b) {
 		return statsStore[a].speed > statsStore[b].speed;
@@ -40,6 +61,7 @@ void BattleSystem::calculateTurnOrder() {
 
 
 int BattleSystem::calculateDamage(const CombatStatsComponent& attacker,
+	// All calculations for damage between entities goes here
 	const CombatStatsComponent& defender)
 {
 	float damageBoost = GetRandomValue(1, static_cast<int>(attacker.attack * 1.5));
@@ -67,6 +89,7 @@ void BattleSystem::turnResolution() {
 
 
 void BattleSystem::attack(Entity attacker, Entity defender) {
+	// All logic of attacking goees here
 
 	int damage = calculateDamage(statsStore[attacker], statsStore[defender]);
 	healthStore[defender].hp -= damage;
@@ -158,7 +181,7 @@ void BattleSystem::handleInvalidOption() {
 }
 
 
-void BattleSystem::handlePlayerTurn(int userInput) {
+void BattleSystem::handlePlayerTurn() {
 	std::cout << "\n" << nameStore[currentEntity].name << "'s turn\n";
 	std::cout << "1. Attack\n" << "2. Defend\n" << "3. Run" << std::endl;
 	std::cin >> userInput;
@@ -205,21 +228,45 @@ void BattleSystem::populateEnemyTargets() {
 	}
 }
 
+void BattleSystem::removeDefeatedFromTurnOrder() {
+	// Removes dead entities from turnOrder vector
+	turnOrder.erase(
+		std::remove_if(turnOrder.begin(), turnOrder.end(),
+			[this](Entity e) {return healthStore[e].hp <= 0; }),
+		turnOrder.end()
+	);
+}
+
+
+bool BattleSystem::checkDefeatCondition() {
+	// Checks the player vector if std::all_of() players are dead
+	return std::all_of(players.begin(), players.end(),
+		[this](Entity e) {return healthStore[e].hp <= 0; });
+}
+
+bool BattleSystem::checkVictoryCondition() {
+	// Checks the enemy vector if std::all_of() players are dead
+	return std::all_of(enemies.begin(), enemies.end(),
+		[this](Entity e) {return healthStore[e].hp <= 0; });
+}
+
 void BattleSystem::update() {
 
 	switch (state) {
 	case START:
 		std::cout << "\n==================== BATTLE START ====================\n";
-		// This is where we can run speed calculations to see who goes first
+		// Runs calculations and populates the turnOrder vector
 		calculateTurnOrder();
-		// printTurnOrder();           This function is debug to ensure correct calculations
+		// DEBUG: printTurnOrder();
+
+		// Moves to next players turn
 		turnResolution();
 
 		break;
 
 	case PLAYERTURN:
 
-		handlePlayerTurn(userInput);
+		handlePlayerTurn();
 		
 		// Pretty sure this is redundant
 		if (state != END) {
@@ -243,44 +290,31 @@ void BattleSystem::update() {
 		state = CHECKBATTLESTATUS;
 		break;
 
-	case CHECKBATTLESTATUS:
-	{
-		// Removes dead entities from turnOrder
-		turnOrder.erase(
-			std::remove_if(turnOrder.begin(), turnOrder.end(),
-				[this](Entity e) {return healthStore[e].hp <= 0; }),
-			turnOrder.end()
-		);
+	case CHECKBATTLESTATUS: {
+	
+		removeDefeatedFromTurnOrder();
 
-		// Check if all players are dead
-		bool allPlayersDead = std::all_of(players.begin(), players.end(),
-			[this](Entity e) {return healthStore[e].hp <= 0; });
-		
-		// Check if all enemies are dead
-		bool allEnemiesDead = std::all_of(enemies.begin(), enemies.end(),
-			[this](Entity e) {return healthStore[e].hp <= 0; });
-
-		if (allPlayersDead) {
-			state = DEFEAT;
-		}
-
-		else if (allEnemiesDead) {
+		if (checkVictoryCondition()) {
 			state = VICTORY;
 		}
-
+		else if (checkDefeatCondition()) {
+			state = DEFEAT;
+		}
 		else {
 			turnResolution();
 		}
-
 		break;
+
 	}
 	case VICTORY:
+
 		std::cout << "\n Victory! All enemies defeated!\n";
 		// TODO: Create victory boolean for future logic
 		state = END;
 		break;
 
 	case DEFEAT:
+
 		std::cout << "\n Defeat... Your party has fallen.\n";
 		// TODO: Create defeat boolean for future logic
 		state = END;
