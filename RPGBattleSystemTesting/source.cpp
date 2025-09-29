@@ -9,6 +9,7 @@
 #include "BattleSystem.h"
 #include "Tags.h"
 #include "nameComponent.h"
+#include "GameStateManager.h"
 
 
 /*
@@ -26,7 +27,7 @@ int main() {
 	std::unordered_map<Entity, HealthComponent> healthStore;
 	std::unordered_map<Entity, CombatStatsComponent> statsStore;
 	std::unordered_map<Entity, NameComponent> nameStore;
-
+	
 	Entity player1 = createEntity();
 	nameStore[player1] = { "Dave" };
 	healthStore[player1] = { 200, 200 };
@@ -36,7 +37,13 @@ int main() {
 	nameStore[player2] = { "Steve" };
 	healthStore[player2] = { 200, 200 };
 	statsStore[player2] = { 20, 5, 11 };
+	
+	std::vector<Entity> players;
+	players.push_back(player1);
+	players.push_back(player2);
 
+
+	/*
 	Entity enemy1 = createEntity();
 	nameStore[enemy1] = { "Goblin" };
 	healthStore[enemy1] = { 100, 100 };
@@ -47,25 +54,20 @@ int main() {
 	healthStore[enemy2] = { 100, 100 };
 	statsStore[enemy2] = { 8, 2, 10 };
 	
-	std::vector<Entity> players;
-	players.push_back(player1);
-	players.push_back(player2);
-
+	
 	std::vector<Entity>enemies;
 	enemies.push_back(enemy1);
 	enemies.push_back(enemy2);
+	*/
 
-	BattleSystem battle(players, enemies, healthStore, statsStore, nameStore);
+	GameStateManager game(players, healthStore, statsStore, nameStore);
+
 
 	const int windowWidth = 720;
 	const int windowHeight = 480;
 
 	float deltaTime{};
 
-	float waitTime = 5.f;
-	int prevIntWait = static_cast<int>(waitTime);
-
-	bool overWorldActive = true;
 	
 	SetRandomSeed(static_cast<unsigned int>(time(NULL)));
 
@@ -81,26 +83,8 @@ int main() {
 		deltaTime = GetFrameTime();
 
 
-		// Placeholder Code to simulate battle
-		// This just prints a . to console every second then when waitTime = 0
-		// battle starts
-		int currentIntWait = static_cast<int>(waitTime);
+		game.update();
 
-		if (currentIntWait < prevIntWait) {
-			std::cout << ".";
-			prevIntWait = currentIntWait;
-		}
-		if (waitTime > 0) {
-			waitTime -= deltaTime;
-		}
-		if (waitTime <= 0) {
-			battle.battleActive = true;
-		}
-		while (battle.isActive()) {
-			battle.update();
-		}
-		// ------------------------------------------------------
-		
 
 
 		BeginDrawing();

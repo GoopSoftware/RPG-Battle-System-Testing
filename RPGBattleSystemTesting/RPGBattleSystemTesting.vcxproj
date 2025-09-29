@@ -128,17 +128,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BattleSystem.cpp" />
-    <ClCompile Include="CombatSystem.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="GameStateManager.cpp" />
+    <ClCompile Include="OverworldSystem.cpp" />
     <ClCompile Include="source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CombatStatsComponent.h" />
     <ClInclude Include="BattleSystem.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="NameComponent.h" />
+    <ClInclude Include="OverworldSystem.h" />
     <ClInclude Include="Tags.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
