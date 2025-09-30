@@ -13,6 +13,10 @@ GameStateManager::~GameStateManager() {
 
 }
 
+void GameStateManager::triggerEncounter() {
+	std::cout << "Encounter triggered\n";
+		
+}
 
 void GameStateManager::update() {
 
@@ -20,9 +24,13 @@ void GameStateManager::update() {
 
 	case GameState::OVERWORLD:
 		overworld.update();
+		if (overworld.getEncounter()) {
+			currentState = GameState::BATTLE;
+		}
 		break;
 
 	case GameState::BATTLE:
+		std::cout << "In a battle!\n";
 		break;
 
 	case GameState::MENU:

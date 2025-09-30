@@ -21,7 +21,7 @@ public:
 	~GameStateManager();
 
 	void update();
-
+	void triggerEncounter();
 
 
 private:

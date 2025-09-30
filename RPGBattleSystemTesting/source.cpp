@@ -74,9 +74,6 @@ int main() {
 	InitWindow(windowWidth, windowHeight, "RPG Test");
 	SetTargetFPS(60);
 
-
-	std::cout << "Searching for a battle.";
-
 	while (!WindowShouldClose())
 	{
 
@@ -86,12 +83,10 @@ int main() {
 		game.update();
 
 
-
 		BeginDrawing();
 
 
 		EndDrawing();
-
 
 
 	}
