@@ -31,7 +31,6 @@ public:
 
 	void update();
 	bool isActive() const { return battleActive; }
-	bool battleActive = false;
 
 	void attack(Entity attacker, Entity defender);
 	void defend(Entity defender);
@@ -84,6 +83,7 @@ private:
 	State state{ START };
 	TurnOrder turn;
 
+	bool battleActive = true;
 
 	std::vector<Entity> turnOrder;
 	int currentTurnIndex = 0;

@@ -1,15 +1,15 @@
 #pragma once
-#include "Entity.h"
 #include <vector>
+#include <raylib.h>
+#include <iostream>
+#include <unordered_map>
 
-/*
-struct Encounter {
+#include "Entity.h"
+#include "Encounter.h"
+#include "HealthComponent.h"
+#include "CombatStatsComponent.h"
+#include "NameComponent.h"
 
-	std::vector<Entity> enemies;
-	std::string encounterName;
-
-};
-*/
 enum class Biome {
 	FOREST,
 	OCEAN,
@@ -24,20 +24,21 @@ public:
 	~OverworldSystem();
 	
 	void update();
-	void generateEncounter();
+	void encounterCheck();
+
+	Encounter generateEncounter(std::unordered_map<Entity, HealthComponent>& healthStore,
+								std::unordered_map<Entity, CombatStatsComponent>& statsStore,
+								std::unordered_map<Entity, NameComponent>& nameStore);
+
 	bool getEncounter() { return encounter; }
+	void clearEncounter() { encounter = false; }
 
 private:
 
-	Entity player;
-
-	float deltaTime;
-
-	int encounterRate;
-	void encounterCheck();
+	int encounterRate; // Unused for now but allows for scaling encounter chance
+	
+	// Flag used to trigger when a battle should happen, not when a battle is happening. 
+	// State::BATTLE is for when a battle is happening
 	bool encounter = false;
-
-	std::string currentBiome = "forest";
-
 };
 

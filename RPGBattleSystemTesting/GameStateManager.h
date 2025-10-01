@@ -1,6 +1,9 @@
 #pragma once
-#include "OverworldSystem.h"
 #include <memory>
+
+#include "OverworldSystem.h"
+#include "BattleSystem.h"
+#include "Encounter.h"
 #include "BattleSystem.h"
 
 enum class GameState {
@@ -28,7 +31,15 @@ private:
 
 	GameState currentState = GameState::OVERWORLD;
 	OverworldSystem overworld;
-	std::unique_ptr<BattleSystem> battle;
-	// MenuSystem menu;                                   ----- For when MenuSystem is done -----
+	// MenuSystem menu;  ----- For when MenuSystem is done -----
+
+	std::vector<Entity> players;
+	std::unordered_map<Entity, HealthComponent>& healthStore;
+	std::unordered_map<Entity, CombatStatsComponent>& statsStore;
+	std::unordered_map<Entity, NameComponent>& nameStore;
+
+	Encounter currentEncounter;
+	std::unique_ptr<BattleSystem> battleSystem; // ptr created when battle triggered
+
 };
 

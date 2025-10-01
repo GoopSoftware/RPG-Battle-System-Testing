@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClInclude Include="CombatStatsComponent.h" />
     <ClInclude Include="BattleSystem.h" />
+    <ClInclude Include="Encounter.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="HealthComponent.h" />
