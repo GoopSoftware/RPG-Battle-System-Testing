@@ -39,19 +39,15 @@ void OverworldSystem::encounterCheck() {
 	int encounterRoll = GetRandomValue(1, 10);
 	if (encounterRoll == 1) { 
 		encounter = true;
-		std::cout << "Encountered a Battle!";
+		std::cout << "Encountered a Battle!\n";
 	}
 }
 
 
 Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthComponent>& healthStore,
 											 std::unordered_map<Entity, CombatStatsComponent>& statsStore,
-											 std::unordered_map<Entity, NameComponent>& nameStore) {
-
-	std::cout << "Generating Encounter()\n";
-	// input = overworld information
-	// algorithm to generate a battle based on overworld information
-
+											 std::unordered_map<Entity, NameComponent>& nameStore) 
+{
 	Encounter encounter;
 	encounter.difficulty = 1;
 	encounter.zone = "Forest";
@@ -66,8 +62,7 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 		auto& stats = statsStore[enemy];
 		auto& health = healthStore[enemy];
 		std::cout << "Created " << nameStore[enemy].name
-			<< " (Hlth: " << health.hp
-			<< " (MaxHlth: " << health.maxHp
+			<< " (Health: " << health.hp
 			<< " (Atk: " << stats.attack
 			<< ", Def: " << stats.defense
 			<< ", Spd: " << stats.speed << ")\n";

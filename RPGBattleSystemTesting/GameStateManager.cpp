@@ -19,7 +19,8 @@ GameStateManager::~GameStateManager() {
 }
 
 void GameStateManager::triggerEncounter() {
-	std::cout << "Encounter triggered\n";
+	// This functions creates the actual battle using the generated values from generateEncounter()
+	// Creates a unique pointer of a BattleSystem
 	currentEncounter = overworld.generateEncounter(healthStore, statsStore, nameStore);
 
 	battleSystem = std::make_unique<BattleSystem>(
@@ -37,6 +38,7 @@ void GameStateManager::update() {
 	switch (currentState) {
 
 	case GameState::OVERWORLD:
+
 		overworld.update();
 
 		if (overworld.getEncounter()) {
@@ -52,8 +54,27 @@ void GameStateManager::update() {
 			battleSystem->update();
 
 			if (!battleSystem->isActive()) {
-				// TODO: Add victory/defeat logic here
-				currentState = GameState::OVERWORLD;
+
+				BattleResult result = battleSystem->getResult();
+
+				if (result == BattleResult::VICTORY) {
+					std::cout << "Your have won the battle!\n";
+					// TODO: Give out xp and loot etc when RewardSystem is done
+					currentState = GameState::OVERWORLD;
+				}
+				else if (result == BattleResult::DEFEAT) {
+					std::cout << "Darn you lost GG noob\n";
+					currentState = GameState::GAME_OVER;
+				}
+				else if (result == BattleResult::RUN) {
+					std::cout << "Your Escaped!\n";
+					currentState = GameState::OVERWORLD;
+				}
+				else {
+					std::cout << "***BUG*** No valid BattleResult Inside GameStateManager.update()";
+				}
+
+				//currentState = GameState::OVERWORLD;
 				battleSystem.reset();
 			}
 		}
@@ -64,6 +85,7 @@ void GameStateManager::update() {
 		break;
 
 	case GameState::GAME_OVER:
+		// TODO: Create DefeatSystem and hook in here
 		break;
 	}
 

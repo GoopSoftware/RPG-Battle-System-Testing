@@ -167,10 +167,11 @@ void BattleSystem::handleRunOption() {
 	int runDecision = GetRandomValue(1, 3);
 	if (runDecision <= 2) {
 		std::cout << "\n>>> You successfully ran away!\n";
-		state = END;
+		state = RUN;
 	}
 	else {
 		std::cout << "\n>>> You tried to run, but failed!\n";
+		state = CHECKBATTLESTATUS;
 	}
 	validAction = true;
 
@@ -268,8 +269,10 @@ void BattleSystem::update() {
 
 		handlePlayerTurn();
 		
-		// Pretty sure this is redundant
-		if (state != END) {
+		// This is super jank and will probably cause issues later but idk how what to do to make it better
+		// This is a second check to make sure we can move into state RUN without overwriting with CHECKBATTLESTATUS
+		// causing the system to break.
+		if (state != RUN) {
 			state = CHECKBATTLESTATUS;
 		}
 
@@ -309,14 +312,25 @@ void BattleSystem::update() {
 	case VICTORY:
 
 		std::cout << "\n Victory! All enemies defeated!\n";
-		// TODO: Create victory boolean for future logic
+		result = BattleResult::VICTORY;
+
 		state = END;
 		break;
 
 	case DEFEAT:
 
 		std::cout << "\n Defeat... Your party has fallen.\n";
-		// TODO: Create defeat boolean for future logic
+		result = BattleResult::DEFEAT;
+
+		state = END;
+		break;
+		
+	case RUN:
+
+		
+		result = BattleResult::RUN;
+
+		
 		state = END;
 		break;
 

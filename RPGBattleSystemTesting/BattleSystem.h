@@ -11,6 +11,12 @@
 
 using Entity = std::uint32_t;
 
+enum class BattleResult {
+	NONE,
+	VICTORY,
+	DEFEAT,
+	RUN
+};
 
 enum TurnOrder {
 	PLAYER_TURN,
@@ -35,6 +41,7 @@ public:
 	void attack(Entity attacker, Entity defender);
 	void defend(Entity defender);
 
+	BattleResult getResult() const { return result; }
 	void calculateTurnOrder();
 	void turnResolution();
 	void printTurnOrder();
@@ -78,12 +85,15 @@ private:
 		CHECKBATTLESTATUS,
 		VICTORY,
 		DEFEAT,
+		RUN,
 		END
 	};
 	State state{ START };
 	TurnOrder turn;
 
 	bool battleActive = true;
+
+	BattleResult result = BattleResult::NONE;
 
 	std::vector<Entity> turnOrder;
 	int currentTurnIndex = 0;
