@@ -6,14 +6,29 @@
 /*
 Battle System Code:
 
-This was the first step created for the text based RPG
+This code is the random encounter system for the RPG
+
+It uses 5 vectors to work
+	Players
+	Enemeis
+	turnOrder
+	livingPlayers
+	livingEnemeis
+
+It first assigns turn order based on the speed value of the party vs the speed value of enemies populating turnOrder.
+Then it changes to the next players turn through the turnResolution() function changing state respectively.
+First index takes their turn then passes over the state to CHECKBATTLESTATUS.
+CHECKBATTLESTATUS checks for dead players, removes from livingVector, checks victory/defeat condition
+then passes to turnResolution.
+
+If player runs it changes to RUN state
+
 
 Goals:
 	- Create a text based battle system mimicing early RPG games
 	- Learn to use components and entities inside a system
 
 TODO:
-	- Refactor console output to return strings
 	- Add magic
 	- Add items
 
@@ -282,6 +297,7 @@ void BattleSystem::update() {
 		// Placeholder enemy logic
 		// In future add enemy ai logic to decide healing/spells/attack/run
 
+		// Runs a check for alive players from players vector and assigns them to livingPLayers vector
 		populateEnemyTargets();
 
 		// if livingPlayers isnt empty Picks a random living player and attacks
@@ -294,7 +310,8 @@ void BattleSystem::update() {
 		break;
 
 	case CHECKBATTLESTATUS: {
-	
+		
+		// updates turn order 
 		removeDefeatedFromTurnOrder();
 
 		if (checkVictoryCondition()) {
@@ -326,7 +343,6 @@ void BattleSystem::update() {
 		break;
 		
 	case RUN:
-
 		
 		result = BattleResult::RUN;
 
