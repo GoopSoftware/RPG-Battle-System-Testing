@@ -43,23 +43,6 @@ int main() {
 	players.push_back(player2);
 
 
-	/*
-	Entity enemy1 = createEntity();
-	nameStore[enemy1] = { "Goblin" };
-	healthStore[enemy1] = { 100, 100 };
-	statsStore[enemy1] = { 8, 2, 10 };
-
-	Entity enemy2 = createEntity();
-	nameStore[enemy2] = { "Goblin 2" };
-	healthStore[enemy2] = { 100, 100 };
-	statsStore[enemy2] = { 8, 2, 10 };
-	
-	
-	std::vector<Entity>enemies;
-	enemies.push_back(enemy1);
-	enemies.push_back(enemy2);
-	*/
-
 	GameStateManager game(players, healthStore, statsStore, nameStore);
 
 
