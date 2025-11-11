@@ -36,16 +36,16 @@ TODO:
 
 
 
-BattleSystem::BattleSystem( std::vector<Entity> players,
-							std::vector<Entity> enemies,
-							std::unordered_map<Entity, HealthComponent>& healthStore,
-							std::unordered_map<Entity, CombatStatsComponent>& statsStore,
-							std::unordered_map<Entity, NameComponent>& nameStore
+BattleSystem::BattleSystem(std::vector<Entity> players,
+	std::vector<Entity> enemies,
+	std::unordered_map<Entity, HealthComponent>& healthStore,
+	std::unordered_map<Entity, CombatStatsComponent>& statsStore,
+	std::unordered_map<Entity, NameComponent>& nameStore
 
-	) :
+) :
 	players(players),
-	enemies(enemies), 
-	healthStore(healthStore), 
+	enemies(enemies),
+	healthStore(healthStore),
 	statsStore(statsStore),
 	nameStore(nameStore)
 {
@@ -66,9 +66,9 @@ void BattleSystem::calculateTurnOrder() {
 	turnOrder.insert(turnOrder.end(), enemies.begin(), enemies.end());
 
 	// Sorts beginning to end based on statsStore.speed or entities
-	std::sort(turnOrder.begin(), turnOrder.end(), 
+	std::sort(turnOrder.begin(), turnOrder.end(),
 		[this](Entity a, Entity b) {
-		return statsStore[a].speed > statsStore[b].speed;
+			return statsStore[a].speed > statsStore[b].speed;
 		});
 
 	currentTurnIndex = -1;
@@ -110,11 +110,11 @@ void BattleSystem::attack(Entity attacker, Entity defender) {
 	healthStore[defender].hp -= damage;
 
 
-    std::cout << "\n>>> " << nameStore[attacker].name
-              << " attacks " << nameStore[defender].name
-              << " for " << damage << " damage!"
-              << "\n    " << nameStore[defender].name
-              << " HP: " << std::max(0, healthStore[defender].hp) << "\n";
+	std::cout << "\n>>> " << nameStore[attacker].name
+		<< " attacks " << nameStore[defender].name
+		<< " for " << damage << " damage!"
+		<< "\n    " << nameStore[defender].name
+		<< " HP: " << std::max(0, healthStore[defender].hp) << "\n";
 
 
 	if (healthStore[defender].hp <= 0) {
@@ -127,7 +127,7 @@ void BattleSystem::defend(Entity defender) {
 	// Logic for defence. No currenty planned system so for now we just permenantly increase by 5
 	statsStore[defender].defense += 5;
 	std::cout << "\n>>> " << nameStore[defender].name
-			  << " defends and raises defense!\n";
+		<< " defends and raises defense!\n";
 }
 
 
@@ -140,10 +140,7 @@ void BattleSystem::handleAttackOption() {
 		if (healthStore[e].hp > 0) {
 			livingEnemies.push_back(e);
 
-			// Print out living enemies if user selected attack
-			std::cout << "   " << livingEnemies.size()
-				<< ") " << nameStore[e].name
-				<< " (HP: " << healthStore[e].hp << ")\n";
+
 		}
 	}
 
@@ -155,17 +152,31 @@ void BattleSystem::handleAttackOption() {
 		return;
 	}
 
-	// seitialize choice to 0 and ask user for input on which enemy to attack
-	int choice = 0;
-	while (choice < 1 || choice > static_cast<int>(livingEnemies.size())) {
-		std::cout << "\nChoose a target (1-" << livingEnemies.size() << "): ";
-		std::cin >> choice;
+	targetCandidates = livingEnemies;
+	targetIndex = 0;
+
+	std::cout << "\n>>> " << nameStore[currentEntity].name
+		<< " chose ATTACK.\n";
+	std::cout << "Choose your target:\n";
+	for (size_t i = 0; i < targetCandidates.size(); ++i) {
+		std::cout << "   " << (i + 1) << ") "
+			<< nameStore[targetCandidates[i]].name
+			<< " (HP: " << healthStore[targetCandidates[i]].hp << ")\n";
 	}
+	std::cout << "Use UP/DOWN or number keys to select. Press ENTER to confirm, ESC to cancel.\n";
+
+	playerPhase = PlayerPhase::TargetMenu;
+
+	// set choice to 0 and ask user for input on which enemy to attack
+	//int choice = 0;
+	//while (choice < 1 || choice > static_cast<int>(livingEnemies.size())) {
+	//	std::cout << "\nChoose a target (1-" << livingEnemies.size() << "): ";
+	//	/*std::cin >> choice;*/
+	//	if (IsKeyPressed(KEY_ONE)) {
+	//		choice = 1;
+	//	}
+	//}
 	// TODO: In future add option to cancel attack and go back a screen
-
-
-	attack(currentEntity, livingEnemies[choice - 1]);
-	validAction = true;
 
 }
 
@@ -197,32 +208,117 @@ void BattleSystem::handleInvalidOption() {
 }
 
 
-void BattleSystem::handlePlayerTurn() {
-	std::cout << "\n" << nameStore[currentEntity].name << "'s turn\n";
-	std::cout << "1. Attack\n" << "2. Defend\n" << "3. Run" << std::endl;
-	std::cin >> userInput;
+//void BattleSystem::handlePlayerTurn() {
+//	std::cout << "\n" << nameStore[currentEntity].name << "'s turn\n";
+//	std::cout << "1. Attack\n" << "2. Defend\n" << "3. Run" << std::endl;
+//	std::cin >> userInput;
+//
+//	switch (userInput) {
+//
+//	case 1:
+//		handleAttackOption();
+//		break;
+//
+//	case 2:
+//		handleDefendOption();
+//		break;
+//
+//	case 3:
+//		handleRunOption();
+//		break;
+//
+//	default:
+//		handleInvalidOption();
+//		break;
+//	}
+//}
 
-	switch (userInput) {
+void BattleSystem::updatePlayerTurn() {
 
-	case 1:
-		handleAttackOption();
+	switch (playerPhase) {
+
+	case PlayerPhase::ActionMenu: {
+
+		if (!printedActionMenu) {
+			printTurnOptions();
+			printedActionMenu = true;
+		}
+
+
+		if (IsKeyPressed(KEY_ONE)) {
+			std::cout << "\n[INPUT] 1 pressed ATTACK selected.\n";
+			handleAttackOption();
+		}
+		else if (IsKeyPressed(KEY_TWO)) {
+			std::cout << "\n[INPUT] 2 pressed DEFEND selected.\n";
+			handleDefendOption();
+			playerPhase = PlayerPhase::Done;
+		}
+		else if (IsKeyPressed(KEY_THREE)) {
+			std::cout << "\n[INPUT] 3 pressed RUN selected.\n";
+			handleRunOption();
+			playerPhase = PlayerPhase::Done;
+		}
 		break;
 
-	case 2:
-		handleDefendOption();
+
+	case PlayerPhase::TargetMenu:
+		if (targetCandidates.empty()) {
+			std::cout << "\n>>> No valid targets. Returning to ActionMenu.\n";
+			playerPhase = PlayerPhase::Done;
+			break;
+		}
+	
+		if (IsKeyPressed(KEY_ONE)) targetIndex = 0;
+		if (IsKeyPressed(KEY_TWO) && targetCandidates.size() > 1) targetIndex = 1;
+		if (IsKeyPressed(KEY_THREE) && targetCandidates.size() > 2) targetIndex = 2;
+
+		if (IsKeyPressed(KEY_UP)) {
+			targetIndex = (targetIndex + targetCandidates.size() - 1) % targetCandidates.size();
+			std::cout << "[INPUT] UP now highlighting: "
+				<< nameStore[targetCandidates[targetIndex]].name << "\n";
+		}
+		if (IsKeyPressed(KEY_DOWN)) {
+			targetIndex = (targetIndex + 1) % targetCandidates.size();
+			std::cout << "[INPUT] DOWN now highlighting: "
+				<< nameStore[targetCandidates[targetIndex]].name << "\n";
+		}
+
+		// select option
+		if (IsKeyPressed(KEY_ENTER)) {
+			std::cout << "[CONFIRM] Enter pressed attacking "
+				<< nameStore[targetCandidates[targetIndex]].name << "\n";
+			attack(currentEntity, targetCandidates[targetIndex]);
+			playerPhase = PlayerPhase::Done;
+		}
+
+		// Cancel back to main action menu
+		if (IsKeyPressed(KEY_Q) || IsKeyPressed(KEY_BACKSPACE)) {
+			std::cout << "[CANCEL] Returning to turn decision " << "\n";
+			playerPhase = PlayerPhase::ActionMenu;
+			printedActionMenu = false;
+
+			break;
+		}
+
+
+	case PlayerPhase::Done:
 		break;
 
-	case 3:
-		handleRunOption();
-		break;
 
 	default:
-		handleInvalidOption();
 		break;
+	}
 	}
 }
 
-void BattleSystem::printTurnOrder() {
+void BattleSystem::printTurnOptions() {
+	log("\n" + nameStore[currentEntity].name + "'s turn\n" + "1. Attack\n" + "2. Defend\n" + "3. Run" + "\n");
+	//std::cout << "\n" << nameStore[currentEntity].name << "'s turn\n";
+	//std::cout << "1. Attack\n" << "2. Defend\n" << "3. Run" << std::endl;
+}
+
+void BattleSystem::printInitialTurnOrder() {
 	std::cout << "\n-- Turn Order --\n";
 	for (size_t i = 0; i < turnOrder.size(); i++) {
 		Entity e = turnOrder[i];
@@ -266,6 +362,15 @@ bool BattleSystem::checkVictoryCondition() {
 		[this](Entity e) {return healthStore[e].hp <= 0; });
 }
 
+void BattleSystem::log(const std::string& msg) {
+	battleLog.push_back(msg);
+	if (battleLog.size() > 8)
+		battleLog.pop_front();
+
+	if (debugPrint)
+		std::cout << msg << "\n"; // optional for debugging
+}
+
 void BattleSystem::update() {
 
 	switch (state) {
@@ -281,15 +386,27 @@ void BattleSystem::update() {
 		break;
 
 	case PLAYERTURN:
+		//if (playerPhase == PlayerPhase::ActionMenu && !printedActionMenu) {
+		//	std::cout << "\n=== " << nameStore[currentEntity].name << "'s Turn ===\n"
+		//		<< "1. Attack\n2. Defend\n3. Run\n";
+		//	printedActionMenu = true;
+		//}
 
-		handlePlayerTurn();
-		
-		// This is super jank and will probably cause issues later but idk how what to do to make it better
-		// This is a second check to make sure we can move into state RUN without overwriting with CHECKBATTLESTATUS
-		// causing the system to break.
-		if (state != RUN) {
-			state = CHECKBATTLESTATUS;
+		updatePlayerTurn();
+
+		if (playerPhase == PlayerPhase::Done) {
+			// This is super jank and will probably cause issues later but idk how what to do to make it better
+			// This is a second check to make sure we can move into state RUN without overwriting with CHECKBATTLESTATUS
+			// causing the system to break.
+			if (state != RUN) {
+				state = CHECKBATTLESTATUS;
+			}
+
+			playerPhase = PlayerPhase::ActionMenu;
+			targetCandidates.clear();
+			printedActionMenu = false;
 		}
+
 
 		break;
 
@@ -310,7 +427,7 @@ void BattleSystem::update() {
 		break;
 
 	case CHECKBATTLESTATUS: {
-		
+
 		// updates turn order 
 		removeDefeatedFromTurnOrder();
 
@@ -341,12 +458,12 @@ void BattleSystem::update() {
 
 		state = END;
 		break;
-		
+
 	case RUN:
-		
+
 		result = BattleResult::RUN;
 
-		
+
 		state = END;
 		break;
 

@@ -7,6 +7,8 @@
 #include <iostream>
 #include <vector>
 #include "nameComponent.h"
+#include <deque>
+#include <string>
 
 
 using Entity = std::uint32_t;
@@ -23,14 +25,20 @@ enum TurnOrder {
 	ENEMY_TURN
 };
 
+enum class PlayerPhase {
+	ActionMenu,
+	TargetMenu,
+	Done
+};
+
 class BattleSystem
 {
 public:
 	BattleSystem(std::vector<Entity> players,
-				 std::vector<Entity> enemies,
-				 std::unordered_map<Entity, HealthComponent>& healthStore,
-				 std::unordered_map<Entity, CombatStatsComponent>& statsStore,
-				 std::unordered_map<Entity, NameComponent>& nameStore
+		std::vector<Entity> enemies,
+		std::unordered_map<Entity, HealthComponent>& healthStore,
+		std::unordered_map<Entity, CombatStatsComponent>& statsStore,
+		std::unordered_map<Entity, NameComponent>& nameStore
 
 	);
 	~BattleSystem();
@@ -44,18 +52,21 @@ public:
 	BattleResult getResult() const { return result; }
 	void calculateTurnOrder();
 	void turnResolution();
-	void printTurnOrder();
+
 	void populateEnemyTargets();
 	int calculateDamage(const CombatStatsComponent& attacker,
-						const CombatStatsComponent& defender);
+		const CombatStatsComponent& defender);
+
+
 
 private:
 
-	void handlePlayerTurn();
+	//void handlePlayerTurn();
 	void handleAttackOption();
 	void handleDefendOption();
 	void handleRunOption();
 	void handleInvalidOption();
+
 
 	void removeDefeatedFromTurnOrder();
 	bool checkDefeatCondition();
@@ -94,8 +105,26 @@ private:
 	bool battleActive = true;
 
 	BattleResult result = BattleResult::NONE;
+	PlayerPhase playerPhase = PlayerPhase::ActionMenu;
+	int actionIndex = 0;
+	int targetIndex = 0;
+	std::vector<Entity> targetCandidates;
+
+	void updatePlayerTurn();
 
 	std::vector<Entity> turnOrder;
 	int currentTurnIndex = 0;
-};
 
+	// CONSOLE DEBUG
+	bool printedActionMenu;
+	void printTurnOptions();
+	void printInitialTurnOrder();
+
+
+	// FUTURE BATTLE LOGGING
+	std::deque<std::string> battleLog;
+	void log(const std::string& msg);
+	bool debugPrint = true;
+
+
+};
