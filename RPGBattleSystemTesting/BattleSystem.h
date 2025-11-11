@@ -123,7 +123,7 @@ private:
 
 	// FUTURE BATTLE LOGGING
 	std::deque<std::string> battleLog;
-	void log(const std::string& msg);
+	void logBattle(const std::string& msg);
 	bool debugPrint = true;
 
 
