@@ -107,6 +107,7 @@ private:
 	BattleResult result = BattleResult::NONE;
 	PlayerPhase playerPhase = PlayerPhase::ActionMenu;
 	int actionIndex = 0;
+	std::vector<std::string> actionOptions{ "Attack", "Defend", "Run" };
 	int targetIndex = 0;
 	std::vector<Entity> targetCandidates;
 

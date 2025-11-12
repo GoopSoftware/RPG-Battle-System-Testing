@@ -156,7 +156,7 @@ void BattleSystem::handleAttackOption() {
 		logBattle("   " + std::to_string((i + 1)) + ") " + nameStore[targetCandidates[i]].name + " (HP: " + std::to_string(healthStore[targetCandidates[i]].hp) + ")\n");
 	}
 	
-	logBattle("Use UP/DOWN or number keys to select. Press ENTER to confirm, ESC to cancel.\n");
+	logBattle("Use W/S to select. Press ENTER to confirm, ESC to cancel.\n");
 
 	playerPhase = PlayerPhase::TargetMenu;
 
@@ -193,81 +193,6 @@ void BattleSystem::handleInvalidOption() {
 
 
 
-void BattleSystem::updatePlayerTurn() {
-
-	switch (playerPhase) {
-
-	case PlayerPhase::ActionMenu: {
-
-		if (!printedActionMenu) {
-			printTurnOptions();
-			printedActionMenu = true;
-		}
-
-		if (IsKeyPressed(KEY_ONE)) {
-			logBattle("\n[INPUT] 1 pressed ATTACK selected.\n");
-			handleAttackOption();
-		}
-		else if (IsKeyPressed(KEY_TWO)) {
-			logBattle("\n[INPUT] 2 pressed DEFEND selected.\n");
-			handleDefendOption();
-			playerPhase = PlayerPhase::Done;
-		}
-		else if (IsKeyPressed(KEY_THREE)) {
-			logBattle("\n[INPUT] 3 pressed RUN selected.\n");
-			handleRunOption();
-			playerPhase = PlayerPhase::Done;
-		}
-		break;
-
-
-	case PlayerPhase::TargetMenu:
-		if (targetCandidates.empty()) {
-			logBattle("\n>>> No valid targets. Returning to ActionMenu.\n");
-			playerPhase = PlayerPhase::Done;
-			break;
-		}
-	
-		if (IsKeyPressed(KEY_ONE)) targetIndex = 0;
-		if (IsKeyPressed(KEY_TWO) && targetCandidates.size() > 1) targetIndex = 1;
-		if (IsKeyPressed(KEY_THREE) && targetCandidates.size() > 2) targetIndex = 2;
-
-		if (IsKeyPressed(KEY_UP)) {
-			targetIndex = (targetIndex + targetCandidates.size() - 1) % targetCandidates.size();
-			logBattle("[INPUT] UP now highlighting: " + nameStore[targetCandidates[targetIndex]].name + "\n");
-		}
-		if (IsKeyPressed(KEY_DOWN)) {
-			targetIndex = (targetIndex + 1) % targetCandidates.size();
-			logBattle("[INPUT] DOWN now highlighting : " + nameStore[targetCandidates[targetIndex]].name + "\n");
-		}
-
-		// select option
-		if (IsKeyPressed(KEY_ENTER)) {
-			logBattle("[CONFIRM] Enter pressed attacking " + nameStore[targetCandidates[targetIndex]].name + "\n");
-			attack(currentEntity, targetCandidates[targetIndex]);
-			playerPhase = PlayerPhase::Done;
-		}
-
-		// Cancel back to main action menu
-		if (IsKeyPressed(KEY_Q) || IsKeyPressed(KEY_BACKSPACE)) {
-			logBattle("[CANCEL] Returning to turn decision \n");
-
-			playerPhase = PlayerPhase::ActionMenu;
-			printedActionMenu = false;
-
-			break;
-		}
-
-
-	case PlayerPhase::Done:
-		break;
-
-
-	default:
-		break;
-	}
-	}
-}
 
 void BattleSystem::printTurnOptions() {
 	logBattle("\n" + nameStore[currentEntity].name + "'s turn\n" + "1. Attack\n" + "2. Defend\n" + "3. Run" + "\n");
@@ -327,6 +252,101 @@ void BattleSystem::logBattle(const std::string& msg) {
 	}
 
 }
+
+void BattleSystem::updatePlayerTurn() {
+
+	switch (playerPhase) {
+
+		case PlayerPhase::ActionMenu: {
+
+			if (!printedActionMenu) {
+				actionIndex = 0;
+				printTurnOptions();
+				printedActionMenu = true;
+				logBattle("[INFO] Action Menu opened.\n");
+				logBattle("Use W/S to select. Press ENTER to confirm, ESC to cancel.\n");
+				logBattle("[INPUT] Currently highlighting: " + actionOptions[actionIndex] + "\n");
+			}
+
+
+			if (IsKeyPressed(KEY_W)) {
+				actionIndex = (actionIndex + actionOptions.size() - 1) % actionOptions.size();
+				logBattle("[INPUT] UP now highlighting: " + actionOptions[actionIndex] + "\n");
+			}
+			if (IsKeyPressed(KEY_S)) {
+				actionIndex = (actionIndex + 1) % actionOptions.size();
+				logBattle("[INPUT] DOWN now highlighting: " + actionOptions[actionIndex] + "\n");
+			}
+
+			if (IsKeyPressed(KEY_ENTER)) {
+				logBattle("[CONFIRM] Enter pressed: " + actionOptions[actionIndex] + "\n");
+
+				switch (actionIndex) {
+				case 0:
+					handleAttackOption();
+					break;
+
+				case 1:
+					handleDefendOption();
+					playerPhase = PlayerPhase::Done;
+					break;
+
+				case 2:
+					handleRunOption();
+					playerPhase = PlayerPhase::Done;
+					break;
+				}
+			}
+
+			break;
+
+		case PlayerPhase::TargetMenu:
+			if (targetCandidates.empty()) {
+				logBattle("\n>>> No valid targets. Returning to ActionMenu.\n");
+				playerPhase = PlayerPhase::Done;
+				break;
+			}
+
+			if (IsKeyPressed(KEY_ONE)) targetIndex = 0;
+			if (IsKeyPressed(KEY_TWO) && targetCandidates.size() > 1) targetIndex = 1;
+			if (IsKeyPressed(KEY_THREE) && targetCandidates.size() > 2) targetIndex = 2;
+
+			if (IsKeyPressed(KEY_W)) {
+				targetIndex = (targetIndex + targetCandidates.size() - 1) % targetCandidates.size();
+				logBattle("[INPUT] UP now highlighting: " + nameStore[targetCandidates[targetIndex]].name + "\n");
+			}
+			if (IsKeyPressed(KEY_S)) {
+				targetIndex = (targetIndex + 1) % targetCandidates.size();
+				logBattle("[INPUT] DOWN now highlighting : " + nameStore[targetCandidates[targetIndex]].name + "\n");
+			}
+
+			// select option
+			if (IsKeyPressed(KEY_ENTER)) {
+				logBattle("[CONFIRM] Enter pressed attacking " + nameStore[targetCandidates[targetIndex]].name + "\n");
+				attack(currentEntity, targetCandidates[targetIndex]);
+				playerPhase = PlayerPhase::Done;
+			}
+
+			// Cancel back to main action menu
+			if (IsKeyPressed(KEY_Q) || IsKeyPressed(KEY_BACKSPACE)) {
+				logBattle("[CANCEL] Returning to turn decision \n");
+
+				playerPhase = PlayerPhase::ActionMenu;
+				printedActionMenu = false;
+
+				break;
+			}
+
+		case PlayerPhase::Done:
+			break;
+
+
+		default:
+			break;
+		}
+	}
+}
+
 
 void BattleSystem::update() {
 
