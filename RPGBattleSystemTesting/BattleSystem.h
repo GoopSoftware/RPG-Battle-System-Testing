@@ -65,7 +65,6 @@ public:
 
 private:
 
-	//void handlePlayerTurn();
 	void handleAttackOption();
 	void handleDefendOption();
 	void handleRunOption();
@@ -131,9 +130,6 @@ private:
 
 
 	// FUTURE BATTLE LOGGING
-	std::deque<std::string> battleLog;
-	void logBattle(const std::string& msg);
-	bool debugPrint = true;
 	DebugSystem debug;
 
 };
