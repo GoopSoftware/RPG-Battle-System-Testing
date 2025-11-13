@@ -1,48 +1,117 @@
-This project is an olschool RPG game made in C++ using the Raylib library
+﻿# Oldschool RPG (C++ / Raylib)
 
-We use ECS (Entity Compenet Systems) to handle the architecture of the game
+This project is an **oldschool turn-based RPG** built in **C++** using the **Raylib** graphics library.  
+The game uses an **ECS (Entity Component System)** architecture to keep gameplay logic modular, scalable, and easy to extend.
 
-Systems
-GameStateManager
-	- Always runs, 
-	- handles the overworld, battle system, menu, and game over states of the game
-	- Handles transitions between systems
+---
 
-OverworldSystem
-	- Always live but only updates when GameStatemanager is in overworld state
-	- Handles:
-		- Player Movement
-		- Random encounter rolls
-		- Random encounter creation
-		- Holds Environmnent context to influence the rest of the game
-			- E.g. Water temple, Fire temple, Ocean, Forest, etc
-	- Returns an encounter struct to GameStateManager
-		- Contains:
-			- Entity IDs
+## Architecture Overview
 
-BattleSystem
-	- Pointer created when encounter begins and destroyed when ends
-	- Constructed with
-		- Players
-		- OverworldSystem struct
-		- Component stores
-			- Player health, player stats, player names, etc
-	- Runs battle loop
-	- Returns flag Victory or Defeat to GameStateManager
+### **Entity Component System (ECS)**
+All gameplay logic is organized around entities (game objects), components (data), and systems (logic).  
+Systems operate only on entities that have the components they need.
 
+---
 
-Flow Example
-	1. OVERWORLD
-		- Player moves
-		- rolls n% encoutenr chance
-		- Triggers Encounter
-		- Feeds info to GameStateManager for battle
-		- GameStateManager switches to battle
-	2. Battle
-		- Construct BattleSystem with info from Overworld
-		- Battle runs
-		- Ends with victory -> Switches back to GameState OVERWORLD
-		- Ends with Defeat -> Switches to GameState GAME_OVER
-	3. GAME_OVER
-		- Display "You Died"
-		- Restart game logic_
+## Systems Overview
+
+### **GameStateManager**
+- Always running — controls global game flow.  
+- Handles **state transitions** between:
+  - `Overworld`
+  - `Battle`
+  - `Menu`
+  - `GameOver`
+- Maintains the active state and delegates update loops to the appropriate system.
+
+---
+
+### **OverworldSystem**
+- Always live but **only updates when the GameStateManager is in the Overworld state**.
+- Responsibilities:
+  - Player movement and interaction  
+  - Random encounter rolls  
+  - Random encounter creation  
+  - Maintains **environment context** (e.g., Forest, Ocean, Fire Temple) to influence enemy selection and encounter difficulty
+- Returns an `Encounter` struct to the `GameStateManager` containing:
+  - Entity IDs for enemies  
+  - Context data (environment, difficulty, etc.)
+
+---
+
+### **BattleSystem**
+- Created dynamically **when an encounter begins** and destroyed when it ends.  
+- Constructed with:
+  - Active player entities  
+  - Encounter data from `OverworldSystem`  
+  - Component stores (player health, stats, names, etc.)
+- Runs the **turn-based battle loop**, managing:
+  - Turn order  
+  - Player and enemy actions  
+  - Victory/defeat checks  
+- Returns a **flag** (`Victory` or `Defeat`) to the `GameStateManager`.
+
+---
+
+## Game Flow Example
+
+1. **Overworld Phase**
+   - Player moves freely  
+   - A random encounter roll is made each step  
+   - On success, an encounter is created and passed to `GameStateManager`  
+   - `GameStateManager` switches the state to **Battle**
+
+2. **Battle Phase**
+   - A new `BattleSystem` instance is constructed with overworld data  
+   - The battle loop runs until victory or defeat  
+   - On **Victory** → return to **Overworld**  
+   - On **Defeat** → switch to **Game Over**
+
+3. **Game Over Phase**
+   - Displays `"You Died"`  
+   - Handles restart or quit logic
+
+---
+
+## Current Work
+- Expanding **encounter generation** logic (location + difficulty scaling)  
+- Adding **environment-specific enemy pools**, inspired by *Final Fantasy VIII*-style scaling
+
+---
+
+## Planned Additions
+- UI Rendering system (menus, HUD, transitions)  
+- Save/Load system  
+- NPC interaction and dialogue system  
+- Audio management system (music + SFX)  
+- Dynamic environment tilesets
+
+---
+
+## Design Philosophy
+> “Keep it modular, keep it simple.”  
+The goal is to emulate the charm of classic JRPGs with modern development practices — a clean ECS structure, smooth transitions, and replayable systems.
+
+---
+
+## Controls (Prototype)
+| Action | Key |
+|--------|-----|
+| Move Up | W / ↑ |
+| Move Down | S / ↓ |
+| Move Left | A / ← |
+| Move Right | D / → |
+| Confirm | Enter |
+| Cancel | Q |
+
+---
+
+## Dependencies
+- **C++17 or higher**  
+- **Raylib** (https://www.raylib.com/)  
+
+---
+
+## Author
+**DirtyZeusLover**  
+Built with passion for oldschool RPGs and ECS-based architecture.  
