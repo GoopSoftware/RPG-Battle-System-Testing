@@ -1,14 +1,18 @@
 #pragma once
 
-#include "Entity.h"
-#include "HealthComponent.h"
-#include "CombatStatsComponent.h"
 #include <unordered_map>
 #include <iostream>
 #include <vector>
-#include "nameComponent.h"
 #include <deque>
 #include <string>
+
+#include "Entity.h"
+#include "HealthComponent.h"
+#include "CombatStatsComponent.h"
+#include "nameComponent.h"
+#include "DebugSystem.h"
+
+
 
 
 using Entity = std::uint32_t;
@@ -106,10 +110,14 @@ private:
 
 	BattleResult result = BattleResult::NONE;
 	PlayerPhase playerPhase = PlayerPhase::ActionMenu;
+
+	// These will be fed into RenderSystem 
 	int actionIndex = 0;
 	std::vector<std::string> actionOptions{ "Attack", "Defend", "Run" };
 	int targetIndex = 0;
 	std::vector<Entity> targetCandidates;
+	// End RenderSystem
+
 
 	void updatePlayerTurn();
 
@@ -126,6 +134,6 @@ private:
 	std::deque<std::string> battleLog;
 	void logBattle(const std::string& msg);
 	bool debugPrint = true;
-
+	DebugSystem debug;
 
 };
