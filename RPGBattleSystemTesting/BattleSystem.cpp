@@ -1,4 +1,5 @@
 #include "BattleSystem.h"
+#include "RenderSystem.h"
 #include "raylib.h"
 #include <algorithm>
 
@@ -446,5 +447,9 @@ void BattleSystem::update() {
 		battleActive = false;
 		break;
 	}
+
+}
+
+void BattleSystem::draw(RenderSystem& renderer) const {
 
 }

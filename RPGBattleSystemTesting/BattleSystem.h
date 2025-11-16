@@ -11,9 +11,10 @@
 #include "CombatStatsComponent.h"
 #include "nameComponent.h"
 #include "DebugSystem.h"
+#include "RenderSystem.h"
 
 
-
+class RenderSystem;
 
 using Entity = std::uint32_t;
 
@@ -61,6 +62,7 @@ public:
 	int calculateDamage(const CombatStatsComponent& attacker,
 		const CombatStatsComponent& defender);
 
+	void draw(RenderSystem& renderer) const;
 
 
 private:
@@ -127,7 +129,6 @@ private:
 	bool printedActionMenu;
 	void printTurnOptions();
 	void printInitialTurnOrder();
-
 
 	// FUTURE BATTLE LOGGING
 	DebugSystem debug;

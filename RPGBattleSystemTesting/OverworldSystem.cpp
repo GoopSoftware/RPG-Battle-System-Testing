@@ -1,5 +1,5 @@
 #include "OverworldSystem.h"
-
+#include "RenderSystem.h"
 
 
 OverworldSystem::OverworldSystem()
@@ -16,19 +16,27 @@ OverworldSystem::~OverworldSystem() {
 
 void OverworldSystem::update() {
 	if (IsKeyPressed(KEY_W)) {
-		std::cout << "Moved Up\n";
+		debug.log("OverworldSystem", LogLevel::INPUT, "Moved Up.");
+		partyPosition.y -= 1;
+		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
 		encounterCheck();
 	}
 	if (IsKeyPressed(KEY_S)) {
-		std::cout << "Moved Down\n";
+		partyPosition.y += 1;
+		debug.log("OverworldSystem", LogLevel::INPUT, "Moved Down.");
+		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
 		encounterCheck();
 	}
 	if (IsKeyPressed(KEY_A)) {
-		std::cout << "Moved Left\n";
+		partyPosition.x -= 1;
+		debug.log("OverworldSystem", LogLevel::INPUT, "Moved Left.");
+		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
 		encounterCheck();
 	}
 	if (IsKeyPressed(KEY_D)) {
-		std::cout << "Moved Right\n";
+		partyPosition.x += 1;
+		debug.log("OverworldSystem", LogLevel::INPUT, "Moved Right.");
+		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
 		encounterCheck();
 	}
 }
@@ -72,3 +80,6 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 	return encounter;
 }
 
+void OverworldSystem::draw(RenderSystem& renderer) const {
+
+}

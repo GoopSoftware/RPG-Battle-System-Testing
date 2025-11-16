@@ -10,6 +10,7 @@
 #include "Tags.h"
 #include "nameComponent.h"
 #include "GameStateManager.h"
+#include "RenderSystem.h"
 
 
 /*
@@ -43,11 +44,12 @@ int main() {
 	players.push_back(player2);
 
 
-	GameStateManager game(players, healthStore, statsStore, nameStore);
-
-
 	const int windowWidth = 720;
 	const int windowHeight = 480;
+
+	GameStateManager game(players, healthStore, statsStore, nameStore);
+	RenderSystem renderer(windowWidth, windowHeight, windowWidth, windowHeight);
+
 
 	float deltaTime{};
 
@@ -64,12 +66,10 @@ int main() {
 
 
 		game.update();
+		renderer.begin();
+		renderer.renderer(game);
+		renderer.end();
 
-
-		BeginDrawing();
-
-
-		EndDrawing();
 
 
 	}
