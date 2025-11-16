@@ -58,20 +58,26 @@ void GameStateManager::update() {
 				BattleResult result = battleSystem->getResult();
 
 				if (result == BattleResult::VICTORY) {
-					std::cout << "Your have won the battle!\n";
+					DebugSystem::log("GameStateManager", LogLevel::INFO, "You party has won the battle!");
+					//std::cout << "You party has won the battle!\n";
 					// TODO: Give out xp and loot etc when RewardSystem is done
 					currentState = GameState::OVERWORLD;
 				}
 				else if (result == BattleResult::DEFEAT) {
-					std::cout << "Darn you lost GG noob\n";
+					DebugSystem::log("GameStateManager", LogLevel::INFO, "Darn you lost GG noob");
+					//std::cout << "Darn you lost GG noob\n";
+
 					currentState = GameState::GAME_OVER;
 				}
 				else if (result == BattleResult::RUN) {
-					std::cout << "Your Escaped!\n";
+					DebugSystem::log("GameStateManager", LogLevel::INFO,  "Your party escaped!");
+					//std::cout << "Your party escaped!\n";
+
 					currentState = GameState::OVERWORLD;
 				}
 				else {
-					std::cout << "***BUG*** No valid BattleResult Inside GameStateManager.update()";
+					DebugSystem::log("GameStateManager", LogLevel::INFO, "***BUG*** No valid BattleResult Inside GameStateManager.update()");
+					//std::cout << "***BUG*** No valid BattleResult Inside GameStateManager.update()";
 				}
 
 				//currentState = GameState::OVERWORLD;

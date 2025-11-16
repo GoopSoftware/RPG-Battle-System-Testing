@@ -125,11 +125,8 @@ private:
 
 	// CONSOLE DEBUG
 	bool printedActionMenu;
+	bool printedInitialTarget;
 	void printTurnOptions();
 	void printInitialTurnOrder();
-
-
-	// FUTURE BATTLE LOGGING
-	DebugSystem debug;
 
 };

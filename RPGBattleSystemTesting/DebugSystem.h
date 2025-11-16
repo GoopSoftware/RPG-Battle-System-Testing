@@ -26,15 +26,15 @@ public:
 	DebugSystem();
 	~DebugSystem();
 
-	LogLevel minLevel = LogLevel::DEBUG;
+	//static LogLevel minLevel = LogLevel::DEBUG;
 
-	void log(std::string system, LogLevel level, std::string message);
+	static void log(std::string system, LogLevel level, std::string message);
 
 private:
 
 
-	std::string getTimestamp();
-	std::string levelToString(LogLevel level);
+	static std::string getTimestamp();
+	static std::string levelToString(LogLevel level);
 
 };
 

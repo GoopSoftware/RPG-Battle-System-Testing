@@ -9,6 +9,8 @@
 #include "HealthComponent.h"
 #include "CombatStatsComponent.h"
 #include "NameComponent.h"
+#include "DebugSystem.h"
+
 
 enum class Biome {
 	FOREST,
