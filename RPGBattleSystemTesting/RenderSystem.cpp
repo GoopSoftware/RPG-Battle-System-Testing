@@ -15,7 +15,7 @@ RenderSystem::~RenderSystem()
 
 void RenderSystem::init() {
 
-	InitWindow(windowHeight, windowHeight, "C++ RPG");
+	InitWindow(windowWidth, windowHeight, "C++ RPG");
 	SetTargetFPS(60);
 
 	target = LoadRenderTexture(targetWidth, targetHeight);

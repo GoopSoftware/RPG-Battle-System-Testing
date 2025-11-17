@@ -44,8 +44,8 @@ int main() {
 	players.push_back(player2);
 
 
-	const int windowWidth = 720;
-	const int windowHeight = 480;
+	const int windowWidth = 1080;
+	const int windowHeight = 720;
 
 	GameStateManager game(players, healthStore, statsStore, nameStore);
 	RenderSystem renderer(windowWidth, windowHeight, windowWidth, windowHeight);
@@ -55,22 +55,18 @@ int main() {
 
 	
 	SetRandomSeed(static_cast<unsigned int>(time(NULL)));
+	renderer.init();
 
-	InitWindow(windowWidth, windowHeight, "RPG Test");
-	SetTargetFPS(60);
 
 	while (!WindowShouldClose())
 	{
 
 		deltaTime = GetFrameTime();
 
-
 		game.update();
 		renderer.begin();
 		renderer.renderer(game);
 		renderer.end();
-
-
 
 	}
 

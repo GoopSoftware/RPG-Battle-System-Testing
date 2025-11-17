@@ -23,6 +23,9 @@ void GameStateManager::triggerEncounter() {
 	// Creates a unique pointer of a BattleSystem
 	currentEncounter = overworld.generateEncounter(healthStore, statsStore, nameStore);
 
+	for (int i = 0; i < players.size(); i++) {
+		std::cout << players[i];
+	}
 	battleSystem = std::make_unique<BattleSystem>(
 		players,
 		currentEncounter.enemies,

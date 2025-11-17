@@ -105,7 +105,8 @@ void BattleSystem::turnResolution() {
 
 
 void BattleSystem::attack(Entity attacker, Entity defender) {
-	// All logic of attacking goees here
+	// All 
+// ic of attacking goees here
 
 	int damage = calculateDamage(statsStore[attacker], statsStore[defender]);
 	healthStore[defender].hp -= damage;
@@ -196,6 +197,14 @@ void BattleSystem::handleInvalidOption() {
 
 }
 
+
+void BattleSystem::buildLivingPlayers() {
+
+}
+
+void BattleSystem::buildLivingEnemies() {
+
+}
 
 
 
@@ -451,5 +460,45 @@ void BattleSystem::update() {
 }
 
 void BattleSystem::draw(RenderSystem& renderer) const {
+
+	int textSize = 20;
+
+	int playersXPos = 200;
+	int playersYPos = 600;
+
+	int actionsXPos = 75;
+	int actionsYPos = 575;
+
+	int enemyXPos = 200;
+	int enemyYPos = 200;
+
+	for (int i = 0; i < players.size(); i++) {
+		Entity p = players[i];
+		std::string name = nameStore.at(p).name;
+		std::string health = std::to_string((healthStore).at(p).hp);
+		std::string maxHealth = std::to_string((healthStore).at(p).maxHp);
+		std::string healthDisplay = name + ": " + health + "/" + maxHealth;
+		DrawText(healthDisplay.c_str(), playersXPos, playersYPos, textSize, BLACK);
+		playersYPos += 25;
+	}
+
+	for (int i = 0; i < actionOptions.size(); i++) {
+		if (i == actionIndex) {
+			DrawText(">", actionsXPos - 20, actionsYPos, textSize, RED);
+		}
+		DrawText(actionOptions[i].c_str(), actionsXPos, actionsYPos, textSize, BLACK);
+		actionsYPos += 25;
+	}
+
+	if (!livingEnemies.empty() && playerPhase == PlayerPhase::TargetMenu) {
+		for (int i = 0; i < livingEnemies.size(); i++) {
+			Entity e = livingEnemies[i];
+			std::string name = nameStore.at(e).name;
+			DrawText(name.c_str(), enemyXPos, enemyYPos, textSize, BLACK);
+			enemyXPos += 0;
+		}
+
+	}
+
 
 }

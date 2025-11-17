@@ -147,6 +147,7 @@
     <ClInclude Include="OverworldSystem.h" />
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Tags.h" />
   </ItemGroup>
   <ItemGroup>

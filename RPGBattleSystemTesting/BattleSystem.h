@@ -72,6 +72,8 @@ private:
 	void handleRunOption();
 	void handleInvalidOption();
 
+	void buildLivingPlayers();
+	void buildLivingPlayers();
 
 	void removeDefeatedFromTurnOrder();
 	bool checkDefeatCondition();
