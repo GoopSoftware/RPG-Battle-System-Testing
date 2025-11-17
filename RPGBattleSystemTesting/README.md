@@ -53,6 +53,11 @@ Systems operate only on entities that have the components they need.
 
 ---
 
+### **RenderSystem**
+
+
+---
+
 ## Game Flow Example
 
 1. **Overworld Phase**
