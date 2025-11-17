@@ -93,6 +93,8 @@ void BattleSystem::turnResolution() {
 	currentTurnIndex = (currentTurnIndex + 1) % turnOrder.size();
 	currentEntity = turnOrder[currentTurnIndex];
 
+	buildLivingEnemies();
+	buildLivingPlayers();
 
 	// Decide if its player or enemy
 	if (std::find(players.begin(), players.end(), currentEntity) != players.end()) {
@@ -132,15 +134,6 @@ void BattleSystem::defend(Entity defender) {
 
 
 void BattleSystem::handleAttackOption() {
-
-	// Clear livingEnemies vector in case an enemy died
-	livingEnemies.clear();
-	// loop through enemeis and assign if hp > 0
-	for (auto e : enemies) {
-		if (healthStore[e].hp > 0) {
-			livingEnemies.push_back(e);
-		}
-	}
 
 	// Redundant but will show if for some reason game breaks
 	if (livingEnemies.empty()) {
@@ -199,11 +192,21 @@ void BattleSystem::handleInvalidOption() {
 
 
 void BattleSystem::buildLivingPlayers() {
-
+	livingPlayers.clear();
+	for (auto p : players) {
+		if (healthStore[p].hp > 0) {
+			livingPlayers.push_back(p);
+		}
+	}
 }
 
 void BattleSystem::buildLivingEnemies() {
-
+	livingEnemies.clear();
+	for (auto e : enemies) {
+		if (healthStore[e].hp > 0) {
+			livingEnemies.push_back(e);
+		}
+	}
 }
 
 
@@ -490,12 +493,12 @@ void BattleSystem::draw(RenderSystem& renderer) const {
 		actionsYPos += 25;
 	}
 
-	if (!livingEnemies.empty() && playerPhase == PlayerPhase::TargetMenu) {
+	if (!livingEnemies.empty()) {
 		for (int i = 0; i < livingEnemies.size(); i++) {
 			Entity e = livingEnemies[i];
 			std::string name = nameStore.at(e).name;
 			DrawText(name.c_str(), enemyXPos, enemyYPos, textSize, BLACK);
-			enemyXPos += 0;
+			enemyXPos += 275;
 		}
 
 	}

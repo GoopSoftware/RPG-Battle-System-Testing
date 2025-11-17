@@ -73,7 +73,7 @@ private:
 	void handleInvalidOption();
 
 	void buildLivingPlayers();
-	void buildLivingPlayers();
+	void buildLivingEnemies();
 
 	void removeDefeatedFromTurnOrder();
 	bool checkDefeatCondition();
