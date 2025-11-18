@@ -53,8 +53,6 @@ private:
 	Vector2 partyPosition = { 0, 0 };
 	int encounterRate; // Unused for now but allows for scaling encounter chance
 	
-	// Flag used to trigger when a battle should happen, not when a battle is happening. 
-	// State::BATTLE is for when a battle is happening
 	bool encounter = false;
 };
 

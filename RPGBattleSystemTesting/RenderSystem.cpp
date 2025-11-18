@@ -8,7 +8,20 @@ Checks game state from GameStateManager
 Runs render____() and render____UI() based on state
 
 Renders sprites and animations using information from SpriteComponent, PositionComponent
-drawSprite()
+
+drawSprite(): 
+	- DrawTexturePro(sprite.texture, src, dest, { 0, 0 }, 0.0f, sprite.tint)
+	- src animation frame changes from:
+		- static_cast<float>(sprite.frameWidth * sprite.currentFrame)
+			- sprite.currentFrame changes based on updateAnimation()
+
+updateAnimation(): 
+	- updateAnimation(SpriteComponent& sprite, float dt)
+	- increments time with
+		- sprite.frameTimer += dt
+	- changes animation frames with
+		- sprite.currentFrame = (sprite.currentFrame + 1) % sprite.maxFrames
+
 */
 
 RenderSystem::RenderSystem(int windowWidth, int windowHeight, int targetWidth, int targetHeight) :
@@ -49,15 +62,18 @@ void RenderSystem::render(GameStateManager& game) {
 	switch (game.getCurrentState()) {
 		case GameState::OVERWORLD:
 			renderOverworld(game);
+			renderOverworldUI(game);
 			break;
 		case GameState::BATTLE:
 			renderBattle(game);
 			renderBattleUI(game);
 			break;
 		case GameState::MENU:
-			// TODO: ADD MENUSYSTEMRENDER
+			// TODO: ADD menuSystemRender()
+			// TODO: ADD menuSystemRenderUI()
 		case GameState::GAME_OVER:
-			// TODO: ADD GAMEOVERRENDER
+			// TODO: ADD gameOverRender()
+			// TODO: ADD gameOverRenderUI()
 		default:
 			break;
 	}
@@ -102,8 +118,7 @@ void RenderSystem::drawSprite(Entity entity, const SpriteComponent& sprite, cons
 		sprite.frameHeight * sprite.scale
 	};
 
-	DrawTexturePro(sprite.texture, src, dest,
-		{ 0, 0 }, 0.0f, sprite.tint);
+	DrawTexturePro(sprite.texture, src, dest, { 0, 0 }, 0.0f, sprite.tint);
 }
 
 // TODO: AnimationSystem refactor this into it
@@ -146,9 +161,10 @@ void RenderSystem::renderBattle(GameStateManager& game) {
 	// Shouldnt run but just in case
 	if (!battle) return;
 
-	// For each enemy in battle:
+	// For each living enemy in battle:
 	for (Entity e : battle->getLivingEnemies())
 	{
+		// get sprite and info from GSM
 		SpriteComponent& sprite = game.getSprite(e);
 		PositionComponent& pos = game.getPosition(e);
 
