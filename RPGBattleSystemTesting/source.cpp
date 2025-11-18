@@ -28,6 +28,8 @@ int main() {
 	std::unordered_map<Entity, HealthComponent> healthStore;
 	std::unordered_map<Entity, CombatStatsComponent> statsStore;
 	std::unordered_map<Entity, NameComponent> nameStore;
+	std::unordered_map<Entity, SpriteComponent> spriteStore;
+	std::unordered_map<Entity, PositionComponent> positionStore;
 	
 	Entity player1 = createEntity();
 	nameStore[player1] = { "Dave" };
@@ -47,7 +49,7 @@ int main() {
 	const int windowWidth = 1080;
 	const int windowHeight = 720;
 
-	GameStateManager game(players, healthStore, statsStore, nameStore);
+	GameStateManager game(players, healthStore, statsStore, nameStore, spriteStore, positionStore);
 	RenderSystem renderer(windowWidth, windowHeight, windowWidth, windowHeight);
 
 
@@ -56,6 +58,8 @@ int main() {
 	
 	SetRandomSeed(static_cast<unsigned int>(time(NULL)));
 	renderer.init();
+
+	Texture2D testTex = LoadTexture("Assets/Orc-Idle.png");
 
 
 	while (!WindowShouldClose())
@@ -66,6 +70,7 @@ int main() {
 		game.update();
 		renderer.begin();
 		renderer.renderer(game);
+		DrawTexture(testTex, 100, 100, WHITE);
 		renderer.end();
 
 	}

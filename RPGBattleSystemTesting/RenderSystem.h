@@ -1,6 +1,10 @@
 #pragma once
 #include <string>
 #include "raylib.h"
+#include "SpriteComponent.h"
+#include "PositionComponent.h"
+#include "Entity.h"
+
 
 class GameStateManager;
 
@@ -10,6 +14,8 @@ public:
 	RenderSystem(int windowWidth, int windowHeight, int targetWidth, int targetHeight);
 	~RenderSystem();
 	
+	Texture2D testTexture;
+
 	void init();
 	void shutdown();
 
@@ -17,8 +23,8 @@ public:
 	void renderer(GameStateManager& game);
 	void end();
 
-	void clear(Color color = RAYWHITE);
-	void drawTestPattern();
+	void drawSprite(Entity entity, const SpriteComponent& sprite, const PositionComponent& pos);
+	void updateAnimation(SpriteComponent& sprite, float dt);
 
 private:
 

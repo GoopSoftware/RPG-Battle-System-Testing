@@ -1,5 +1,9 @@
 #include "RenderSystem.h"
 #include "GameStateManager.h"
+#include "SpriteComponent.h"
+#include "PositionComponent.h"
+
+
 
 RenderSystem::RenderSystem(int windowWidth, int windowHeight, int targetWidth, int targetHeight) :
 	windowWidth(windowWidth), windowHeight(windowHeight), targetWidth(targetWidth), targetHeight(targetHeight)
@@ -84,4 +88,42 @@ void RenderSystem::renderBattle(GameStateManager& game) {
 void RenderSystem::renderUI(GameStateManager& game) {
 
 
+}
+
+void RenderSystem::drawSprite(Entity entity, const SpriteComponent& sprite, const PositionComponent& pos) {
+
+	// Source rect based on animation frame
+	Rectangle src = {
+		(float)(sprite.frameWidth * sprite.currentFrame),
+		0.0f,
+		(float)sprite.frameWidth,
+		(float)sprite.frameHeight
+	};
+
+	// Destination rect where we draw on screen
+	Rectangle dest = {
+		pos.x + sprite.offset.x,
+		pos.y + sprite.offset.y,
+		sprite.frameWidth * sprite.scale,
+		sprite.frameHeight * sprite.scale
+	};
+
+	// Draw
+	DrawTexturePro(sprite.texture, src, dest,
+		{ 0, 0 }, 0.0f, sprite.tint);
+
+}
+
+// TODO: AnimationSystem refactor this into it
+void RenderSystem::updateAnimation(SpriteComponent& sprite, float dt)
+{
+	if (sprite.maxFrames <= 1) return;  // not animated
+
+	sprite.frameTimer += dt;
+
+	if (sprite.frameTimer >= sprite.frameTime)
+	{
+		sprite.currentFrame = (sprite.currentFrame + 1) % sprite.maxFrames;
+		sprite.frameTimer = 0.0f;
+	}
 }

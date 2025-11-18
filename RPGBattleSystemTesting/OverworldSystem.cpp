@@ -54,7 +54,10 @@ void OverworldSystem::encounterCheck() {
 
 Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthComponent>& healthStore,
 											 std::unordered_map<Entity, CombatStatsComponent>& statsStore,
-											 std::unordered_map<Entity, NameComponent>& nameStore) 
+											 std::unordered_map<Entity, NameComponent>& nameStore,
+											 std::unordered_map<Entity, SpriteComponent>& spriteStore,
+											 std::unordered_map<Entity, PositionComponent>& positionStore
+) 
 {
 	Encounter encounter;
 	encounter.difficulty = 1;
@@ -67,6 +70,21 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 		healthStore[enemy] = { 30, 30 };
 		statsStore[enemy] = { 5 + GetRandomValue(0, 3), 2, 5 };
 		nameStore[enemy] = { "Goblin_" + std::to_string(i + 1) };
+
+		SpriteComponent sprite;
+		sprite.texture = LoadTexture("Assets/Orc-Idle.png");
+		sprite.frameWidth = sprite.texture.width;
+		sprite.frameHeight = sprite.texture.height;
+		sprite.maxFrames = 1;
+		sprite.scale = 3.0f;
+
+		spriteStore[enemy] = sprite;
+
+		PositionComponent pos;
+		pos.x = 900;               // move depending on i
+		pos.y = 200 + i * 150;     // vertical spacing
+		positionStore[enemy] = pos;
+
 		auto& stats = statsStore[enemy];
 		auto& health = healthStore[enemy];
 		std::cout << "Created " << nameStore[enemy].name

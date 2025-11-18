@@ -2,5 +2,7 @@
 #include "raylib.h"
 
 struct PositionComponent {
-	Vector2 position;
+
+	float x;
+	float y;
 };

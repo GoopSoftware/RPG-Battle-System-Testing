@@ -43,9 +43,9 @@ public:
 		std::vector<Entity> enemies,
 		std::unordered_map<Entity, HealthComponent>& healthStore,
 		std::unordered_map<Entity, CombatStatsComponent>& statsStore,
-		std::unordered_map<Entity, NameComponent>& nameStore
-
-	);
+		std::unordered_map<Entity, NameComponent>& nameStore,
+		std::unordered_map<Entity, SpriteComponent>& spriteStore,
+		std::unordered_map<Entity, PositionComponent>& positionStore);
 	~BattleSystem();
 
 	void update();
@@ -92,6 +92,8 @@ private:
 	std::unordered_map<Entity, HealthComponent>& healthStore;
 	std::unordered_map<Entity, CombatStatsComponent>& statsStore;
 	std::unordered_map<Entity, NameComponent>& nameStore;
+	std::unordered_map<Entity, SpriteComponent>& spriteStore;
+	std::unordered_map<Entity, PositionComponent>& positionStore;
 
 	int userInput{};
 	bool validAction = false;

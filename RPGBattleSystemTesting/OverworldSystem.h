@@ -10,6 +10,11 @@
 #include "CombatStatsComponent.h"
 #include "NameComponent.h"
 #include "DebugSystem.h"
+#include "SpriteComponent.h"
+#include "PositionComponent.h"
+#include "RenderSystem.h"
+
+
 
 class RenderSystem;
 
@@ -31,13 +36,15 @@ public:
 
 	Encounter generateEncounter(std::unordered_map<Entity, HealthComponent>& healthStore,
 								std::unordered_map<Entity, CombatStatsComponent>& statsStore,
-								std::unordered_map<Entity, NameComponent>& nameStore);
+								std::unordered_map<Entity, NameComponent>& nameStore,
+								std::unordered_map<Entity, SpriteComponent>& spriteStore,
+								std::unordered_map<Entity, PositionComponent>& positionStore);
 
 	bool getEncounter() { return encounter; }
 	void clearEncounter() { encounter = false; }
 	void draw(RenderSystem& renderer) const;
 
-
+	Texture2D testTexture;
 private:
 
 	DebugSystem debug;

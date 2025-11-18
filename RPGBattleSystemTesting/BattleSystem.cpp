@@ -2,6 +2,9 @@
 #include "RenderSystem.h"
 #include "raylib.h"
 #include <algorithm>
+#include "SpriteComponent.h"
+#include "PositionComponent.h"
+
 
 
 /*
@@ -41,14 +44,18 @@ BattleSystem::BattleSystem(std::vector<Entity> players,
 	std::vector<Entity> enemies,
 	std::unordered_map<Entity, HealthComponent>& healthStore,
 	std::unordered_map<Entity, CombatStatsComponent>& statsStore,
-	std::unordered_map<Entity, NameComponent>& nameStore
+	std::unordered_map<Entity, NameComponent>& nameStore,
+	std::unordered_map<Entity, SpriteComponent>& spriteStore,
+	std::unordered_map<Entity, PositionComponent>& positionStore
 
 ) :
 	players(players),
 	enemies(enemies),
 	healthStore(healthStore),
 	statsStore(statsStore),
-	nameStore(nameStore)
+	nameStore(nameStore),
+	spriteStore(spriteStore),
+	positionStore(positionStore)
 {
 
 }

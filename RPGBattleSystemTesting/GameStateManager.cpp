@@ -5,11 +5,15 @@ GameStateManager::GameStateManager(
 	std::vector<Entity> players,
 	std::unordered_map<Entity, HealthComponent>& healthStore,
 	std::unordered_map<Entity, CombatStatsComponent>& statsStore,
-	std::unordered_map<Entity, NameComponent>& nameStore) :
+	std::unordered_map<Entity, NameComponent>& nameStore,
+	std::unordered_map<Entity, SpriteComponent>& spriteStore,
+	std::unordered_map<Entity, PositionComponent>& positionStore) :
 	players(std::move(players)),
 		healthStore(healthStore),
 		statsStore(statsStore),
-		nameStore(nameStore)
+		nameStore(nameStore),
+		spriteStore(spriteStore),
+		positionStore(positionStore)
 {
 
 }
@@ -21,7 +25,12 @@ GameStateManager::~GameStateManager() {
 void GameStateManager::triggerEncounter() {
 	// This functions creates the actual battle using the generated values from generateEncounter()
 	// Creates a unique pointer of a BattleSystem
-	currentEncounter = overworld.generateEncounter(healthStore, statsStore, nameStore);
+	currentEncounter = overworld.generateEncounter( healthStore, 
+													statsStore, 
+													nameStore,
+													spriteStore,
+													positionStore
+	);
 
 	for (int i = 0; i < players.size(); i++) {
 		std::cout << players[i];
@@ -31,7 +40,9 @@ void GameStateManager::triggerEncounter() {
 		currentEncounter.enemies,
 		healthStore,
 		statsStore,
-		nameStore
+		nameStore,
+		spriteStore,
+		positionStore
 	);
 
 }
