@@ -6,6 +6,7 @@
 #include "Encounter.h"
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
+#include "TextureManager.h"
 
 
 enum class GameState {
@@ -19,12 +20,14 @@ class GameStateManager
 {
 public:
 	GameStateManager(std::vector<Entity> players,
+					TextureManager& textureManager,
 					 std::unordered_map<Entity, HealthComponent>& healthStore,
 					 std::unordered_map<Entity, CombatStatsComponent>& statsStore,
 					 std::unordered_map<Entity, NameComponent>& nameStore,
 					 std::unordered_map<Entity, SpriteComponent>& spriteStore,
 					 std::unordered_map<Entity, PositionComponent>& positionStore);
 	~GameStateManager();
+
 
 	void update();
 	void triggerEncounter();
@@ -35,12 +38,15 @@ public:
 
 	//BattleSystem* getBattleSystem() { return battleSystem.get(); }
 	const BattleSystem* getBattleSystem() const { return battleSystem.get(); }
+	SpriteComponent& getSprite(Entity e) const { return spriteStore.at(e); }
+	PositionComponent& getPosition(Entity e) const { return positionStore.at(e); }
 
 
 private:
 
 	GameState currentState = GameState::OVERWORLD;
 	OverworldSystem overworld;
+	TextureManager& textureManager;
 	// MenuSystem menu;  ----- For when MenuSystem is done -----
 
 

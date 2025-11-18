@@ -80,11 +80,6 @@ void RenderSystem::renderOverworld(GameStateManager& game) {
 
 }
 
-void RenderSystem::renderBattle(GameStateManager& game) {
-	game.getBattleSystem()->draw(*this);
-
-}
-
 void RenderSystem::renderUI(GameStateManager& game) {
 
 
@@ -94,11 +89,12 @@ void RenderSystem::drawSprite(Entity entity, const SpriteComponent& sprite, cons
 
 	// Source rect based on animation frame
 	Rectangle src = {
-		(float)(sprite.frameWidth * sprite.currentFrame),
-		0.0f,
-		(float)sprite.frameWidth,
-		(float)sprite.frameHeight
+	(float)(sprite.frameWidth * sprite.currentFrame),
+	0,
+	(float)sprite.frameWidth,
+	(float)sprite.frameHeight
 	};
+
 
 	// Destination rect where we draw on screen
 	Rectangle dest = {
@@ -126,4 +122,23 @@ void RenderSystem::updateAnimation(SpriteComponent& sprite, float dt)
 		sprite.currentFrame = (sprite.currentFrame + 1) % sprite.maxFrames;
 		sprite.frameTimer = 0.0f;
 	}
+}
+
+void RenderSystem::renderBattle(GameStateManager& game) {
+
+	const BattleSystem* battle = game.getBattleSystem();
+	if (!battle) return;
+
+	// For each enemy in battle:
+	for (Entity e : battle->getEnemies())
+	{
+		SpriteComponent& sprite = game.getSprite(e);
+		PositionComponent& pos = game.getPosition(e);
+
+		updateAnimation(sprite, GetFrameTime());
+		drawSprite(e, sprite, pos);
+	}
+
+	battle->draw(*this);
+
 }

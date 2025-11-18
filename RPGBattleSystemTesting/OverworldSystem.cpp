@@ -2,10 +2,11 @@
 #include "RenderSystem.h"
 
 
-OverworldSystem::OverworldSystem()
-	
+OverworldSystem::OverworldSystem(TextureManager& textureManager) :
+	textureManager(textureManager)
 {
-
+	std::cout << "[Overworld] GoblinTexture ID at construction: "
+		<< textureManager.goblinTexture.id << "\n";
 }
 
 OverworldSystem::~OverworldSystem() {
@@ -72,17 +73,18 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 		nameStore[enemy] = { "Goblin_" + std::to_string(i + 1) };
 
 		SpriteComponent sprite;
-		sprite.texture = LoadTexture("Assets/Orc-Idle.png");
-		sprite.frameWidth = sprite.texture.width;
+		sprite.texture = textureManager.goblinTexture;
+		sprite.maxFrames = 6;
+		sprite.frameWidth = sprite.texture.width / sprite.maxFrames;
 		sprite.frameHeight = sprite.texture.height;
-		sprite.maxFrames = 1;
 		sprite.scale = 3.0f;
+
 
 		spriteStore[enemy] = sprite;
 
 		PositionComponent pos;
-		pos.x = 900;               // move depending on i
-		pos.y = 200 + i * 150;     // vertical spacing
+		pos.x = 100 + (i * 250);              
+		pos.y = 100;    
 		positionStore[enemy] = pos;
 
 		auto& stats = statsStore[enemy];

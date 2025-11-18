@@ -13,6 +13,7 @@
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
 #include "RenderSystem.h"
+#include "TextureManager.h"
 
 
 
@@ -28,7 +29,7 @@ enum class Biome {
 class OverworldSystem
 {
 public:
-	OverworldSystem();
+	OverworldSystem(TextureManager& textureManager);
 	~OverworldSystem();
 	
 	void update();
@@ -44,9 +45,10 @@ public:
 	void clearEncounter() { encounter = false; }
 	void draw(RenderSystem& renderer) const;
 
-	Texture2D testTexture;
+
 private:
 
+	TextureManager& textureManager;
 	DebugSystem debug;
 	Vector2 partyPosition = { 0, 0 };
 	int encounterRate; // Unused for now but allows for scaling encounter chance

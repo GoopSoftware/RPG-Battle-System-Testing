@@ -11,7 +11,7 @@
 #include "nameComponent.h"
 #include "GameStateManager.h"
 #include "RenderSystem.h"
-
+#include "TextureManager.h"
 
 /*
 This is an rpg battle system programmed to explore ECS style of game development
@@ -49,7 +49,11 @@ int main() {
 	const int windowWidth = 1080;
 	const int windowHeight = 720;
 
-	GameStateManager game(players, healthStore, statsStore, nameStore, spriteStore, positionStore);
+	Texture2D texture;
+	// Vector purely for holding all textures to unload on game end
+	std::vector<Texture2D> textures;
+	TextureManager textureManager;
+	GameStateManager game(players, textureManager, healthStore, statsStore, nameStore, spriteStore, positionStore);
 	RenderSystem renderer(windowWidth, windowHeight, windowWidth, windowHeight);
 
 
@@ -60,6 +64,9 @@ int main() {
 	renderer.init();
 
 	Texture2D testTex = LoadTexture("Assets/Orc-Idle.png");
+	textures.push_back(testTex);
+	textureManager.goblinTexture = testTex;
+	textureManager.debugPrint();
 
 
 	while (!WindowShouldClose())
@@ -70,7 +77,7 @@ int main() {
 		game.update();
 		renderer.begin();
 		renderer.renderer(game);
-		DrawTexture(testTex, 100, 100, WHITE);
+		//DrawTexture(testTex, 100, 100, WHITE);
 		renderer.end();
 
 	}

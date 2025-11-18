@@ -330,11 +330,11 @@ void BattleSystem::updatePlayerTurn() {
 			//if (IsKeyPressed(KEY_TWO) && targetCandidates.size() > 1) targetIndex = 1;
 			//if (IsKeyPressed(KEY_THREE) && targetCandidates.size() > 2) targetIndex = 2;
 
-			if (IsKeyPressed(KEY_W)) {
+			if (IsKeyPressed(KEY_A)) {
 				targetIndex = (targetIndex + targetCandidates.size() - 1) % targetCandidates.size();
 				debug.log("BattleSystem", LogLevel::INPUT, "UP now highlighting : " + nameStore[targetCandidates[targetIndex]].name);
 			}
-			if (IsKeyPressed(KEY_S)) {
+			if (IsKeyPressed(KEY_D)) {
 				targetIndex = (targetIndex + 1) % targetCandidates.size();
 				debug.log("BattleSystem", LogLevel::INPUT, "DOWN now highlighting : " + nameStore[targetCandidates[targetIndex]].name);
 			}
@@ -502,10 +502,18 @@ void BattleSystem::draw(RenderSystem& renderer) const {
 
 	if (!livingEnemies.empty()) {
 		for (int i = 0; i < livingEnemies.size(); i++) {
+
 			Entity e = livingEnemies[i];
+			int eX = positionStore.at(e).x;
+			int eY = positionStore.at(e).y;
 			std::string name = nameStore.at(e).name;
-			DrawText(name.c_str(), enemyXPos, enemyYPos, textSize, BLACK);
+			//DrawText(name.c_str(), enemyXPos, enemyYPos, textSize, BLACK);
+			renderer.drawSprite(e, spriteStore.at(e), positionStore.at(e));
 			enemyXPos += 275;
+
+			if (playerPhase == PlayerPhase::TargetMenu && i == targetIndex) {
+				DrawText(">", eX - 40, eY + 40, 40, RED);  // big red arrow
+			}
 		}
 
 	}

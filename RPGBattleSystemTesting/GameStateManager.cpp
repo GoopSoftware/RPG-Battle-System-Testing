@@ -3,20 +3,27 @@
 
 GameStateManager::GameStateManager(
 	std::vector<Entity> players,
+	TextureManager& textureManager,
 	std::unordered_map<Entity, HealthComponent>& healthStore,
 	std::unordered_map<Entity, CombatStatsComponent>& statsStore,
 	std::unordered_map<Entity, NameComponent>& nameStore,
 	std::unordered_map<Entity, SpriteComponent>& spriteStore,
 	std::unordered_map<Entity, PositionComponent>& positionStore) :
-	players(std::move(players)),
+
+		players(std::move(players)),
+		textureManager(textureManager),
+		overworld(textureManager),
 		healthStore(healthStore),
 		statsStore(statsStore),
 		nameStore(nameStore),
 		spriteStore(spriteStore),
 		positionStore(positionStore)
 {
+	std::cout << "[GSM] TextureManager Goblin ID: "
+		<< textureManager.goblinTexture.id << "\n";
 
 }
+
 
 GameStateManager::~GameStateManager() {
 

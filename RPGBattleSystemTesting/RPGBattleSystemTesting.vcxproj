@@ -134,6 +134,7 @@
     <ClCompile Include="OverworldSystem.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="source.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CombatStatsComponent.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Tags.h" />
+    <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

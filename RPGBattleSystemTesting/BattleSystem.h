@@ -54,6 +54,7 @@ public:
 	void attack(Entity attacker, Entity defender);
 	void defend(Entity defender);
 
+	const std::vector<Entity>& getEnemies() const { return enemies; }
 	BattleResult getResult() const { return result; }
 	void calculateTurnOrder();
 	void turnResolution();
@@ -61,7 +62,6 @@ public:
 	void populateEnemyTargets();
 	int calculateDamage(const CombatStatsComponent& attacker,
 		const CombatStatsComponent& defender);
-
 	void draw(RenderSystem& renderer) const;
 
 
