@@ -11,7 +11,7 @@ struct SpriteComponent {
 	float frameTime = 0.15f;
 	float frameTimer = 0.0f;;
 	
-	Vector2 offset{ 0,0 };
+	Vector2 offset{ frameWidth * .5f ,frameHeight * .5f };
 	float scale = 1.0f;
 	Color tint = WHITE;
 

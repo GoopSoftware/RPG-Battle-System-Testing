@@ -112,13 +112,16 @@ void RenderSystem::drawSprite(Entity entity, const SpriteComponent& sprite, cons
 
 	// Destination rect where we draw on screen
 	Rectangle dest = {
-		pos.x + sprite.offset.x,
-		pos.y + sprite.offset.y,
+		pos.x,
+		pos.y,
 		sprite.frameWidth * sprite.scale,
 		sprite.frameHeight * sprite.scale
 	};
-
-	DrawTexturePro(sprite.texture, src, dest, { 0, 0 }, 0.0f, sprite.tint);
+	Vector2 origin = {
+	dest.width / 2.0f,
+	dest.height / 2.0f
+	};
+	DrawTexturePro(sprite.texture, src, dest, origin, 0.0f, sprite.tint);
 }
 
 // TODO: AnimationSystem refactor this into it

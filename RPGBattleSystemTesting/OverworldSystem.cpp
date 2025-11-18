@@ -79,8 +79,12 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 	encounter.difficulty = 1;
 	encounter.zone = "Forest";
 	encounter.encounterName = "Test Battle";
+	int enemyCount = 4;
+	
+	std::vector<Vector2> positions = calculateEnemyPosition(enemyCount, GetScreenWidth(), GetScreenHeight());
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < enemyCount; i++) {
+		
 		Entity enemy = createEntity();
 
 		healthStore[enemy] = { 30, 30 };
@@ -97,9 +101,11 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 		spriteStore[enemy] = sprite;
 
 		PositionComponent pos;
-		pos.x = 100 + (i * 250);              
-		pos.y = 100;    
+		pos.x = positions[i].x;
+		pos.y = positions[i].y;
 		positionStore[enemy] = pos;
+		std::cout << "PositionsX: " << positions[i].x << std::endl;
+		std::cout << "PosX: " << pos.x << std::endl;
 
 		auto& stats = statsStore[enemy];
 		auto& health = healthStore[enemy];
@@ -108,10 +114,57 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 			<< " (Atk: " << stats.attack
 			<< ", Def: " << stats.defense
 			<< ", Spd: " << stats.speed << ")\n";
+
 		encounter.enemies.push_back(enemy);
 	}
 
 	return encounter;
+}
+
+std::vector<Vector2> OverworldSystem::calculateEnemyPosition(int total, float screenWidth, float screenHeight) {
+	std::vector<Vector2> positions;
+	positions.reserve(total);
+
+	float centerX = screenWidth * .5f;
+	float baseY = screenHeight * 0.4f;
+
+	float clusterWidth = 0.0f;
+
+	switch (total) {
+	case 1: 
+		clusterWidth = 0.0f; 
+		break;
+	case 2:
+		clusterWidth = screenWidth * .25f;
+		break;
+	case 3:
+		clusterWidth = screenWidth * .6f;;
+		break;
+	case 4:
+		clusterWidth = screenWidth * .8f;
+		break;
+	default:
+		clusterWidth = screenWidth * .8f;
+		break;
+	}
+
+	if (total == 1) {
+		positions.push_back({ centerX, baseY });
+		return positions;
+	}
+
+	float startX = centerX - (clusterWidth / 2.f);
+
+	float spacing = clusterWidth / (total - 1);
+
+
+	for (int i = 0; i < total; i++) {
+		float x = startX + spacing * i;
+		float y = baseY;
+		positions.push_back({ x, y });
+	}
+
+	return positions;
 }
 
 void OverworldSystem::draw(RenderSystem& renderer) const {

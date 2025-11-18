@@ -289,7 +289,6 @@ void BattleSystem::updatePlayerTurn() {
 				debug.log("BattleSystem", LogLevel::TOOLTIP, "Use W/S to select. Press ENTER to confirm, ESC to cancel.");
 			}
 
-
 			if (IsKeyPressed(KEY_W)) {
 				actionIndex = (actionIndex + actionOptions.size() - 1) % actionOptions.size();
 				debug.log("BattleSystem", LogLevel::INPUT, "UP now highlighting: " + actionOptions[actionIndex]);
@@ -516,7 +515,6 @@ void BattleSystem::draw(RenderSystem& renderer) const {
 			std::string name = nameStore.at(e).name;
 			//DrawText(name.c_str(), enemyXPos, enemyYPos, textSize, BLACK);
 			renderer.drawSprite(e, spriteStore.at(e), positionStore.at(e));
-			enemyXPos += 275;
 
 			if (playerPhase == PlayerPhase::TargetMenu && i == targetIndex) {
 				DrawText(">", eX + 60, eY + 100, 40, RED);  // big red arrow

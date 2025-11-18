@@ -48,6 +48,7 @@ public:
 
 private:
 
+	std::vector<Vector2> calculateEnemyPosition(int total, float screenWidth, float screenHeight);
 	TextureManager& textureManager;
 	DebugSystem debug;
 	Vector2 partyPosition = { 0, 0 };
