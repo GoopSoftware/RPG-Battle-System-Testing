@@ -55,6 +55,8 @@ public:
 	void defend(Entity defender);
 
 	const std::vector<Entity>& getEnemies() const { return enemies; }
+	const std::vector<Entity>& getLivingEnemies() const { return livingEnemies; }
+
 	BattleResult getResult() const { return result; }
 	void calculateTurnOrder();
 	void turnResolution();

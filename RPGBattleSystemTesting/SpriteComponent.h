@@ -14,9 +14,5 @@ struct SpriteComponent {
 	Vector2 offset{ 0,0 };
 	float scale = 1.0f;
 	Color tint = WHITE;
-	
-	/*Rectangle sourceRectangle;
-	Rectangle destRectangle;
-	Vector2 origin;*/
 
 };

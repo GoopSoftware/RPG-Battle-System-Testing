@@ -25,6 +25,7 @@ for different enemy types.
 
 int main() {
 
+	// Initializing components
 	std::unordered_map<Entity, HealthComponent> healthStore;
 	std::unordered_map<Entity, CombatStatsComponent> statsStore;
 	std::unordered_map<Entity, NameComponent> nameStore;
@@ -40,10 +41,16 @@ int main() {
 	nameStore[player2] = { "Steve" };
 	healthStore[player2] = { 200, 200 };
 	statsStore[player2] = { 20, 5, 11 };
+
+	Entity player3 = createEntity();
+	nameStore[player3] = { "Frank" };
+	healthStore[player3] = { 200, 200 };
+	statsStore[player3] = { 20, 5, 11 };
 	
 	std::vector<Entity> players;
 	players.push_back(player1);
 	players.push_back(player2);
+	players.push_back(player3);
 
 
 	const int windowWidth = 1080;
@@ -76,7 +83,7 @@ int main() {
 
 		game.update();
 		renderer.begin();
-		renderer.renderer(game);
+		renderer.render(game);
 		//DrawTexture(testTex, 100, 100, WHITE);
 		renderer.end();
 

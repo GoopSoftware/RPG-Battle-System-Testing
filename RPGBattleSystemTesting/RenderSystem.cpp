@@ -3,7 +3,13 @@
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
 
+/*
+Checks game state from GameStateManager
+Runs render____() and render____UI() based on state
 
+Renders sprites and animations using information from SpriteComponent, PositionComponent
+drawSprite()
+*/
 
 RenderSystem::RenderSystem(int windowWidth, int windowHeight, int targetWidth, int targetHeight) :
 	windowWidth(windowWidth), windowHeight(windowHeight), targetWidth(targetWidth), targetHeight(targetHeight)
@@ -38,7 +44,7 @@ void RenderSystem::begin() {
 	ClearBackground(RAYWHITE);
 }
 
-void RenderSystem::renderer(GameStateManager& game) {
+void RenderSystem::render(GameStateManager& game) {
 
 	switch (game.getCurrentState()) {
 		case GameState::OVERWORLD:
@@ -46,6 +52,7 @@ void RenderSystem::renderer(GameStateManager& game) {
 			break;
 		case GameState::BATTLE:
 			renderBattle(game);
+			renderBattleUI(game);
 			break;
 		case GameState::MENU:
 			// TODO: ADD MENUSYSTEMRENDER
@@ -75,24 +82,15 @@ void RenderSystem::end() {
 } 
 
 
-void RenderSystem::renderOverworld(GameStateManager& game) {
-	game.getOverworld().draw(*this);
-
-}
-
-void RenderSystem::renderUI(GameStateManager& game) {
-
-
-}
 
 void RenderSystem::drawSprite(Entity entity, const SpriteComponent& sprite, const PositionComponent& pos) {
 
 	// Source rect based on animation frame
 	Rectangle src = {
-	(float)(sprite.frameWidth * sprite.currentFrame),
-	0,
-	(float)sprite.frameWidth,
-	(float)sprite.frameHeight
+	static_cast<float>(sprite.frameWidth * sprite.currentFrame),
+	static_cast<float>(0),
+	static_cast<float>(sprite.frameWidth),
+	static_cast<float>(sprite.frameHeight)
 	};
 
 
@@ -104,15 +102,12 @@ void RenderSystem::drawSprite(Entity entity, const SpriteComponent& sprite, cons
 		sprite.frameHeight * sprite.scale
 	};
 
-	// Draw
 	DrawTexturePro(sprite.texture, src, dest,
 		{ 0, 0 }, 0.0f, sprite.tint);
-
 }
 
 // TODO: AnimationSystem refactor this into it
-void RenderSystem::updateAnimation(SpriteComponent& sprite, float dt)
-{
+void RenderSystem::updateAnimation(SpriteComponent& sprite, float dt) {
 	if (sprite.maxFrames <= 1) return;  // not animated
 
 	sprite.frameTimer += dt;
@@ -124,13 +119,35 @@ void RenderSystem::updateAnimation(SpriteComponent& sprite, float dt)
 	}
 }
 
+
+void RenderSystem::renderUI(GameStateManager& game) {
+
+
+}
+
+void RenderSystem::renderOverworldUI(GameStateManager& game) {
+
+
+}
+
+void RenderSystem::renderOverworld(GameStateManager& game) {
+	game.getOverworld().draw(*this);
+
+}
+
+void RenderSystem::renderBattleUI(GameStateManager& game) {
+
+
+}
+
 void RenderSystem::renderBattle(GameStateManager& game) {
 
 	const BattleSystem* battle = game.getBattleSystem();
+	// Shouldnt run but just in case
 	if (!battle) return;
 
 	// For each enemy in battle:
-	for (Entity e : battle->getEnemies())
+	for (Entity e : battle->getLivingEnemies())
 	{
 		SpriteComponent& sprite = game.getSprite(e);
 		PositionComponent& pos = game.getPosition(e);

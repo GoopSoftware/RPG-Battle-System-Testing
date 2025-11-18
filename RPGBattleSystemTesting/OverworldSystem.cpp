@@ -2,6 +2,17 @@
 #include "RenderSystem.h"
 
 
+/*
+Handles all overworld logic of the program
+
+- WASD movement
+- Rolls random encounters
+- Created the random encounter information and sends to BattleSystem through an Encounter.h struct
+
+*/
+
+
+
 OverworldSystem::OverworldSystem(TextureManager& textureManager) :
 	textureManager(textureManager)
 {
@@ -39,6 +50,10 @@ void OverworldSystem::update() {
 		debug.log("OverworldSystem", LogLevel::INPUT, "Moved Right.");
 		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
 		encounterCheck();
+	}
+
+	if (IsKeyPressed(KEY_B)) {
+		encounter = true;
 	}
 }
 
@@ -78,7 +93,6 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 		sprite.frameWidth = sprite.texture.width / sprite.maxFrames;
 		sprite.frameHeight = sprite.texture.height;
 		sprite.scale = 3.0f;
-
 
 		spriteStore[enemy] = sprite;
 

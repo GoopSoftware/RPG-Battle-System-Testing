@@ -20,7 +20,7 @@ public:
 	void shutdown();
 
 	void begin();
-	void renderer(GameStateManager& game);
+	void render(GameStateManager& game);
 	void end();
 
 	void drawSprite(Entity entity, const SpriteComponent& sprite, const PositionComponent& pos);
@@ -34,11 +34,12 @@ private:
 	int windowHeight;
 	int targetWidth;
 	int targetHeight;
-
-
+	
+	void renderUI(GameStateManager& game);
 	void renderOverworld(GameStateManager& game);
 	void renderBattle(GameStateManager& game);
-	void renderUI(GameStateManager& game);
+	void renderBattleUI(GameStateManager& game);
+	void renderOverworldUI(GameStateManager& game);
 
 };
 

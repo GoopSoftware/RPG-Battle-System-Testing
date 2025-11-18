@@ -13,11 +13,13 @@ Battle System Code:
 This code is the random encounter system for the RPG
 
 It uses 5 vectors to work
-	Players
-	Enemeis
-	turnOrder
-	livingPlayers
-	livingEnemeis
+	Players[]
+	Enemies[]
+	turnOrder[]
+	livingPlayers[]
+	livingEnemies[]
+	Health, stats, name stores (reference)
+	sprite, position (reference)
 
 It first assigns turn order based on the speed value of the party vs the speed value of enemies populating turnOrder.
 Then it changes to the next players turn through the turnResolution() function changing state respectively.
@@ -28,13 +30,14 @@ then passes to turnResolution.
 If player runs it changes to RUN state
 
 
-Goals:
-	- Create a text based battle system mimicing early RPG games
-	- Learn to use components and entities inside a system
-
 TODO:
 	- Add magic
 	- Add items
+
+
+
+Flow:
+Start -> PLAYERTURN/ENEMYTURN -> CHECKBATTLESTATUS -> PLAYERTURN/ENEMYTURN -> CHECKBATTLESTATUS -> ...
 
 */
 
@@ -470,6 +473,10 @@ void BattleSystem::update() {
 }
 
 void BattleSystem::draw(RenderSystem& renderer) const {
+	// Handle all of the drawing of the battles, 
+	// it will call methods from RenderSystem to display 
+	// Render system calls draw
+	// Prevents us from having to transfer tons of information to the render system for displaying
 
 	int textSize = 20;
 
@@ -512,11 +519,9 @@ void BattleSystem::draw(RenderSystem& renderer) const {
 			enemyXPos += 275;
 
 			if (playerPhase == PlayerPhase::TargetMenu && i == targetIndex) {
-				DrawText(">", eX - 40, eY + 40, 40, RED);  // big red arrow
+				DrawText(">", eX + 60, eY + 100, 40, RED);  // big red arrow
 			}
 		}
-
 	}
-
 
 }

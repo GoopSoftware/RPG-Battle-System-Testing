@@ -1,6 +1,24 @@
 #include "GameStateManager.h"
 
 
+/*
+GameState owns the big picture of the program. It is the brain and glue of the operation
+- Current State (OVERWORLD, BATTLE, MENU, etc
+- Entity Component stores
+
+
+
+update() - manages the state system
+
+Facilitates transferring of data between other Systems unless unnecessary
+Does:
+	- Overworld.generateBattle() -> BattleSystem
+
+Doesn't:
+	- RenderSystem
+	- DebugSystem
+*/
+
 GameStateManager::GameStateManager(
 	std::vector<Entity> players,
 	TextureManager& textureManager,
