@@ -54,6 +54,11 @@ public:
 	void attack(Entity attacker, Entity defender);
 	void defend(Entity defender);
 
+	bool isTargeting() const { return playerPhase == PlayerPhase::TargetMenu; }
+	int getTargetIndex() const { return targetIndex; }
+
+	//result = (condition) ? value_if_true : value_if_false;
+
 	const std::vector<Entity>& getEnemies() const { return enemies; }
 	const std::vector<Entity>& getLivingEnemies() const { return livingEnemies; }
 
@@ -121,6 +126,7 @@ private:
 	// These will be fed into RenderSystem 
 	int actionIndex = 0;
 	std::vector<std::string> actionOptions{ "Attack", "Defend", "Run" };
+	bool targeting = false;
 	int targetIndex = 0;
 	std::vector<Entity> targetCandidates;
 	// End RenderSystem

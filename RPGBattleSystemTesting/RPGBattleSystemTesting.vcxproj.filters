@@ -37,6 +37,9 @@
     <Filter Include="Header Files\Mangers">
       <UniqueIdentifier>{e36a726e-9929-45eb-b67e-e061229d2850}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Shaders">
+      <UniqueIdentifier>{905e40e4-a0c4-4d15-83f7-25a9ba3af261}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source.cpp">
@@ -110,6 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <None Include="Assets\Shaders\outline.fs">
+      <Filter>Assets\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Orc-Idle.png">

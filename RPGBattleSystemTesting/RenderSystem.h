@@ -25,10 +25,18 @@ public:
 
 	void drawSprite(Entity entity, const SpriteComponent& sprite, const PositionComponent& pos);
 	void updateAnimation(SpriteComponent& sprite, float dt);
+	void drawSpriteOutlined(Entity entity, const SpriteComponent& sprite, const PositionComponent& pos);
 
 private:
 
 	RenderTexture2D target;
+
+	// Shader values for outlining enemies
+	Shader outlineShader;
+	int outlineSizeLoc;
+	int outlineColorLoc;
+	int textureSizeLoc;
+
 
 	int windowWidth;
 	int windowHeight;

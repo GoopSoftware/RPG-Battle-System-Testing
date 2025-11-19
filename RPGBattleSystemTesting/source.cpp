@@ -23,6 +23,7 @@ for different enemy types.
 
 
 
+
 int main() {
 
 	// Initializing components
@@ -34,23 +35,23 @@ int main() {
 	
 	Entity player1 = createEntity();
 	nameStore[player1] = { "Dave" };
-	healthStore[player1] = { 1, 200 };
+	healthStore[player1] = { 200, 200 };
 	statsStore[player1] = { 20, 5, 25 };
 	
 	Entity player2 = createEntity();
 	nameStore[player2] = { "Steve" };
-	healthStore[player2] = { 1, 200 };
+	healthStore[player2] = { 200, 200 };
 	statsStore[player2] = { 20, 5, 11 };
 
 	Entity player3 = createEntity();
 	nameStore[player3] = { "Frank" };
-	healthStore[player3] = { 1, 200 };
+	healthStore[player3] = { 200, 200 };
 	statsStore[player3] = { 20, 5, 11 };
 	
 	std::vector<Entity> players;
 	players.push_back(player1);
-	//players.push_back(player2);
-	//players.push_back(player3);
+	players.push_back(player2);
+	players.push_back(player3);
 
 
 	const int windowWidth = 1080;

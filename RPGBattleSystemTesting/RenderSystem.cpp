@@ -3,6 +3,15 @@
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
 
+
+
+#if defined(PLATFORM_DESKTOP)
+#define GLSL_VERSION            330
+#else   // PLATFORM_ANDROID, PLATFORM_WEB
+#define GLSL_VERSION            100
+#endif
+
+
 /*
 Checks game state from GameStateManager
 Runs render____() and render____UI() based on state
@@ -41,9 +50,21 @@ void RenderSystem::init() {
 	InitWindow(windowWidth, windowHeight, "C++ RPG");
 	SetTargetFPS(60);
 
+	outlineShader = LoadShader(0, TextFormat("Assets/Shaders/outline.fs", GLSL_VERSION));
+	float outlineSize = 0.5f;
+	float outlineColor[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+
+	outlineSizeLoc = GetShaderLocation(outlineShader, "outlineSize");
+	outlineColorLoc = GetShaderLocation(outlineShader, "outlineColor");
+	textureSizeLoc = GetShaderLocation(outlineShader, "textureSize");
+
+	SetShaderValue(outlineShader, outlineSizeLoc, &outlineSize, SHADER_UNIFORM_FLOAT);
+	SetShaderValue(outlineShader, outlineColorLoc, outlineColor, SHADER_UNIFORM_VEC4);
+
 	target = LoadRenderTexture(targetWidth, targetHeight);
 	SetTextureFilter(target.texture, TEXTURE_FILTER_POINT);
 }
+
 
 void RenderSystem::shutdown() {
 	if (IsWindowReady()) {
@@ -124,6 +145,17 @@ void RenderSystem::drawSprite(Entity entity, const SpriteComponent& sprite, cons
 	DrawTexturePro(sprite.texture, src, dest, origin, 0.0f, sprite.tint);
 }
 
+void RenderSystem::drawSpriteOutlined(Entity entity, const SpriteComponent& sprite, const PositionComponent& pos) {
+
+
+	float texSize[2] = { static_cast<float>(sprite.texture.width), static_cast<float>(sprite.texture.height) };
+	SetShaderValue(outlineShader, textureSizeLoc, texSize, SHADER_UNIFORM_VEC2);
+
+	BeginShaderMode(outlineShader);
+	drawSprite(entity, sprite, pos);
+	EndShaderMode();
+}
+
 // TODO: AnimationSystem refactor this into it
 void RenderSystem::updateAnimation(SpriteComponent& sprite, float dt) {
 	if (sprite.maxFrames <= 1) return;  // not animated
@@ -164,15 +196,28 @@ void RenderSystem::renderBattle(GameStateManager& game) {
 	// Shouldnt run but just in case
 	if (!battle) return;
 
+	auto enemies = battle->getLivingEnemies();
+
 	// For each living enemy in battle:
-	for (Entity e : battle->getLivingEnemies())
+	for (int i = 0; i < enemies.size(); i++)
 	{
+
+		Entity e = enemies[i];
+
 		// get sprite and info from GSM
 		SpriteComponent& sprite = game.getSprite(e);
 		PositionComponent& pos = game.getPosition(e);
 
 		updateAnimation(sprite, GetFrameTime());
-		drawSprite(e, sprite, pos);
+
+
+		if (battle->isTargeting() && i == battle->getTargetIndex()) {
+			drawSpriteOutlined(e, sprite, pos);
+		}
+		else {
+			drawSprite(e, sprite, pos);
+		}
+
 	}
 
 	battle->draw(*this);

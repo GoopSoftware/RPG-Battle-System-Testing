@@ -153,6 +153,7 @@
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Shaders\outline.fs" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

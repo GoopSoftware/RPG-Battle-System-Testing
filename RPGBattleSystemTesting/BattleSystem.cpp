@@ -516,9 +516,6 @@ void BattleSystem::draw(RenderSystem& renderer) const {
 			//DrawText(name.c_str(), enemyXPos, enemyYPos, textSize, BLACK);
 			renderer.drawSprite(e, spriteStore.at(e), positionStore.at(e));
 
-			if (playerPhase == PlayerPhase::TargetMenu && i == targetIndex) {
-				DrawText(">", eX + 60, eY + 100, 40, RED);  // big red arrow
-			}
 		}
 	}
 

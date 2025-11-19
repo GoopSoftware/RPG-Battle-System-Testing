@@ -141,10 +141,10 @@ std::vector<Vector2> OverworldSystem::calculateEnemyPosition(int total, float sc
 		clusterWidth = screenWidth * .6f;;
 		break;
 	case 4:
-		clusterWidth = screenWidth * .8f;
+		clusterWidth = screenWidth * .7f;
 		break;
 	default:
-		clusterWidth = screenWidth * .8f;
+		clusterWidth = screenWidth * .7f;
 		break;
 	}
 
