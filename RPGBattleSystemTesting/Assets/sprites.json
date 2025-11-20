@@ -1,0 +1,69 @@
+{
+  "Goblin": {
+    "texture": "Assets/Sprites/Goblin.png",
+    "scale": 3.0,
+    "frameWidth": 64,
+    "frameHeight": 64,
+
+    "animations": {
+      "Idle": {
+        "start": 0,
+        "count": 6,
+        "time": 0.15,
+        "loop": true
+      },
+      "Walk": {
+        "start": 6,
+        "count": 6,
+        "time": 0.12,
+        "loop": true
+      },
+      "Attack": {
+        "start": 12,
+        "count": 6,
+        "time": 0.10,
+        "loop": false
+      },
+      "Hurt": {
+        "start": 18,
+        "count": 2,
+        "time": 0.20,
+        "loop": false
+      }
+    }
+  },
+
+  "Knight": {
+    "texture": "Assets/Sprites/Knight.png",
+    "scale": 2.5,
+    "frameWidth": 80,
+    "frameHeight": 80,
+
+    "animations": {
+      "Idle": {
+        "start": 0,
+        "count": 8,
+        "time": 0.18,
+        "loop": true
+      },
+      "Walk": {
+        "start": 8,
+        "count": 8,
+        "time": 0.12,
+        "loop": true
+      },
+      "Attack": {
+        "start": 16,
+        "count": 6,
+        "time": 0.08,
+        "loop": false
+      },
+      "Dead": {
+        "start": 22,
+        "count": 4,
+        "time": 0.20,
+        "loop": false
+      }
+    }
+  }
+}

@@ -14,7 +14,6 @@ public:
 	RenderSystem(int windowWidth, int windowHeight, int targetWidth, int targetHeight);
 	~RenderSystem();
 	
-	Texture2D testTexture;
 
 	void init();
 	void shutdown();

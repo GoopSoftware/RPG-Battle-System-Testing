@@ -164,8 +164,8 @@ void RenderSystem::updateAnimation(SpriteComponent& sprite, float dt) {
 
 	if (sprite.frameTimer >= sprite.frameTime)
 	{
-		sprite.currentFrame = (sprite.currentFrame + 1) % sprite.maxFrames;
 		sprite.frameTimer = 0.0f;
+		sprite.currentFrame = (sprite.currentFrame + 1) % sprite.maxFrames;
 	}
 }
 
@@ -208,8 +208,9 @@ void RenderSystem::renderBattle(GameStateManager& game) {
 		SpriteComponent& sprite = game.getSprite(e);
 		PositionComponent& pos = game.getPosition(e);
 
-		updateAnimation(sprite, GetFrameTime());
+		game.animationSystem.updateSprite(sprite, GetFrameTime());
 
+		//updateAnimation(sprite, GetFrameTime());
 
 		if (battle->isTargeting() && i == battle->getTargetIndex()) {
 			drawSpriteOutlined(e, sprite, pos);

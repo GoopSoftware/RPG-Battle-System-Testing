@@ -7,6 +7,7 @@
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
 #include "TextureManager.h"
+#include "AnimationSystem.h"
 
 
 
@@ -21,8 +22,9 @@ enum class GameState {
 class GameStateManager
 {
 public:
-	GameStateManager(std::vector<Entity> players,
-					TextureManager& textureManager,
+	GameStateManager(float deltaTime,
+					 std::vector<Entity> players,
+					 TextureManager& textureManager,
 					 std::unordered_map<Entity, HealthComponent>& healthStore,
 					 std::unordered_map<Entity, CombatStatsComponent>& statsStore,
 					 std::unordered_map<Entity, NameComponent>& nameStore,
@@ -43,8 +45,11 @@ public:
 	SpriteComponent& getSprite(Entity e) const { return spriteStore.at(e); }
 	PositionComponent& getPosition(Entity e) const { return positionStore.at(e); }
 
+	AnimationSystem animationSystem;
+
 
 private:
+	float deltaTime;
 
 	GameState currentState = GameState::OVERWORLD;
 	OverworldSystem overworld;

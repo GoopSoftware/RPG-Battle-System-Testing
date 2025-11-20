@@ -20,6 +20,7 @@ Doesn't:
 */
 
 GameStateManager::GameStateManager(
+	float deltaTime,
 	std::vector<Entity> players,
 	TextureManager& textureManager,
 	std::unordered_map<Entity, HealthComponent>& healthStore,
@@ -27,10 +28,12 @@ GameStateManager::GameStateManager(
 	std::unordered_map<Entity, NameComponent>& nameStore,
 	std::unordered_map<Entity, SpriteComponent>& spriteStore,
 	std::unordered_map<Entity, PositionComponent>& positionStore) :
-
+		
+		deltaTime(deltaTime),
 		players(std::move(players)),
 		textureManager(textureManager),
 		overworld(textureManager),
+		animationSystem(spriteStore),
 		healthStore(healthStore),
 		statsStore(statsStore),
 		nameStore(nameStore),
@@ -73,6 +76,8 @@ void GameStateManager::triggerEncounter() {
 }
 
 void GameStateManager::update() {
+
+	animationSystem.update(deltaTime);
 
 	switch (currentState) {
 

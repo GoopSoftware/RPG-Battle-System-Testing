@@ -56,16 +56,16 @@ int main() {
 
 	const int windowWidth = 1080;
 	const int windowHeight = 720;
+	float deltaTime{};
 
 	Texture2D texture;
 	// Vector purely for holding all textures to unload on game end
 	std::vector<Texture2D> textures;
 	TextureManager textureManager;
-	GameStateManager game(players, textureManager, healthStore, statsStore, nameStore, spriteStore, positionStore);
+	GameStateManager game(deltaTime, players, textureManager, healthStore, statsStore, nameStore, spriteStore, positionStore);
 	RenderSystem renderer(windowWidth, windowHeight, windowWidth, windowHeight);
 
 
-	float deltaTime{};
 
 	
 	SetRandomSeed(static_cast<unsigned int>(time(NULL)));
