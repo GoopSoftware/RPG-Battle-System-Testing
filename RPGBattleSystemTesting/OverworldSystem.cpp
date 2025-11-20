@@ -13,11 +13,9 @@ Handles all overworld logic of the program
 
 
 
-OverworldSystem::OverworldSystem(TextureManager& textureManager) :
-	textureManager(textureManager)
+OverworldSystem::OverworldSystem()
 {
-	std::cout << "[Overworld] GoblinTexture ID at construction: "
-		<< textureManager.goblinTexture.id << "\n";
+
 }
 
 OverworldSystem::~OverworldSystem() {
@@ -28,26 +26,26 @@ OverworldSystem::~OverworldSystem() {
 
 void OverworldSystem::update() {
 	if (IsKeyPressed(KEY_W)) {
-		debug.log("OverworldSystem", LogLevel::INPUT, "Moved Up.");
+		DebugSystem::log("OverworldSystem", LogLevel::INPUT, "Moved Up.");
 		partyPosition.y -= 1;
 		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
 		encounterCheck();
 	}
 	if (IsKeyPressed(KEY_S)) {
 		partyPosition.y += 1;
-		debug.log("OverworldSystem", LogLevel::INPUT, "Moved Down.");
+		DebugSystem::log("OverworldSystem", LogLevel::INPUT, "Moved Down.");
 		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
 		encounterCheck();
 	}
 	if (IsKeyPressed(KEY_A)) {
 		partyPosition.x -= 1;
-		debug.log("OverworldSystem", LogLevel::INPUT, "Moved Left.");
+		DebugSystem::log("OverworldSystem", LogLevel::INPUT, "Moved Left.");
 		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
 		encounterCheck();
 	}
 	if (IsKeyPressed(KEY_D)) {
 		partyPosition.x += 1;
-		debug.log("OverworldSystem", LogLevel::INPUT, "Moved Right.");
+		DebugSystem::log("OverworldSystem", LogLevel::INPUT, "Moved Right.");
 		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
 		encounterCheck();
 	}
@@ -93,7 +91,7 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 
 		// TODO Make this scalable
 		SpriteComponent sprite;
-		sprite.texture = textureManager.goblinTexture;
+		sprite.texture = TextureManager::Get().Get("Goblin");
 		sprite.columns = 8;
 		sprite.rows = 6;
 		sprite.frameWidth = sprite.texture.width / sprite.columns;
@@ -136,7 +134,7 @@ std::vector<Vector2> OverworldSystem::calculateEnemyPosition(int total, float sc
 	positions.reserve(total);
 
 	float centerX = screenWidth * .5f;
-	float baseY = screenHeight * 0.4f;
+	float baseY = screenHeight * 0.58f;
 
 	float clusterWidth = 0.0f;
 

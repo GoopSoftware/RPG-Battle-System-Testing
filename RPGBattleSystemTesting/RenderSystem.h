@@ -5,6 +5,7 @@
 #include "PositionComponent.h"
 #include "Entity.h"
 #include "DebugSystem.h"
+#include "TextureManager.h"
 
 
 class GameStateManager;
@@ -29,7 +30,6 @@ public:
 private:
 
 	RenderTexture2D target;
-	DebugSystem debug;
 
 	// Shader values for outlining enemies
 	Shader outlineShader;
@@ -46,6 +46,7 @@ private:
 	void renderUI(GameStateManager& game);
 	void renderOverworld(GameStateManager& game);
 	void renderBattle(GameStateManager& game);
+	void renderBattleBG(GameStateManager& game);
 	void renderBattleUI(GameStateManager& game);
 	void renderOverworldUI(GameStateManager& game);
 

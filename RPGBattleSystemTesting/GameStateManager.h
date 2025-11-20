@@ -24,7 +24,6 @@ class GameStateManager
 public:
 	GameStateManager(float deltaTime,
 					 std::vector<Entity> players,
-					 TextureManager& textureManager,
 					 std::unordered_map<Entity, HealthComponent>& healthStore,
 					 std::unordered_map<Entity, CombatStatsComponent>& statsStore,
 					 std::unordered_map<Entity, NameComponent>& nameStore,
@@ -32,7 +31,7 @@ public:
 					 std::unordered_map<Entity, PositionComponent>& positionStore);
 	~GameStateManager();
 
-
+	void init();
 	void update();
 	void triggerEncounter();
 	GameState getCurrentState() const { return currentState; }
@@ -53,7 +52,6 @@ private:
 
 	GameState currentState = GameState::OVERWORLD;
 	OverworldSystem overworld;
-	TextureManager& textureManager;
 	// MenuSystem menu;  ----- For when MenuSystem is done -----
 
 

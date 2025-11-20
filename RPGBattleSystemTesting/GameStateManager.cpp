@@ -22,7 +22,6 @@ Doesn't:
 GameStateManager::GameStateManager(
 	float deltaTime,
 	std::vector<Entity> players,
-	TextureManager& textureManager,
 	std::unordered_map<Entity, HealthComponent>& healthStore,
 	std::unordered_map<Entity, CombatStatsComponent>& statsStore,
 	std::unordered_map<Entity, NameComponent>& nameStore,
@@ -31,8 +30,6 @@ GameStateManager::GameStateManager(
 		
 		deltaTime(deltaTime),
 		players(std::move(players)),
-		textureManager(textureManager),
-		overworld(textureManager),
 		animationSystem(spriteStore),
 		healthStore(healthStore),
 		statsStore(statsStore),
@@ -40,14 +37,20 @@ GameStateManager::GameStateManager(
 		spriteStore(spriteStore),
 		positionStore(positionStore)
 {
-	std::cout << "[GSM] TextureManager Goblin ID: "
-		<< textureManager.goblinTexture.id << "\n";
+
 
 }
 
 
 GameStateManager::~GameStateManager() {
 
+}
+
+
+void GameStateManager::init() {
+	auto& TM = TextureManager::Get();
+	TM.Load("Goblin", "assets/Orc.png");
+	TM.Load("BattleBG", "assets/battlebg.png");
 }
 
 void GameStateManager::triggerEncounter() {

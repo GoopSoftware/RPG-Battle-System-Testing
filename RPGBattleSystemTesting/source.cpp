@@ -58,23 +58,17 @@ int main() {
 	const int windowHeight = 720;
 	float deltaTime{};
 
-	Texture2D texture;
 	// Vector purely for holding all textures to unload on game end
-	std::vector<Texture2D> textures;
-	TextureManager textureManager;
-	GameStateManager game(deltaTime, players, textureManager, healthStore, statsStore, nameStore, spriteStore, positionStore);
+	//std::vector<Texture2D> textures;
+
+	GameStateManager game(deltaTime, players, healthStore, statsStore, nameStore, spriteStore, positionStore);
 	RenderSystem renderer(windowWidth, windowHeight, windowWidth, windowHeight);
-
-
 
 	
 	SetRandomSeed(static_cast<unsigned int>(time(NULL)));
 	renderer.init();
+	game.init();
 
-	Texture2D testTex = LoadTexture("Assets/Orc.png");
-	textures.push_back(testTex);
-	textureManager.goblinTexture = testTex;
-	textureManager.debugPrint();
 
 
 	while (!WindowShouldClose())
@@ -82,6 +76,7 @@ int main() {
 
 		deltaTime = GetFrameTime();
 
+		DebugSystem::enableDebug();
 		game.update();
 		renderer.begin();
 		renderer.render(game);

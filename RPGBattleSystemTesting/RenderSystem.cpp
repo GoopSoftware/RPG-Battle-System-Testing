@@ -29,7 +29,10 @@ drawSprite():
 */
 
 RenderSystem::RenderSystem(int windowWidth, int windowHeight, int targetWidth, int targetHeight) :
-	windowWidth(windowWidth), windowHeight(windowHeight), targetWidth(targetWidth), targetHeight(targetHeight)
+	windowWidth(windowWidth), 
+	windowHeight(windowHeight), 
+	targetWidth(targetWidth), 
+	targetHeight(targetHeight)
 {
 
 }
@@ -81,6 +84,7 @@ void RenderSystem::render(GameStateManager& game) {
 			renderOverworldUI(game);
 			break;
 		case GameState::BATTLE:
+			renderBattleBG(game);
 			renderBattle(game);
 			renderBattleUI(game);
 			break;
@@ -176,20 +180,31 @@ void RenderSystem::renderBattleUI(GameStateManager& game) {
 
 }
 
-void RenderSystem::renderBattle(GameStateManager& game) {
+void RenderSystem::renderBattleBG(GameStateManager& game) {
 
+	Texture2D bg = TextureManager::Get().Get("BattleBG");
+
+	Rectangle src = { 0, 0, (float)bg.width, (float)bg.height };
+	Rectangle dst = { 0, 0, (float)targetWidth, (float)targetHeight };
+
+	DrawTexturePro(bg, src, dst, { 0.f, 0.f }, 0.f, WHITE);
+
+}
+
+void RenderSystem::renderBattle(GameStateManager& game) {
 
 
 	const BattleSystem* battle = game.getBattleSystem();
 
 	// DEBUG
-	debug.handleAnimationDebug(game, battle);
+	DebugSystem::handleAnimationDebug(game, battle);
 	// END DEBUG
 
 	// Shouldnt run but just in case
 	if (!battle) return;
 
 	auto enemies = battle->getLivingEnemies();
+
 
 
 	// For each living enemy in battle:
@@ -204,7 +219,6 @@ void RenderSystem::renderBattle(GameStateManager& game) {
 
 		game.animationSystem.updateSprite(sprite, GetFrameTime());
 
-		//updateAnimation(sprite, GetFrameTime());
 
 		if (battle->isTargeting() && i == battle->getTargetIndex()) {
 			drawSpriteOutlined(e, sprite, pos);

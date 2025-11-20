@@ -29,7 +29,7 @@ enum class Biome {
 class OverworldSystem
 {
 public:
-	OverworldSystem(TextureManager& textureManager);
+	OverworldSystem();
 	~OverworldSystem();
 	
 	void update();
@@ -49,8 +49,7 @@ public:
 private:
 
 	std::vector<Vector2> calculateEnemyPosition(int total, float screenWidth, float screenHeight);
-	TextureManager& textureManager;
-	DebugSystem debug;
+	//DebugSystem debug;
 	Vector2 partyPosition = { 0, 0 };
 	int encounterRate; // Unused for now but allows for scaling encounter chance
 	

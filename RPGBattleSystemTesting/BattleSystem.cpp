@@ -44,12 +44,12 @@ Start -> PLAYERTURN/ENEMYTURN -> CHECKBATTLESTATUS -> PLAYERTURN/ENEMYTURN -> CH
 
 
 BattleSystem::BattleSystem(std::vector<Entity> players,
-	std::vector<Entity> enemies,
-	std::unordered_map<Entity, HealthComponent>& healthStore,
-	std::unordered_map<Entity, CombatStatsComponent>& statsStore,
-	std::unordered_map<Entity, NameComponent>& nameStore,
-	std::unordered_map<Entity, SpriteComponent>& spriteStore,
-	std::unordered_map<Entity, PositionComponent>& positionStore
+							std::vector<Entity> enemies,
+							std::unordered_map<Entity, HealthComponent>& healthStore,
+							std::unordered_map<Entity, CombatStatsComponent>& statsStore,
+							std::unordered_map<Entity, NameComponent>& nameStore,
+							std::unordered_map<Entity, SpriteComponent>& spriteStore,
+							std::unordered_map<Entity, PositionComponent>& positionStore
 
 ) :
 	players(players),
@@ -123,14 +123,15 @@ void BattleSystem::attack(Entity attacker, Entity defender) {
 	int damage = calculateDamage(statsStore[attacker], statsStore[defender]);
 	healthStore[defender].hp -= damage;
 
-	debug.log("BattleSystem", LogLevel::INFO, "[INFO]>>> " + nameStore[attacker].name + " attacks " + nameStore[defender].name + " for "
+	
+	DebugSystem::log("BattleSystem", LogLevel::INFO, "[INFO]>>> " + nameStore[attacker].name + " attacks " + nameStore[defender].name + " for "
 		+ std::to_string(damage) + " damage!" + "\n    " + nameStore[defender].name + " HP: "
 		+ std::to_string(std::max(0, healthStore[defender].hp)));
 
 
 
 	if (healthStore[defender].hp <= 0) {
-		debug.log("BattleSystem", LogLevel::INFO, nameStore[defender].name + " has been defeated!");
+		DebugSystem::log("BattleSystem", LogLevel::INFO, nameStore[defender].name + " has been defeated!");
 
 	}
 }
@@ -139,7 +140,7 @@ void BattleSystem::defend(Entity defender) {
 	// Logic for defence. No currenty planned system so for now we just permenantly increase by 5
 	statsStore[defender].defense += 5;
 
-	debug.log("BattleSystem", LogLevel::INPUT, ">>> " + nameStore[defender].name + " defends and raises defense!");
+	DebugSystem::log("BattleSystem", LogLevel::INPUT, ">>> " + nameStore[defender].name + " defends and raises defense!");
 }
 
 
@@ -147,7 +148,7 @@ void BattleSystem::handleAttackOption() {
 
 	// Redundant but will show if for some reason game breaks
 	if (livingEnemies.empty()) {
-		debug.log("BattleSystem", LogLevel::DEBUG, "No enemies left to attack!\n>>> Something broke in the code to show this");
+		DebugSystem::log("BattleSystem", LogLevel::DEBUG, "No enemies left to attack!\n>>> Something broke in the code to show this");
 
 		validAction = true;
 		return;
@@ -156,14 +157,14 @@ void BattleSystem::handleAttackOption() {
 	targetCandidates = livingEnemies;
 	targetIndex = 0;
 
-	debug.log("BattleSystem", LogLevel::INPUT, ">>> " + nameStore[currentEntity].name + " chose ATTACK.");
-	debug.log("BattleSystem", LogLevel::INFO, "Choose your target:");
+	DebugSystem::log("BattleSystem", LogLevel::INPUT, ">>> " + nameStore[currentEntity].name + " chose ATTACK.");
+	DebugSystem::log("BattleSystem", LogLevel::INFO, "Choose your target:");
 	
 	for (size_t i = 0; i < targetCandidates.size(); ++i) {
-		debug.log("BattleSystem", LogLevel::INFO, std::to_string((i + 1)) + ") " + nameStore[targetCandidates[i]].name + " (HP: " + std::to_string(healthStore[targetCandidates[i]].hp) + ")");
+		DebugSystem::log("BattleSystem", LogLevel::INFO, std::to_string((i + 1)) + ") " + nameStore[targetCandidates[i]].name + " (HP: " + std::to_string(healthStore[targetCandidates[i]].hp) + ")");
 	}
 	
-	debug.log("BattleSystem", LogLevel::INFO, "Use W / S to select.Press ENTER to confirm, ESC to cancel.");
+	DebugSystem::log("BattleSystem", LogLevel::INFO, "Use W / S to select.Press ENTER to confirm, ESC to cancel.");
 
 	playerPhase = PlayerPhase::TargetMenu;
 
@@ -182,12 +183,12 @@ void BattleSystem::handleRunOption() {
 	// TODO: Add calculation based on average speed values of enemies and players
 	int runDecision = GetRandomValue(1, 3);
 	if (runDecision <= 2) {
-		debug.log("BattleSystem", LogLevel::INFO, ">>> You successfully ran away!");
+		DebugSystem::log("BattleSystem", LogLevel::INFO, ">>> You successfully ran away!");
 
 		state = RUN;
 	}
 	else {
-		debug.log("BattleSystem", LogLevel::INFO, ">>> You tried to run, but failed!");
+		DebugSystem::log("BattleSystem", LogLevel::INFO, ">>> You tried to run, but failed!");
 
 		state = CHECKBATTLESTATUS;
 	}
@@ -196,7 +197,7 @@ void BattleSystem::handleRunOption() {
 }
 
 void BattleSystem::handleInvalidOption() {
-	debug.log("BattleSystem", LogLevel::INFO, "Invalid choice. Please try again.");
+	DebugSystem::log("BattleSystem", LogLevel::INFO, "Invalid choice. Please try again.");
 
 }
 
@@ -222,21 +223,21 @@ void BattleSystem::buildLivingEnemies() {
 
 
 void BattleSystem::printTurnOptions() {
-	debug.log("BattleSystem", LogLevel::INFO, nameStore[currentEntity].name + "'s turn");
-	debug.log("BattleSystem", LogLevel::INFO, "1. Attack");
-	debug.log("BattleSystem", LogLevel::INFO, "2. Defend");
-	debug.log("BattleSystem", LogLevel::INFO, "3. Run");
+	DebugSystem::log("BattleSystem", LogLevel::INFO, nameStore[currentEntity].name + "'s turn");
+	DebugSystem::log("BattleSystem", LogLevel::INFO, "1. Attack");
+	DebugSystem::log("BattleSystem", LogLevel::INFO, "2. Defend");
+	DebugSystem::log("BattleSystem", LogLevel::INFO, "3. Run");
 
 }
 
 void BattleSystem::printInitialTurnOrder() {
-	debug.log("BattleSystem", LogLevel::INFO, "-- Turn Order --");
+	DebugSystem::log("BattleSystem", LogLevel::INFO, "-- Turn Order --");
 
 	for (size_t i = 0; i < turnOrder.size(); i++) {
 		Entity e = turnOrder[i];
-		debug.log("BattleSystem", LogLevel::INFO, " " + std::to_string((i + 1)) + ") " + nameStore[e].name + " (Speed: " + std::to_string(statsStore[e].speed) + ")");
+		DebugSystem::log("BattleSystem", LogLevel::INFO, " " + std::to_string((i + 1)) + ") " + nameStore[e].name + " (Speed: " + std::to_string(statsStore[e].speed) + ")");
 	}
-	debug.log("BattleSystem", LogLevel::INFO, "----------------");
+	DebugSystem::log("BattleSystem", LogLevel::INFO, "----------------");
 }
 
 void BattleSystem::populateEnemyTargets() {
@@ -285,22 +286,21 @@ void BattleSystem::updatePlayerTurn() {
 				actionIndex = 0;
 				printTurnOptions();
 				printedActionMenu = true;
-				//debug.log("BattleSystem", LogLevel::INFO, "Action Menu opened.");
-				debug.log("BattleSystem", LogLevel::INPUT, "Currently highlighting : " + actionOptions[actionIndex]);
-				debug.log("BattleSystem", LogLevel::TOOLTIP, "Use W/S to select. Press ENTER to confirm, ESC to cancel.");
+				DebugSystem::log("BattleSystem", LogLevel::INPUT, "Currently highlighting : " + actionOptions[actionIndex]);
+				DebugSystem::log("BattleSystem", LogLevel::TOOLTIP, "Use W/S to select. Press ENTER to confirm, ESC to cancel.");
 			}
 
 			if (IsKeyPressed(KEY_W)) {
 				actionIndex = (actionIndex + actionOptions.size() - 1) % actionOptions.size();
-				debug.log("BattleSystem", LogLevel::INPUT, "UP now highlighting: " + actionOptions[actionIndex]);
+				DebugSystem::log("BattleSystem", LogLevel::INPUT, "UP now highlighting: " + actionOptions[actionIndex]);
 			}
 			if (IsKeyPressed(KEY_S)) {
 				actionIndex = (actionIndex + 1) % actionOptions.size();
-				debug.log("BattleSystem", LogLevel::INPUT, "DOWN now highlighting: " + actionOptions[actionIndex]);
+				DebugSystem::log("BattleSystem", LogLevel::INPUT, "DOWN now highlighting: " + actionOptions[actionIndex]);
 			}
 
 			if (IsKeyPressed(KEY_ENTER)) {
-				debug.log("BattleSystem", LogLevel::INPUT, "Enter pressed: " + actionOptions[actionIndex]);
+				DebugSystem::log("BattleSystem", LogLevel::INPUT, "Enter pressed: " + actionOptions[actionIndex]);
 
 				switch (actionIndex) {
 				case 0:
@@ -323,7 +323,7 @@ void BattleSystem::updatePlayerTurn() {
 
 		case PlayerPhase::TargetMenu:
 			if (targetCandidates.empty()) {
-				debug.log("BattleSystem", LogLevel::INFO, ">>> No valid targets. Returning to ActionMenu.");
+				DebugSystem::log("BattleSystem", LogLevel::INFO, ">>> No valid targets. Returning to ActionMenu.");
 				playerPhase = PlayerPhase::Done;
 				break;
 			}
@@ -335,23 +335,23 @@ void BattleSystem::updatePlayerTurn() {
 
 			if (IsKeyPressed(KEY_A)) {
 				targetIndex = (targetIndex + targetCandidates.size() - 1) % targetCandidates.size();
-				debug.log("BattleSystem", LogLevel::INPUT, "UP now highlighting : " + nameStore[targetCandidates[targetIndex]].name);
+				DebugSystem::log("BattleSystem", LogLevel::INPUT, "UP now highlighting : " + nameStore[targetCandidates[targetIndex]].name);
 			}
 			if (IsKeyPressed(KEY_D)) {
 				targetIndex = (targetIndex + 1) % targetCandidates.size();
-				debug.log("BattleSystem", LogLevel::INPUT, "DOWN now highlighting : " + nameStore[targetCandidates[targetIndex]].name);
+				DebugSystem::log("BattleSystem", LogLevel::INPUT, "DOWN now highlighting : " + nameStore[targetCandidates[targetIndex]].name);
 			}
 
 			// select option
 			if (IsKeyPressed(KEY_ENTER)) {
-				debug.log("BattleSystem", LogLevel::INPUT, "[CONFIRM] Enter pressed attacking " + nameStore[targetCandidates[targetIndex]].name);
+				DebugSystem::log("BattleSystem", LogLevel::INPUT, "[CONFIRM] Enter pressed attacking " + nameStore[targetCandidates[targetIndex]].name);
 				attack(currentEntity, targetCandidates[targetIndex]);
 				playerPhase = PlayerPhase::Done;
 			}
 
 			// Cancel back to main action menu
 			if (IsKeyPressed(KEY_Q) || IsKeyPressed(KEY_BACKSPACE)) {
-				debug.log("BattleSystem", LogLevel::INPUT, "[CANCEL] Returning to turn decision");
+				DebugSystem::log("BattleSystem", LogLevel::INPUT, "[CANCEL] Returning to turn decision");
 
 				playerPhase = PlayerPhase::ActionMenu;
 				printedActionMenu = false;
@@ -374,7 +374,7 @@ void BattleSystem::update() {
 
 	switch (state) {
 	case START:
-		debug.log("BattleSystem", LogLevel::INFO, "==================== BATTLE START ====================");
+		DebugSystem::log("BattleSystem", LogLevel::INFO, "==================== BATTLE START ====================");
 		
 		// Runs calculations and populates the turnOrder vector
 		calculateTurnOrder();
@@ -440,7 +440,7 @@ void BattleSystem::update() {
 	}
 	case VICTORY:
 
-		debug.log("BattleSystem", LogLevel::INFO, "Victory! All enemies defeated!");
+		DebugSystem::log("BattleSystem", LogLevel::INFO, "Victory! All enemies defeated!");
 
 		result = BattleResult::VICTORY;
 
@@ -448,7 +448,7 @@ void BattleSystem::update() {
 		break;
 
 	case DEFEAT:
-		debug.log("BattleSystem", LogLevel::INFO, "Defeat... Your party has fallen.");
+		DebugSystem::log("BattleSystem", LogLevel::INFO, "Defeat... Your party has fallen.");
 
 		result = BattleResult::DEFEAT;
 

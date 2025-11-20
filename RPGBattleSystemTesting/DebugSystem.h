@@ -6,6 +6,8 @@
 #include <ctime>
 #include <iomanip>
 #include <unordered_map>
+#include "raylib.h"
+
 
 class GameStateManager;
 class BattleSystem;
@@ -28,18 +30,23 @@ class DebugSystem
 {
 
 public:
-	DebugSystem();
-	~DebugSystem();
 
-	LogLevel minLevel = LogLevel::DEBUG;
-	void handleAnimationDebug(GameStateManager& game, const BattleSystem* battle);
-	void log(std::string system, LogLevel level, std::string message);
+
+	static void enableDebug();
+	static void handleAnimationDebug(GameStateManager& game, const BattleSystem* battle);
+	static void log(std::string system, LogLevel level, std::string message);
+	
+	static LogLevel minLevel;
+	static bool debug;
+
+	static std::string getTimestamp();
+	static std::string levelToString(LogLevel level);
 
 private:
 
-	bool debugOn = false;
-	std::string getTimestamp();
-	std::string levelToString(LogLevel level);
+	DebugSystem() = delete;
+	~DebugSystem() = delete;
+
 
 };
 

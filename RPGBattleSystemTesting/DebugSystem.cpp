@@ -3,20 +3,31 @@
 #include "GameStateManager.h"
 #include "SpriteComponent.h"
 #include "AnimationSystem.h"
-#include "raylib.h"
 
-DebugSystem::DebugSystem() {
+bool DebugSystem::debug = true;
+LogLevel DebugSystem::minLevel = LogLevel::DEBUG;
 
+//DebugSystem::DebugSystem() {
+//
+//}
+//
+//
+//DebugSystem::~DebugSystem() {
+//
+//}
+
+
+void DebugSystem::enableDebug() {
+	if (IsKeyPressed(KEY_L)) {
+		debug = !debug;
+		std::cout << "Debug: " << (debug ? "ON" : "OFF") << std::endl;
+	}
 }
 
-
-DebugSystem::~DebugSystem() {
-
-}
 
 
 void DebugSystem::log(std::string system, LogLevel level, std::string message) {
-	if (debugOn) {
+	if (debug) {
 		std::ostringstream stream;
 		std::string timeStr = getTimestamp();
 		std::string levelStr = levelToString(level);
@@ -28,6 +39,7 @@ void DebugSystem::log(std::string system, LogLevel level, std::string message) {
 		std::cout << stream.str() << std::endl;
 	}
 }
+
 
 
 std::string DebugSystem::getTimestamp() {
@@ -49,28 +61,28 @@ std::string DebugSystem::getTimestamp() {
 
 std::string DebugSystem::levelToString(LogLevel level) {
 	switch (level) {
-	case LogLevel::INFO:
-		return "INFO";
-	case LogLevel::INPUT:
-		return "INPUT";
-	case LogLevel::WARNING:
-		return "WARNING";
-	case LogLevel::ERROR:
-		return "ERROR";
-	case LogLevel::TOOLTIP:
-		return "TOOLTIP";
-	case LogLevel::DEBUG:
-		return "DEBUG";
-	case LogLevel::EVENT:
-		return "EVENT";
-	default:
-		return "UNKNOWN";
-	}
+		case LogLevel::INFO:
+			return "INFO";
+		case LogLevel::INPUT:
+			return "INPUT";
+		case LogLevel::WARNING:
+			return "WARNING";
+		case LogLevel::ERROR:
+			return "ERROR";
+		case LogLevel::TOOLTIP:
+			return "TOOLTIP";
+		case LogLevel::DEBUG:
+			return "DEBUG";
+		case LogLevel::EVENT:
+			return "EVENT";
+		default:
+			return "UNKNOWN";
+		}
 }
 
 void DebugSystem::handleAnimationDebug(GameStateManager& game, const BattleSystem* battle)
 {
-	if (debugOn) {
+	if (debug) {
 		if (!battle) return;
 
 		const auto& livingEnemies = battle->getLivingEnemies();

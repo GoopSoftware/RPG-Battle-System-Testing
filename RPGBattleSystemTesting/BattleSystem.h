@@ -143,6 +143,5 @@ private:
 	void printInitialTurnOrder();
 
 	// FUTURE BATTLE LOGGING
-	DebugSystem debug;
 
 };

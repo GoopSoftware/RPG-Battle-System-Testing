@@ -163,6 +163,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\battlebg.png" />
     <Image Include="Assets\Orc-Idle.png" />
     <Image Include="Assets\Orc.png" />
     <Image Include="Assets\Soldier.png" />
