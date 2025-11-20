@@ -7,23 +7,33 @@ AnimationSystem::AnimationSystem(std::unordered_map<Entity, SpriteComponent>& sp
 
 }
 
-void AnimationSystem::update(float deltaTime) {
-	for (auto& [entity, sprite] : sprites) {
-		if (sprite.maxFrames > 1) {
-			updateSprite(sprite, deltaTime);
-		}
+void AnimationSystem::setState(SpriteComponent& sprite, AnimationState newState) {
+
+	if (sprite.state != newState) {
+		sprite.state = newState;
+
+		// Reset to first frame of the new animation
+		const AnimationData& anim = sprite.animations[newState];
+		sprite.currentFrame = anim.startFrame;
+		sprite.frameTimer = 0.0f;
 	}
 }
 
+
+
 void AnimationSystem::updateSprite(SpriteComponent& sprite, float deltaTime) {
+
+	const AnimationData& anim = sprite.animations[sprite.state];
+
 	sprite.frameTimer += deltaTime;
 
-	if (sprite.frameTimer >= sprite.frameTime) {
+	if (sprite.frameTimer >= anim.frameTime) {
 		sprite.frameTimer = 0.0f;
 
-		// Single animation state system. Will change into multiple branch later based on spritecomponent state
-		sprite.currentFrame = (sprite.currentFrame + 1) % sprite.maxFrames;
-		//switch(sprite.animationState)
-	}
+		sprite.currentFrame++;
 
+		if (sprite.currentFrame > anim.endFrame) {
+			sprite.currentFrame = anim.startFrame;
+		}
+	}
 }

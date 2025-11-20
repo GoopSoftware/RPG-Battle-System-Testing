@@ -91,11 +91,21 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 		statsStore[enemy] = { 5 + GetRandomValue(0, 3), 2, 5 };
 		nameStore[enemy] = { "Goblin_" + std::to_string(i + 1) };
 
+		// TODO Make this scalable
 		SpriteComponent sprite;
 		sprite.texture = textureManager.goblinTexture;
-		sprite.maxFrames = 6;
-		sprite.frameWidth = sprite.texture.width / sprite.maxFrames;
-		sprite.frameHeight = sprite.texture.height;
+		sprite.columns = 8;
+		sprite.rows = 6;
+		sprite.frameWidth = sprite.texture.width / sprite.columns;
+		sprite.frameHeight = sprite.texture.height / sprite.rows;
+		sprite.animations = {
+			{ AnimationState::Idle,     { 0, 5, 0.15f } },
+			{ AnimationState::Walk,     { 8, 15, 0.15f } },
+			{ AnimationState::Attack,   { 16, 21, 0.15f } },
+			{ AnimationState::Attack2,  { 24, 29, 0.15f } },
+			{ AnimationState::Hurt,     { 32, 36, 0.15f } },
+			{ AnimationState::Dead,     { 40, 44, 0.15f } }
+		};
 		sprite.scale = 3.0f;
 
 		spriteStore[enemy] = sprite;

@@ -4,6 +4,7 @@
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
 #include "Entity.h"
+#include "DebugSystem.h"
 
 
 class GameStateManager;
@@ -23,12 +24,12 @@ public:
 	void end();
 
 	void drawSprite(Entity entity, const SpriteComponent& sprite, const PositionComponent& pos);
-	void updateAnimation(SpriteComponent& sprite, float dt);
 	void drawSpriteOutlined(Entity entity, const SpriteComponent& sprite, const PositionComponent& pos);
 
 private:
 
 	RenderTexture2D target;
+	DebugSystem debug;
 
 	// Shader values for outlining enemies
 	Shader outlineShader;

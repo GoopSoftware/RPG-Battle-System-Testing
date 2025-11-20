@@ -276,6 +276,7 @@ bool BattleSystem::checkVictoryCondition() {
 
 void BattleSystem::updatePlayerTurn() {
 
+
 	switch (playerPhase) {
 
 		case PlayerPhase::ActionMenu: {

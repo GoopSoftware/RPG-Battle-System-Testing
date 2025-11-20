@@ -77,7 +77,6 @@ void GameStateManager::triggerEncounter() {
 
 void GameStateManager::update() {
 
-	animationSystem.update(deltaTime);
 
 	switch (currentState) {
 

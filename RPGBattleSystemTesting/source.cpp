@@ -71,7 +71,7 @@ int main() {
 	SetRandomSeed(static_cast<unsigned int>(time(NULL)));
 	renderer.init();
 
-	Texture2D testTex = LoadTexture("Assets/Orc-Idle.png");
+	Texture2D testTex = LoadTexture("Assets/Orc.png");
 	textures.push_back(testTex);
 	textureManager.goblinTexture = testTex;
 	textureManager.debugPrint();

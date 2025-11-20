@@ -14,9 +14,9 @@
 
 /*
 Checks game state from GameStateManager
-Runs render____() and render____UI() based on state
+Runs renderState() and renderStateUI() based on state
 
-Renders sprites and animations using information from SpriteComponent, PositionComponent
+Renders only the current frame of the sprite component
 
 drawSprite(): 
 	- DrawTexturePro(sprite.texture, src, dest, { 0, 0 }, 0.0f, sprite.tint)
@@ -24,12 +24,7 @@ drawSprite():
 		- static_cast<float>(sprite.frameWidth * sprite.currentFrame)
 			- sprite.currentFrame changes based on updateAnimation()
 
-updateAnimation(): 
-	- updateAnimation(SpriteComponent& sprite, float dt)
-	- increments time with
-		- sprite.frameTimer += dt
-	- changes animation frames with
-		- sprite.currentFrame = (sprite.currentFrame + 1) % sprite.maxFrames
+
 
 */
 
@@ -122,12 +117,15 @@ void RenderSystem::end() {
 
 void RenderSystem::drawSprite(Entity entity, const SpriteComponent& sprite, const PositionComponent& pos) {
 
-	// Source rect based on animation frame
+	int totalCols = sprite.columns;
+	int col = sprite.currentFrame % totalCols;
+	int row = sprite.currentFrame / totalCols;
+
 	Rectangle src = {
-	static_cast<float>(sprite.frameWidth * sprite.currentFrame),
-	static_cast<float>(0),
-	static_cast<float>(sprite.frameWidth),
-	static_cast<float>(sprite.frameHeight)
+		static_cast<float>(col * sprite.frameWidth),
+		static_cast<float>(row * sprite.frameHeight),
+		static_cast<float>(sprite.frameWidth),
+		static_cast<float>(sprite.frameHeight)
 	};
 
 
@@ -156,18 +154,6 @@ void RenderSystem::drawSpriteOutlined(Entity entity, const SpriteComponent& spri
 	EndShaderMode();
 }
 
-// TODO: AnimationSystem refactor this into it
-void RenderSystem::updateAnimation(SpriteComponent& sprite, float dt) {
-	if (sprite.maxFrames <= 1) return;  // not animated
-
-	sprite.frameTimer += dt;
-
-	if (sprite.frameTimer >= sprite.frameTime)
-	{
-		sprite.frameTimer = 0.0f;
-		sprite.currentFrame = (sprite.currentFrame + 1) % sprite.maxFrames;
-	}
-}
 
 
 void RenderSystem::renderUI(GameStateManager& game) {
@@ -192,11 +178,19 @@ void RenderSystem::renderBattleUI(GameStateManager& game) {
 
 void RenderSystem::renderBattle(GameStateManager& game) {
 
+
+
 	const BattleSystem* battle = game.getBattleSystem();
+
+	// DEBUG
+	debug.handleAnimationDebug(game, battle);
+	// END DEBUG
+
 	// Shouldnt run but just in case
 	if (!battle) return;
 
 	auto enemies = battle->getLivingEnemies();
+
 
 	// For each living enemy in battle:
 	for (int i = 0; i < enemies.size(); i++)
