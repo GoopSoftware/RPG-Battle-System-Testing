@@ -8,6 +8,8 @@
 #include "PositionComponent.h"
 #include "TextureManager.h"
 #include "AnimationSystem.h"
+#include "OverworldMapLoader.h"
+#include "OverworldMap.h"
 
 
 
@@ -38,6 +40,8 @@ public:
 	
 	//OverworldSystem& getOverworld() { return overworld; }
 	const OverworldSystem& getOverworld() const { return overworld; }
+	const OverworldMap& getOverworldMap() const { return overworldMap; }
+
 
 	//BattleSystem* getBattleSystem() { return battleSystem.get(); }
 	const BattleSystem* getBattleSystem() const { return battleSystem.get(); }
@@ -52,6 +56,7 @@ private:
 
 	GameState currentState = GameState::OVERWORLD;
 	OverworldSystem overworld;
+	OverworldMap overworldMap;
 	// MenuSystem menu;  ----- For when MenuSystem is done -----
 
 
@@ -66,4 +71,3 @@ private:
 	std::unique_ptr<BattleSystem> battleSystem; // ptr created when battle triggered
 
 };
-

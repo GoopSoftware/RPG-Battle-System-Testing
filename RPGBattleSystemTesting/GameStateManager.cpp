@@ -47,10 +47,15 @@ GameStateManager::~GameStateManager() {
 }
 
 
+
 void GameStateManager::init() {
 	auto& TM = TextureManager::Get();
 	TM.Load("Goblin", "assets/Orc.png");
 	TM.Load("BattleBG", "assets/battlebg.png");
+	// TODO: This stays in init() for now then when we have multiple overworld maps to load from we develop a system to change based on location
+	OverworldMapLoader::Load("assets/maps/TestMapjson.json", overworldMap);
+
+	overworld.initializePlayer(positionStore, spriteStore);
 }
 
 void GameStateManager::triggerEncounter() {

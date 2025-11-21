@@ -44,10 +44,11 @@ private:
 	int targetHeight;
 	
 	void renderUI(GameStateManager& game);
-	void renderOverworld(GameStateManager& game);
 	void renderBattle(GameStateManager& game);
 	void renderBattleBG(GameStateManager& game);
 	void renderBattleUI(GameStateManager& game);
+	void renderOverworld(GameStateManager& game);
+	void renderOverworldPlayer(GameStateManager& game);
 	void renderOverworldUI(GameStateManager& game);
 
 };

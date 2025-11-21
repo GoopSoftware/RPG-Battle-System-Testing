@@ -82,6 +82,8 @@ void RenderSystem::render(GameStateManager& game) {
 		case GameState::OVERWORLD:
 			renderOverworld(game);
 			renderOverworldUI(game);
+			renderOverworldPlayer(game);
+
 			break;
 		case GameState::BATTLE:
 			renderBattleBG(game);
@@ -170,10 +172,60 @@ void RenderSystem::renderOverworldUI(GameStateManager& game) {
 
 }
 
-void RenderSystem::renderOverworld(GameStateManager& game) {
-	game.getOverworld().draw(*this);
+void RenderSystem::renderOverworldPlayer(GameStateManager& game) {
+
+	Entity player = game.getOverworld().getPlayer();
+
+	const SpriteComponent& sprite = game.getSprite(player);
+	const PositionComponent& pos = game.getPosition(player);
+
+	// Draw sprite
+	drawSprite(player, sprite, pos);
 
 }
+
+
+
+void RenderSystem::renderOverworld(GameStateManager& game)
+{
+	const OverworldMap& map = game.getOverworldMap();
+
+	for (const auto& layer : map.visualLayers)
+	{
+		for (int y = 0; y < map.height; ++y)
+		{
+			for (int x = 0; x < map.width; ++x)
+			{
+				int tileId = map.getTile(layer, x, y);
+				if (tileId == 0) continue;
+
+				int index = tileId - map.firstGid;
+				int tilesPerRow = map.tilesetTexture.width / map.tileWidth;
+
+				int srcX = (index % tilesPerRow) * map.tileWidth;
+				int srcY = (index / tilesPerRow) * map.tileHeight;
+
+				Rectangle src = {
+					(float)srcX,
+					(float)srcY,
+					(float)map.tileWidth,
+					(float)map.tileHeight
+				};
+
+				Vector2 dest = {
+					(float)x * map.tileWidth,
+					(float)y * map.tileHeight
+				};
+
+				DrawTextureRec(map.tilesetTexture, src, dest, WHITE);
+			}
+		}
+	}
+
+}
+
+
+
 
 void RenderSystem::renderBattleUI(GameStateManager& game) {
 

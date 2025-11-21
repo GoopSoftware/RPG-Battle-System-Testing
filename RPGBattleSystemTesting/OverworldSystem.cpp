@@ -65,6 +65,33 @@ void OverworldSystem::encounterCheck() {
 	}
 }
 
+void OverworldSystem::initializePlayer(std::unordered_map<Entity, PositionComponent>& positionStore,
+									   std::unordered_map<Entity, SpriteComponent>& spriteStore) {
+
+	overworldPlayer = createEntity();
+	positionStore[overworldPlayer] = { 320.f, 320.f };
+
+	SpriteComponent overworldSprite;
+	overworldSprite.texture = TextureManager::Get().Get("Goblin");
+	overworldSprite.columns = 8;
+	overworldSprite.rows = 6;
+	overworldSprite.frameWidth = overworldSprite.texture.width / overworldSprite.columns;
+	overworldSprite.frameHeight = overworldSprite.texture.height / overworldSprite.rows;
+	overworldSprite.animations = {
+								{ AnimationState::Idle,     { 0, 5, 0.15f } },
+								{ AnimationState::Walk,     { 8, 15, 0.15f } },
+								{ AnimationState::Attack,   { 16, 21, 0.15f } },
+								{ AnimationState::Attack2,  { 24, 29, 0.15f } },
+								{ AnimationState::Hurt,     { 32, 36, 0.15f } },
+								{ AnimationState::Dead,     { 40, 44, 0.15f } }
+	};
+	overworldSprite.scale = 3.0f;
+	spriteStore[overworldPlayer] = overworldSprite;
+
+	std::cout << "[Overworld] Player initialized (entity " << overworldPlayer << ")\n";
+
+}
+
 
 Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthComponent>& healthStore,
 											 std::unordered_map<Entity, CombatStatsComponent>& statsStore,

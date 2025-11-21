@@ -1,0 +1,42 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Assets/tilesets/TestTileset.tsx",
+    "expandedProjectPaths": [
+        "Assets/maps",
+        ".",
+        "Assets/tilesets",
+        "Assets"
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "Assets/maps/TestMap.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 490,
+                "y": 298
+            }
+        },
+        "Assets/tilesets/TestTileset.tsx": {
+            "scaleInDock": 0.33,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/Jake/source/repos/RPG-Battle-System-Testing/RPGBattleSystemTesting/Assets/maps",
+    "last.imagePath": "C:/Users/Jake/source/repos/RPG-Battle-System-Testing/RPGBattleSystemTesting/Assets/tilesets",
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "Assets/maps/TestMap.tmx",
+        "Assets/tilesets/TestTileset.tsx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "Assets/maps/TestMap.tmx",
+        "Assets/tilesets/TestTileset.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

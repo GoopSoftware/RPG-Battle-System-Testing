@@ -35,6 +35,10 @@ public:
 	void update();
 	void encounterCheck();
 
+	void setPlayerEntity(Entity player) { overworldPlayer = player; }
+
+	//void update(float deltaTime, OverworldMap)
+
 	Encounter generateEncounter(std::unordered_map<Entity, HealthComponent>& healthStore,
 								std::unordered_map<Entity, CombatStatsComponent>& statsStore,
 								std::unordered_map<Entity, NameComponent>& nameStore,
@@ -45,9 +49,16 @@ public:
 	void clearEncounter() { encounter = false; }
 	void draw(RenderSystem& renderer) const;
 
+	void initializePlayer(std::unordered_map<Entity, PositionComponent>& positionStore,
+						  std::unordered_map<Entity, SpriteComponent>& spriteStore);
+
+	Entity getPlayer() const { return overworldPlayer; }
+
+
 
 private:
 
+	Entity overworldPlayer;
 	std::vector<Vector2> calculateEnemyPosition(int total, float screenWidth, float screenHeight);
 	//DebugSystem debug;
 	Vector2 partyPosition = { 0, 0 };

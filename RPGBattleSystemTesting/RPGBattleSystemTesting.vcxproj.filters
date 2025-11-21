@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
@@ -25,46 +21,59 @@
     <Filter Include="Header Files\Misc">
       <UniqueIdentifier>{46442514-b0f1-4737-8e55-cc324f3e4701}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Systems">
-      <UniqueIdentifier>{262eeecd-f2b5-4087-8e65-63c6ee0f0641}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Misc">
-      <UniqueIdentifier>{c8155758-4237-44e2-bee1-041f3a8635be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Managers">
-      <UniqueIdentifier>{59d83532-10c8-41c2-ab4d-e74248efe9c0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Mangers">
       <UniqueIdentifier>{e36a726e-9929-45eb-b67e-e061229d2850}</UniqueIdentifier>
     </Filter>
     <Filter Include="Assets\Shaders">
       <UniqueIdentifier>{905e40e4-a0c4-4d15-83f7-25a9ba3af261}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\Source Files\Systems">
+      <UniqueIdentifier>{262eeecd-f2b5-4087-8e65-63c6ee0f0641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Source Files\Misc">
+      <UniqueIdentifier>{c8155758-4237-44e2-bee1-041f3a8635be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Source Files\Managers">
+      <UniqueIdentifier>{59d83532-10c8-41c2-ab4d-e74248efe9c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BattleSystem.cpp">
-      <Filter>Source Files\Systems</Filter>
+      <Filter>Resource Files\Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="DebugSystem.cpp">
-      <Filter>Source Files\Systems</Filter>
+      <Filter>Resource Files\Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem.cpp">
-      <Filter>Source Files\Systems</Filter>
+      <Filter>Resource Files\Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="OverworldSystem.cpp">
-      <Filter>Source Files\Systems</Filter>
+      <Filter>Resource Files\Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>Source Files\Misc</Filter>
+      <Filter>Resource Files\Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
-      <Filter>Source Files\Managers</Filter>
+      <Filter>Resource Files\Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="GameStateManager.cpp">
-      <Filter>Source Files\Managers</Filter>
+      <Filter>Resource Files\Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationSystem.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OverworldMap.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OverworldMapLoader.cpp">
+      <Filter>Resource Files\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +119,15 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Header Files\Mangers</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OverworldMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OverworldMapLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -120,6 +138,15 @@
   <ItemGroup>
     <Image Include="Assets\Orc-Idle.png">
       <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\battlebg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Orc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Soldier.png">
+      <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
 </Project>
