@@ -41,7 +41,8 @@ public:
 	~OverworldSystem();
 	
 	void update(std::unordered_map<Entity, PositionComponent>& positionStore,
-				std::unordered_map<Entity, SpriteComponent>& spriteStore);
+				std::unordered_map<Entity, SpriteComponent>& spriteStore,
+				const OverworldMap& map);
 	void encounterCheck();
 
 	void setPlayerEntity(Entity player) { overworldPlayer = player; }
@@ -75,7 +76,8 @@ private:
 	std::vector<Vector2> calculateEnemyPosition(int total, float screenWidth, float screenHeight);
 	//DebugSystem debug;
 	int encounterRate; // Unused for now but allows for scaling encounter chance
-	
+	bool isBlocked(const OverworldMap& map, float x, float y) const;
+
 	bool encounter = false;
 };
 

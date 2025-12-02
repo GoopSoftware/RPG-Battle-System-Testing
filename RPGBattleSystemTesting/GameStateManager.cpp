@@ -90,7 +90,7 @@ void GameStateManager::update() {
 
 	case GameState::OVERWORLD:
 
-		overworld.update(positionStore, spriteStore);
+		overworld.update(positionStore, spriteStore, overworldMap);
 
 		if (overworld.getEncounter()) {
 			triggerEncounter();

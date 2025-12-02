@@ -243,6 +243,8 @@ void RenderSystem::renderOverworldPlayer(GameStateManager& game) {
 
 
 
+
+
 void RenderSystem::renderOverworld(GameStateManager& game)
 {
 	const OverworldMap& map = game.getOverworldMap();

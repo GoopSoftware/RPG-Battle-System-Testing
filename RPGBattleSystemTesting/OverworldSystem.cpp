@@ -25,43 +25,59 @@ OverworldSystem::~OverworldSystem() {
 
 
 void OverworldSystem::update(std::unordered_map<Entity, PositionComponent>& positionStore,
-							 std::unordered_map<Entity, SpriteComponent>& spriteStore) {
+							 std::unordered_map<Entity, SpriteComponent>& spriteStore,
+							 const OverworldMap& map) {
 
+	int speed = 5;
 	PositionComponent& pos = positionStore[overworldPlayer];
 
 	moveDirection = MoveDirection::None;
 	bool moved = false;
-	int speed = 5;
+
+	float newX = pos.x;
+	float newY = pos.y;
 
 	if (IsKeyDown(KEY_W)) {
-		pos.y -= speed;
+		newY -= speed;
 		moveDirection = MoveDirection::Up;
 		moved = true;
 	}
 	if (IsKeyDown(KEY_S)) {
-		pos.y += speed;
+		newY += speed;
 		moveDirection = MoveDirection::Down;
 		moved = true;
 	}
 	if (IsKeyDown(KEY_A)) {
-		pos.x -= speed;
+		newX -= speed;
 		moveDirection = MoveDirection::Left;
 		moved = true;
 	}
 	if (IsKeyDown(KEY_D)) {
-		pos.x += speed;
+		newX += speed;
 		moveDirection = MoveDirection::Right;
 		moved = true;
 	}
 
-	if (moved) {
-		encounterCheck();
+	if (!isBlocked(map, newX, newY)) {
+		pos.x = newX;
+		pos.y = newY;
 	}
 
+	if (moved) { encounterCheck(); }
+
 	// Debug instant battle
-	if (IsKeyPressed(KEY_B)) {
-		encounter = true;
-	}
+	if (IsKeyPressed(KEY_B)) { encounter = true; }
+}
+
+bool OverworldSystem::isBlocked(const OverworldMap& map, float x, float y) const {
+	int tileX = static_cast<int>(x) / map.tileWidth;
+	int tileY = static_cast<int>(y) / map.tileHeight;
+
+	// Safety check
+	if (tileX < 0 || tileY < 0 || tileX >= map.width || tileY >= map.height)
+		return true; // treat outside map as blocked
+
+	return map.collision[tileY * map.width + tileX] != 0;
 }
 
 void OverworldSystem::encounterCheck() {
