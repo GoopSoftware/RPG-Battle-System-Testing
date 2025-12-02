@@ -247,40 +247,50 @@ void RenderSystem::renderOverworld(GameStateManager& game)
 {
 	const OverworldMap& map = game.getOverworldMap();
 
+	drawTileLayer(map, map.terrain);
+	
+	/*drawTileLayer(map, map.grass);
+	drawTileLayer(map, map.mountain);
+	drawTileLayer(map, map.water);*/
+
+	// Optional future extra visual layers:
 	for (const auto& layer : map.visualLayers)
-	{
-		for (int y = 0; y < map.height; ++y)
-		{
-			for (int x = 0; x < map.width; ++x)
-			{
-				int tileId = map.getTile(layer, x, y);
-				if (tileId == 0) continue;
-
-				int index = tileId - map.firstGid;
-				int tilesPerRow = map.tilesetTexture.width / map.tileWidth;
-
-				int srcX = (index % tilesPerRow) * map.tileWidth;
-				int srcY = (index / tilesPerRow) * map.tileHeight;
-
-				Rectangle src = {
-					(float)srcX,
-					(float)srcY,
-					(float)map.tileWidth,
-					(float)map.tileHeight
-				};
-
-				Vector2 dest = {
-					(float)x * map.tileWidth,
-					(float)y * map.tileHeight
-				};
-
-				DrawTextureRec(map.tilesetTexture, src, dest, WHITE);
-			}
-		}
-	}
-
+		drawTileLayer(map, layer);
 }
 
+void RenderSystem::drawTileLayer(const OverworldMap& map, const OverworldMap::TileLayer& layer)
+{
+	if (layer.tiles.empty()) return;
+
+	for (int y = 0; y < map.height; ++y)
+	{
+		for (int x = 0; x < map.width; ++x)
+		{
+			int tileId = map.getTile(layer, x, y);
+			if (tileId == 0) continue;
+
+			int index = tileId - map.firstGid;
+			int tilesPerRow = map.tilesetTexture.width / map.tileWidth;
+
+			int srcX = (index % tilesPerRow) * map.tileWidth;
+			int srcY = (index / tilesPerRow) * map.tileHeight;
+
+			Rectangle src = {
+				(float)srcX,
+				(float)srcY,
+				(float)map.tileWidth,
+				(float)map.tileHeight
+			};
+
+			Vector2 dest = {
+				(float)x * map.tileWidth,
+				(float)y * map.tileHeight
+			};
+
+			DrawTextureRec(map.tilesetTexture, src, dest, WHITE);
+		}
+	}
+}
 
 
 

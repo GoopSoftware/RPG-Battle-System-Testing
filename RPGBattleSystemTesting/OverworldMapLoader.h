@@ -23,11 +23,15 @@ public:
 		outMap.height = json["height"];
 		outMap.tileWidth = json["tilewidth"];
 		outMap.tileHeight = json["tileheight"];
-
 		outMap.firstGid = json["tilesets"][0]["firstgid"];
-		std::string tsxPath = json["tilesets"][0]["source"];
 
-		std::string pngFileName = convertTsxToPng(tsxPath); // "TestTileset.png"
+		int totalTiles = outMap.width * outMap.height;
+
+		outMap.collision.resize(totalTiles, 0);
+		outMap.regions.resize(totalTiles, 0);
+
+		std::string tsxPath = json["tilesets"][0]["source"];
+		std::string pngFileName = convertTsxToPng(tsxPath);
 		std::string pngPath = "Assets/tilesets/" + pngFileName;
 
 		std::cout << "Loading tileset: " << pngPath << std::endl;
@@ -35,44 +39,33 @@ public:
 		TextureManager::Get().Load("overworld_tileset", pngPath);
 		outMap.tilesetTexture = TextureManager::Get().Get("overworld_tileset");
 
-
-
 		for (auto& layer : json["layers"]) {
 			std::string name = layer["name"];
 			auto data = layer["data"].get<std::vector<int>>();
 
+			if (data.size() != totalTiles) {
+				std::cout << "[ERROR] Layer '" << name << "' has incorrect tile count!\n";
+				continue;
+			}
+
 			if (name == "Collision") {
-				outMap.collision = data;
+				for (int i = 0; i < totalTiles; i++) {
+					outMap.collision[i] = (data[i] != 0);
+				}
 			}
-			else if (name == "Regions") {
-				outMap.regions = data;
-			}
-			else {
-				OverworldMap::TileLayer tl;
-				tl.name = name;
-				tl.tiles = data;
-				outMap.visualLayers.push_back(tl);
 
-			}
+			else if (name == "Terrain") { outMap.terrain = { name, data }; }
+			else if (name == "Grass") { outMap.grass = { name, data }; }
+			else if (name == "Mountain") { outMap.mountain = { name, data }; }
+			else if (name == "Water") { outMap.water = { name, data }; }
+			else { outMap.visualLayers.push_back({ name, data }); }
 		}
 
-		// DEBUG ---------------------------------------------------------------------------
-		std::cout << "[MapLoader] Loaded map: " << path << "\n";
-		std::cout << "  Size: " << outMap.width << "x" << outMap.height << "\n";
-		std::cout << "  TileSize: " << outMap.tileWidth << "x" << outMap.tileHeight << "\n";
+		std::cout << "[MapLoader] Loaded map: " << path << "\n"
+			<< "  Size: " << outMap.width << "x" << outMap.height << "\n"
+			<< "  tileset: " << outMap.tilesetTexture.width
+			<< "x" << outMap.tilesetTexture.height << "\n\n";
 
-		std::cout << "  Visual Layers: " << outMap.visualLayers.size() << "\n";
-		for (auto& layer : outMap.visualLayers) {
-			std::cout << "     - " << layer.name << " (" << layer.tiles.size() << " tiles)\n";
-		}
-
-		std::cout << "  Collision tiles: " << outMap.collision.size() << "\n";
-		std::cout << "  Regions tiles:   " << outMap.regions.size() << "\n";
-
-		std::cout << "  tilesetTexture: "
-			<< outMap.tilesetTexture.width << "x"
-			<< outMap.tilesetTexture.height << "\n";
-		// END DEBUG ---------------------------------------------------------------------------
 		return true;
 	}
 

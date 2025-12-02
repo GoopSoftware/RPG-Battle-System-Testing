@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "DebugSystem.h"
 #include "TextureManager.h"
+#include "OverworldMap.h"
 
 
 class GameStateManager;
@@ -46,10 +47,13 @@ private:
 	int targetHeight;
 	
 	void renderUI(GameStateManager& game);
+
 	void renderBattle(GameStateManager& game);
 	void renderBattleBG(GameStateManager& game);
 	void renderBattleUI(GameStateManager& game);
+
 	void renderOverworld(GameStateManager& game);
+	void drawTileLayer(const OverworldMap& map, const OverworldMap::TileLayer& layer);
 	void renderOverworldPlayer(GameStateManager& game);
 	void renderOverworldUI(GameStateManager& game);
 
