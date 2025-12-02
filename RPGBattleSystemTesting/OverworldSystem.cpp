@@ -24,32 +24,41 @@ OverworldSystem::~OverworldSystem() {
 
 
 
-void OverworldSystem::update() {
-	if (IsKeyPressed(KEY_W)) {
-		DebugSystem::log("OverworldSystem", LogLevel::INPUT, "Moved Up.");
-		partyPosition.y -= 1;
-		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
-		encounterCheck();
+void OverworldSystem::update(std::unordered_map<Entity, PositionComponent>& positionStore,
+							 std::unordered_map<Entity, SpriteComponent>& spriteStore) {
+
+	PositionComponent& pos = positionStore[overworldPlayer];
+
+	moveDirection = MoveDirection::None;
+	bool moved = false;
+	int speed = 5;
+
+	if (IsKeyDown(KEY_W)) {
+		pos.y -= speed;
+		moveDirection = MoveDirection::Up;
+		moved = true;
 	}
-	if (IsKeyPressed(KEY_S)) {
-		partyPosition.y += 1;
-		DebugSystem::log("OverworldSystem", LogLevel::INPUT, "Moved Down.");
-		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
-		encounterCheck();
+	if (IsKeyDown(KEY_S)) {
+		pos.y += speed;
+		moveDirection = MoveDirection::Down;
+		moved = true;
 	}
-	if (IsKeyPressed(KEY_A)) {
-		partyPosition.x -= 1;
-		DebugSystem::log("OverworldSystem", LogLevel::INPUT, "Moved Left.");
-		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
-		encounterCheck();
+	if (IsKeyDown(KEY_A)) {
+		pos.x -= speed;
+		moveDirection = MoveDirection::Left;
+		moved = true;
 	}
-	if (IsKeyPressed(KEY_D)) {
-		partyPosition.x += 1;
-		DebugSystem::log("OverworldSystem", LogLevel::INPUT, "Moved Right.");
-		std::cout << "X: " << partyPosition.x << "Y: " << partyPosition.y << std::endl;
+	if (IsKeyDown(KEY_D)) {
+		pos.x += speed;
+		moveDirection = MoveDirection::Right;
+		moved = true;
+	}
+
+	if (moved) {
 		encounterCheck();
 	}
 
+	// Debug instant battle
 	if (IsKeyPressed(KEY_B)) {
 		encounter = true;
 	}
@@ -58,7 +67,7 @@ void OverworldSystem::update() {
 void OverworldSystem::encounterCheck() {
 	// Checks 1/10 chance for a battle to happen then hands off to GameStateManager
 	// GameState sees the flag inside its update()
-	int encounterRoll = GetRandomValue(1, 10);
+	int encounterRoll = GetRandomValue(1, 10000);
 	if (encounterRoll == 1) { 
 		encounter = true;
 		std::cout << "Encountered a Battle!\n";
@@ -71,7 +80,6 @@ void OverworldSystem::initializePlayer(std::unordered_map<Entity, PositionCompon
 	overworldPlayer = createEntity();
 	positionStore[overworldPlayer] = { 320.f, 320.f };
 
-	SpriteComponent overworldSprite;
 	overworldSprite.texture = TextureManager::Get().Get("Goblin");
 	overworldSprite.columns = 8;
 	overworldSprite.rows = 6;

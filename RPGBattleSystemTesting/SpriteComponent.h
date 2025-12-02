@@ -38,6 +38,8 @@ struct SpriteComponent {
 	AnimationState state = AnimationState::Idle;
 	std::unordered_map<AnimationState, AnimationData> animations;
 
+	bool flipX = false;
+	bool flipY = false;
 
 	Vector2 offset{ 0, 0 };
 	Color tint = WHITE;

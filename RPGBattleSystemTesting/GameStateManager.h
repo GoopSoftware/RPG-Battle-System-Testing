@@ -42,7 +42,6 @@ public:
 	const OverworldSystem& getOverworld() const { return overworld; }
 	const OverworldMap& getOverworldMap() const { return overworldMap; }
 
-
 	//BattleSystem* getBattleSystem() { return battleSystem.get(); }
 	const BattleSystem* getBattleSystem() const { return battleSystem.get(); }
 	SpriteComponent& getSprite(Entity e) const { return spriteStore.at(e); }

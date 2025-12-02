@@ -37,6 +37,8 @@ private:
 	int outlineColorLoc;
 	int textureSizeLoc;
 
+	Camera2D overworldCamera;
+	void updateOverworldCamera(GameStateManager& game);
 
 	int windowWidth;
 	int windowHeight;

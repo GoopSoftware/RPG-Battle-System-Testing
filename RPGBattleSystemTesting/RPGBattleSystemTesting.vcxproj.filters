@@ -66,14 +66,17 @@
     <ClCompile Include="GameStateManager.cpp">
       <Filter>Resource Files\Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationSystem.cpp">
-      <Filter>Resource Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OverworldMap.cpp">
       <Filter>Resource Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OverworldMapLoader.cpp">
       <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationSystem.cpp">
+      <Filter>Resource Files\Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="architecture_demo.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

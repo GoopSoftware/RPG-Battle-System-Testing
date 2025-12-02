@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnimationSystem.cpp" />
+    <ClCompile Include="architecture_demo.cpp" />
     <ClCompile Include="BattleSystem.cpp" />
     <ClCompile Include="DebugSystem.cpp" />
     <ClCompile Include="Entity.cpp" />

@@ -10,6 +10,7 @@
 #else   // PLATFORM_ANDROID, PLATFORM_WEB
 #define GLSL_VERSION            100
 #endif
+//#define CLAMP(x, lower, upper) ( ((x)<(lower))?(lower):(((x)>(upper))?(upper):(x)) )
 
 
 /*
@@ -42,11 +43,40 @@ RenderSystem::~RenderSystem()
 	shutdown();
 }
 
+void RenderSystem::updateOverworldCamera(GameStateManager& game) {
+	Entity player = game.getOverworld().getPlayer();
+	const PositionComponent& pos = game.getPosition(player);
+	const OverworldMap& map = game.getOverworldMap();
+
+	float worldWidth = map.width * map.tileWidth;
+	float worldHeight = map.height * map.tileHeight;
+
+	// Smooth camera follow (lerp)
+	float speed = 10.0f * GetFrameTime();
+
+	Vector2 target = { pos.x, pos.y };
+
+	overworldCamera.target.x += (target.x - overworldCamera.target.x) * speed;
+	overworldCamera.target.y += (target.y - overworldCamera.target.y) * speed;
+
+	// Clamp camera to map bounds
+	float halfW = overworldCamera.offset.x / overworldCamera.zoom;
+	float halfH = overworldCamera.offset.y / overworldCamera.zoom;
+
+	overworldCamera.target.x = std::clamp(overworldCamera.target.x, halfW, worldWidth - halfW);
+	overworldCamera.target.y = std::clamp(overworldCamera.target.y, halfH, worldHeight - halfH);
+
+}
 
 void RenderSystem::init() {
 
 	InitWindow(windowWidth, windowHeight, "C++ RPG");
 	SetTargetFPS(60);
+
+	overworldCamera.target = { 0, 0 };
+	overworldCamera.offset = { targetWidth / 2.0f, targetHeight / 2.0f };
+	overworldCamera.rotation = 0.0f;
+	overworldCamera.zoom = 1.0f;
 
 	outlineShader = LoadShader(0, TextFormat("Assets/Shaders/outline.fs", GLSL_VERSION));
 	float outlineSize = 0.5f;
@@ -80,9 +110,15 @@ void RenderSystem::render(GameStateManager& game) {
 
 	switch (game.getCurrentState()) {
 		case GameState::OVERWORLD:
+			updateOverworldCamera(game);
+
+			BeginMode2D(overworldCamera);
 			renderOverworld(game);
-			renderOverworldUI(game);
 			renderOverworldPlayer(game);
+			EndMode2D();
+
+			renderOverworldUI(game);
+
 
 			break;
 		case GameState::BATTLE:
@@ -130,7 +166,7 @@ void RenderSystem::drawSprite(Entity entity, const SpriteComponent& sprite, cons
 	Rectangle src = {
 		static_cast<float>(col * sprite.frameWidth),
 		static_cast<float>(row * sprite.frameHeight),
-		static_cast<float>(sprite.frameWidth),
+		(sprite.flipX ? -sprite.frameWidth : sprite.frameWidth),
 		static_cast<float>(sprite.frameHeight)
 	};
 
@@ -176,11 +212,32 @@ void RenderSystem::renderOverworldPlayer(GameStateManager& game) {
 
 	Entity player = game.getOverworld().getPlayer();
 
-	const SpriteComponent& sprite = game.getSprite(player);
-	const PositionComponent& pos = game.getPosition(player);
+	SpriteComponent& sprite = game.getSprite(player);
+	PositionComponent& pos = game.getPosition(player);
 
+	switch (game.getOverworld().getMoveDirection())
+	{
+
+		case MoveDirection::Left:
+			sprite.flipX = true;
+			game.animationSystem.setState(sprite, AnimationState::Walk);
+			break;
+		case MoveDirection::Right:
+			sprite.flipX = false;
+			game.animationSystem.setState(sprite, AnimationState::Walk);
+			break;
+		case MoveDirection::Up:
+		case MoveDirection::Down:
+			game.animationSystem.setState(sprite, AnimationState::Walk);
+			break;
+		case MoveDirection::None:
+			game.animationSystem.setState(sprite, AnimationState::Idle);
+			break;
+	}
 	// Draw sprite
+	game.animationSystem.updateSprite(sprite, GetFrameTime());
 	drawSprite(player, sprite, pos);
+
 
 }
 

@@ -26,13 +26,22 @@ enum class Biome {
 };
 
 
+enum class MoveDirection {
+	None,
+	Up,
+	Down,
+	Left,
+	Right
+};
+
 class OverworldSystem
 {
 public:
 	OverworldSystem();
 	~OverworldSystem();
 	
-	void update();
+	void update(std::unordered_map<Entity, PositionComponent>& positionStore,
+				std::unordered_map<Entity, SpriteComponent>& spriteStore);
 	void encounterCheck();
 
 	void setPlayerEntity(Entity player) { overworldPlayer = player; }
@@ -46,6 +55,7 @@ public:
 								std::unordered_map<Entity, PositionComponent>& positionStore);
 
 	bool getEncounter() { return encounter; }
+	MoveDirection getMoveDirection() const { return moveDirection; }
 	void clearEncounter() { encounter = false; }
 	void draw(RenderSystem& renderer) const;
 
@@ -58,10 +68,12 @@ public:
 
 private:
 
+	MoveDirection moveDirection = MoveDirection::None;
+
+	SpriteComponent overworldSprite;
 	Entity overworldPlayer;
 	std::vector<Vector2> calculateEnemyPosition(int total, float screenWidth, float screenHeight);
 	//DebugSystem debug;
-	Vector2 partyPosition = { 0, 0 };
 	int encounterRate; // Unused for now but allows for scaling encounter chance
 	
 	bool encounter = false;
