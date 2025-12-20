@@ -1,0 +1,23 @@
+{
+    "schemaVersion": 1,
+    "templates": [
+        {
+            "id": "forest_goblin_patrol",
+            "displayName": "Goblin Patrol",
+            "difficulty": 1,
+            "formation": "arc_front",
+            "groups": [
+                {
+                    "minCount": 1,
+                    "maxCount": 4,
+                    "choices": [
+                        {
+                            "enemyId": "goblin",
+                            "weight": 100
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

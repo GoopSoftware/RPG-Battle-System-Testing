@@ -1,5 +1,6 @@
 #include "GameStateManager.h"
-
+#include "EnemyBlueprints.h"
+#include "EnemyBlueprintsLoader.h"
 
 /*
 GameState owns the big picture of the program. It is the brain and glue of the operation
@@ -56,6 +57,12 @@ void GameStateManager::init() {
 	TM.Load("BattleBG", "assets/battlebg.png");
 	// TODO: This stays in init() for now then when we have multiple overworld maps to load from we develop a system to change based on location
 	OverworldMapLoader::Load("assets/maps/TestMapjson.json", overworldMap);
+
+	// -------------DEBUG-------------
+	EnemyBlueprintsDb enemies = loadEnemyBlueprintsFromFile("content/data/enemy_blueprints.json");
+	std::cout << "Loaded enemies: " << enemies.byId.size() << "\n";
+
+	//---------------------------------------
 
 	overworld.initializePlayer();
 }

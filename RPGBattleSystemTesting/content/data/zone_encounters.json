@@ -1,0 +1,14 @@
+{
+    "schemaVersion": 1,
+    "zones": [
+        {
+            "id": "Forest",
+            "encounters": [
+                {
+                    "templateId": "forest_goblin_patrol",
+                    "weight": 100
+                }
+            ]
+        }
+    ]
+}

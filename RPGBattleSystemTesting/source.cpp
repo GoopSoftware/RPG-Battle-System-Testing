@@ -12,6 +12,7 @@
 #include "GameStateManager.h"
 #include "RenderSystem.h"
 #include "TextureManager.h"
+#include "EnemyBlueprintsLoader.h"
 
 /*
 This is an rpg battle system programmed to explore ECS style of game development
@@ -70,6 +71,7 @@ int main() {
 	SetRandomSeed(static_cast<unsigned int>(time(NULL)));
 	renderer.init();
 	game.init();
+	
 
 	Entity overworldPlayer = createEntity();
 	positionStore[overworldPlayer] = { 320.f, 320.f };

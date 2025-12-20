@@ -1,0 +1,63 @@
+{
+    "schemaVersion": 1,
+    "enemies": [
+        {
+            "id": "goblin",
+            "displayName": "Goblin",
+            "baseName": "Goblin",
+            "tags": [ "forest" ],
+
+            "health": { "maxHp": 30 },
+            "stats": {
+                "attack": 5,
+                "defense": 2,
+                "speed": 5
+            },
+
+            "sprite": {
+                "textureKey": "Goblin",
+                "columns": 8,
+                "rows": 6,
+                "scale": 3.0,
+                "animations": [
+                    {
+                        "state": "Idle",
+                        "startFrame": 0,
+                        "endFrame": 5,
+                        "frameTime": 0.15
+                    },
+                    {
+                        "state": "Walk",
+                        "startFrame": 8,
+                        "endFrame": 15,
+                        "frameTime": 0.15
+                    },
+                    {
+                        "state": "Attack",
+                        "startFrame": 16,
+                        "endFrame": 21,
+                        "frameTime": 0.15
+                    },
+                    {
+                        "state": "Attack2",
+                        "startFrame": 24,
+                        "endFrame": 29,
+                        "frameTime": 0.15
+                    },
+                    {
+                        "state": "Hurt",
+                        "startFrame": 32,
+                        "endFrame": 36,
+                        "frameTime": 0.15
+                    },
+                    {
+                        "state": "Dead",
+                        "startFrame": 40,
+                        "endFrame": 44,
+                        "frameTime": 0.15
+                    }
+                ]
+            }
+        }
+    ]
+}
