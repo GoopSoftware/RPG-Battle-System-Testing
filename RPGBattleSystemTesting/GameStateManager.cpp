@@ -35,7 +35,9 @@ GameStateManager::GameStateManager(
 		statsStore(statsStore),
 		nameStore(nameStore),
 		spriteStore(spriteStore),
-		positionStore(positionStore)
+		positionStore(positionStore),
+		overworld(healthStore, statsStore, nameStore, spriteStore, positionStore)
+
 {
 
 
@@ -55,18 +57,13 @@ void GameStateManager::init() {
 	// TODO: This stays in init() for now then when we have multiple overworld maps to load from we develop a system to change based on location
 	OverworldMapLoader::Load("assets/maps/TestMapjson.json", overworldMap);
 
-	overworld.initializePlayer(positionStore, spriteStore);
+	overworld.initializePlayer();
 }
 
 void GameStateManager::triggerEncounter() {
 	// This functions creates the actual battle using the generated values from generateEncounter()
 	// Creates a unique pointer of a BattleSystem
-	currentEncounter = overworld.generateEncounter( healthStore, 
-													statsStore, 
-													nameStore,
-													spriteStore,
-													positionStore
-	);
+	currentEncounter = overworld.generateEncounter();
 
 	for (int i = 0; i < players.size(); i++) {
 		std::cout << players[i];
@@ -90,7 +87,7 @@ void GameStateManager::update() {
 
 	case GameState::OVERWORLD:
 
-		overworld.update(positionStore, spriteStore, overworldMap);
+		overworld.update(overworldMap);
 
 		if (overworld.getEncounter()) {
 			triggerEncounter();

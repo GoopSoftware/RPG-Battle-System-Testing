@@ -3,12 +3,12 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Assets/maps/TestMap.tmx",
+    "activeFile": "",
     "expandedProjectPaths": [
-        "Assets/maps",
-        "Assets",
+        "Assets/tilesets",
         ".",
-        "Assets/tilesets"
+        "Assets",
+        "Assets/maps"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -16,8 +16,8 @@
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 488.6666666666666,
-                "y": 296.66666666666663
+                "x": 487.33333333333337,
+                "y": 295.3333333333333
             }
         },
         "Assets/tilesets/TestTileset.tsx": {
@@ -35,8 +35,8 @@
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
-        "Assets/tilesets/TestTileset.tsx",
-        "Assets/maps/TestMap.tmx"
+        "Assets/maps/TestMap.tmx",
+        "Assets/tilesets/TestTileset.tsx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

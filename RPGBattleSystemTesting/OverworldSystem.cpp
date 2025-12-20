@@ -13,7 +13,17 @@ Handles all overworld logic of the program
 
 
 
-OverworldSystem::OverworldSystem()
+OverworldSystem::OverworldSystem(std::unordered_map<Entity, HealthComponent>& healthStore,
+								std::unordered_map<Entity, CombatStatsComponent>& statsStore,
+								std::unordered_map<Entity, NameComponent>& nameStore,
+								std::unordered_map<Entity, SpriteComponent>& spriteStore,
+								std::unordered_map<Entity, PositionComponent>& positionStore) :
+	healthStore(healthStore),
+	statsStore(statsStore),
+	nameStore(nameStore),
+	spriteStore(spriteStore),
+	positionStore(positionStore)
+
 {
 
 }
@@ -24,9 +34,7 @@ OverworldSystem::~OverworldSystem() {
 
 
 
-void OverworldSystem::update(std::unordered_map<Entity, PositionComponent>& positionStore,
-							 std::unordered_map<Entity, SpriteComponent>& spriteStore,
-							 const OverworldMap& map) {
+void OverworldSystem::update(const OverworldMap& map) {
 
 	int speed = 5;
 	PositionComponent& pos = positionStore[overworldPlayer];
@@ -90,8 +98,7 @@ void OverworldSystem::encounterCheck() {
 	}
 }
 
-void OverworldSystem::initializePlayer(std::unordered_map<Entity, PositionComponent>& positionStore,
-									   std::unordered_map<Entity, SpriteComponent>& spriteStore) {
+void OverworldSystem::initializePlayer() {
 
 	overworldPlayer = createEntity();
 	positionStore[overworldPlayer] = { 320.f, 320.f };
@@ -116,21 +123,19 @@ void OverworldSystem::initializePlayer(std::unordered_map<Entity, PositionCompon
 
 }
 
-
-Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthComponent>& healthStore,
-											 std::unordered_map<Entity, CombatStatsComponent>& statsStore,
-											 std::unordered_map<Entity, NameComponent>& nameStore,
-											 std::unordered_map<Entity, SpriteComponent>& spriteStore,
-											 std::unordered_map<Entity, PositionComponent>& positionStore
-) 
+// TODO: GenerateEncoutner must have an input for difficulty, zone, enemy count logic, 
+// and a method to build the sprite of each enemy generated
+// We should probably also move the component stores into the constructor
+Encounter OverworldSystem::generateEncounter() 
 {
+	// Hard coded
 	Encounter encounter;
 	encounter.difficulty = 1;
 	encounter.zone = "Forest";
 	encounter.encounterName = "Test Battle";
-	int enemyCount = 4;
+	int enemyCount = GetRandomValue(1, 4);
 	
-	std::vector<Vector2> positions = calculateEnemyPosition(enemyCount, GetScreenWidth(), GetScreenHeight());
+	std::vector<Vector2> positions = calculateEnemyEncounterPosition(enemyCount, GetScreenWidth(), GetScreenHeight());
 
 	for (int i = 0; i < enemyCount; i++) {
 		
@@ -140,7 +145,7 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 		statsStore[enemy] = { 5 + GetRandomValue(0, 3), 2, 5 };
 		nameStore[enemy] = { "Goblin_" + std::to_string(i + 1) };
 
-		// TODO Make this scalable
+		// TODO Make this scalable, its currently hardcoded
 		SpriteComponent sprite;
 		sprite.texture = TextureManager::Get().Get("Goblin");
 		sprite.columns = 8;
@@ -180,16 +185,16 @@ Encounter OverworldSystem::generateEncounter(std::unordered_map<Entity, HealthCo
 	return encounter;
 }
 
-std::vector<Vector2> OverworldSystem::calculateEnemyPosition(int total, float screenWidth, float screenHeight) {
+std::vector<Vector2> OverworldSystem::calculateEnemyEncounterPosition(int totalEnemies, float screenWidth, float screenHeight) {
 	std::vector<Vector2> positions;
-	positions.reserve(total);
+	positions.reserve(totalEnemies);
 
 	float centerX = screenWidth * .5f;
 	float baseY = screenHeight * 0.58f;
 
 	float clusterWidth = 0.0f;
 
-	switch (total) {
+	switch (totalEnemies) {
 	case 1: 
 		clusterWidth = 0.0f; 
 		break;
@@ -207,17 +212,17 @@ std::vector<Vector2> OverworldSystem::calculateEnemyPosition(int total, float sc
 		break;
 	}
 
-	if (total == 1) {
+	if (totalEnemies == 1) {
 		positions.push_back({ centerX, baseY });
 		return positions;
 	}
 
 	float startX = centerX - (clusterWidth / 2.f);
 
-	float spacing = clusterWidth / (total - 1);
+	float spacing = clusterWidth / (totalEnemies - 1);
 
 
-	for (int i = 0; i < total; i++) {
+	for (int i = 0; i < totalEnemies; i++) {
 		float x = startX + spacing * i;
 		float y = baseY;
 		positions.push_back({ x, y });

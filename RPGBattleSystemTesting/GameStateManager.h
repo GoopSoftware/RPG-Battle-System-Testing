@@ -38,7 +38,7 @@ public:
 	void triggerEncounter();
 	GameState getCurrentState() const { return currentState; }
 	
-	//OverworldSystem& getOverworld() { return overworld; }
+	OverworldSystem& getOverworld() { return overworld; }
 	const OverworldSystem& getOverworld() const { return overworld; }
 	const OverworldMap& getOverworldMap() const { return overworldMap; }
 
@@ -54,7 +54,6 @@ private:
 	float deltaTime;
 
 	GameState currentState = GameState::OVERWORLD;
-	OverworldSystem overworld;
 	OverworldMap overworldMap;
 	// MenuSystem menu;  ----- For when MenuSystem is done -----
 
@@ -65,6 +64,7 @@ private:
 	std::unordered_map<Entity, NameComponent>& nameStore;
 	std::unordered_map<Entity, SpriteComponent>& spriteStore;
 	std::unordered_map<Entity, PositionComponent>& positionStore;
+	OverworldSystem overworld;
 
 	Encounter currentEncounter;
 	std::unique_ptr<BattleSystem> battleSystem; // ptr created when battle triggered

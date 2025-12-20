@@ -40,12 +40,12 @@ class BattleSystem
 {
 public:
 	BattleSystem(std::vector<Entity> players,
-		std::vector<Entity> enemies,
-		std::unordered_map<Entity, HealthComponent>& healthStore,
-		std::unordered_map<Entity, CombatStatsComponent>& statsStore,
-		std::unordered_map<Entity, NameComponent>& nameStore,
-		std::unordered_map<Entity, SpriteComponent>& spriteStore,
-		std::unordered_map<Entity, PositionComponent>& positionStore);
+				 std::vector<Entity> enemies,
+				 std::unordered_map<Entity, HealthComponent>& healthStore,
+				 std::unordered_map<Entity, CombatStatsComponent>& statsStore,
+				 std::unordered_map<Entity, NameComponent>& nameStore,
+				 std::unordered_map<Entity, SpriteComponent>& spriteStore,
+				 std::unordered_map<Entity, PositionComponent>& positionStore);
 	~BattleSystem();
 
 	void update();
@@ -66,9 +66,8 @@ public:
 	void calculateTurnOrder();
 	void turnResolution();
 
-	void populateEnemyTargets();
 	int calculateDamage(const CombatStatsComponent& attacker,
-		const CombatStatsComponent& defender);
+						const CombatStatsComponent& defender);
 	void draw(RenderSystem& renderer) const;
 
 

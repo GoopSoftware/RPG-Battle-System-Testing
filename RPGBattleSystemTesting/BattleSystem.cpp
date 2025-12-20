@@ -103,6 +103,7 @@ void BattleSystem::turnResolution() {
 	currentTurnIndex = (currentTurnIndex + 1) % turnOrder.size();
 	currentEntity = turnOrder[currentTurnIndex];
 
+	// build the vectors
 	buildLivingEnemies();
 	buildLivingPlayers();
 
@@ -117,8 +118,6 @@ void BattleSystem::turnResolution() {
 
 
 void BattleSystem::attack(Entity attacker, Entity defender) {
-	// All 
-// ic of attacking goees here
 
 	int damage = calculateDamage(statsStore[attacker], statsStore[defender]);
 	healthStore[defender].hp -= damage;
@@ -128,11 +127,8 @@ void BattleSystem::attack(Entity attacker, Entity defender) {
 		+ std::to_string(damage) + " damage!" + "\n    " + nameStore[defender].name + " HP: "
 		+ std::to_string(std::max(0, healthStore[defender].hp)));
 
-
-
 	if (healthStore[defender].hp <= 0) {
 		DebugSystem::log("BattleSystem", LogLevel::INFO, nameStore[defender].name + " has been defeated!");
-
 	}
 }
 
@@ -149,7 +145,6 @@ void BattleSystem::handleAttackOption() {
 	// Redundant but will show if for some reason game breaks
 	if (livingEnemies.empty()) {
 		DebugSystem::log("BattleSystem", LogLevel::DEBUG, "No enemies left to attack!\n>>> Something broke in the code to show this");
-
 		validAction = true;
 		return;
 	}
@@ -167,7 +162,6 @@ void BattleSystem::handleAttackOption() {
 	DebugSystem::log("BattleSystem", LogLevel::INFO, "Use W / S to select.Press ENTER to confirm, ESC to cancel.");
 
 	playerPhase = PlayerPhase::TargetMenu;
-
 
 }
 
@@ -196,11 +190,7 @@ void BattleSystem::handleRunOption() {
 
 }
 
-void BattleSystem::handleInvalidOption() {
-	DebugSystem::log("BattleSystem", LogLevel::INFO, "Invalid choice. Please try again.");
-
-}
-
+void BattleSystem::handleInvalidOption() { DebugSystem::log("BattleSystem", LogLevel::INFO, "Invalid choice. Please try again.");}
 
 void BattleSystem::buildLivingPlayers() {
 	livingPlayers.clear();
@@ -221,7 +211,6 @@ void BattleSystem::buildLivingEnemies() {
 }
 
 
-
 void BattleSystem::printTurnOptions() {
 	DebugSystem::log("BattleSystem", LogLevel::INFO, nameStore[currentEntity].name + "'s turn");
 	DebugSystem::log("BattleSystem", LogLevel::INFO, "1. Attack");
@@ -240,18 +229,6 @@ void BattleSystem::printInitialTurnOrder() {
 	DebugSystem::log("BattleSystem", LogLevel::INFO, "----------------");
 }
 
-void BattleSystem::populateEnemyTargets() {
-	// Clears livingPlayers vector in case players died, 
-	// checks players vector, if hp > 0 add to livingPlayers vector
-
-	livingPlayers.clear();
-	for (auto p : players) {
-		if (healthStore[p].hp > 0) {
-			livingPlayers.push_back(p);
-		}
-	}
-}
-
 void BattleSystem::removeDefeatedFromTurnOrder() {
 	// Removes dead entities from turnOrder vector
 	turnOrder.erase(
@@ -262,14 +239,15 @@ void BattleSystem::removeDefeatedFromTurnOrder() {
 }
 
 
+// TODO: The following 2 methods can be one with a vector fed in
 bool BattleSystem::checkDefeatCondition() {
-	// Checks the player vector if std::all_of() players are dead
+	// bool checks the player vector if std::all_of() players are dead
 	return std::all_of(players.begin(), players.end(),
 		[this](Entity e) {return healthStore[e].hp <= 0; });
 }
 
 bool BattleSystem::checkVictoryCondition() {
-	// Checks the enemy vector if std::all_of() players are dead
+	// bool checks the enemy vector if std::all_of() players are dead
 	return std::all_of(enemies.begin(), enemies.end(),
 		[this](Entity e) {return healthStore[e].hp <= 0; });
 }
@@ -410,7 +388,8 @@ void BattleSystem::update() {
 		// In future add enemy ai logic to decide healing/spells/attack/run
 
 		// Runs a check for alive players from players vector and assigns them to livingPLayers vector
-		populateEnemyTargets();
+		// We already do this in the turn resolution, 
+		//buildLivingPlayers();
 
 		// if livingPlayers isnt empty Picks a random living player and attacks
 		if (!livingPlayers.empty()) {
