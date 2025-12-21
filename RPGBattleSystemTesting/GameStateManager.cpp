@@ -1,6 +1,11 @@
 #include "GameStateManager.h"
 #include "EnemyBlueprints.h"
 #include "EnemyBlueprintsLoader.h"
+#include "EncounterTemplates.h"
+#include "ZoneEncounterTables.h"
+#include "EncounterTemplatesLoader.h"
+#include "ZoneEncounterTablesLoader.h"
+
 
 /*
 GameState owns the big picture of the program. It is the brain and glue of the operation
@@ -58,9 +63,17 @@ void GameStateManager::init() {
 	// TODO: This stays in init() for now then when we have multiple overworld maps to load from we develop a system to change based on location
 	OverworldMapLoader::Load("assets/maps/TestMapjson.json", overworldMap);
 
-	// -------------DEBUG-------------
+	// -------------Enemy Loading Logic -------------
+
 	EnemyBlueprintsDb enemies = loadEnemyBlueprintsFromFile("content/data/enemy_blueprints.json");
 	std::cout << "Loaded enemies: " << enemies.byId.size() << "\n";
+
+	EncounterTemplatesDb templates = loadEncounterTemplatesFromFile("content/data/encounter_templates.json");
+	std::cout << "Loaded templates: " << templates.byId.size() << "\n";
+
+	ZoneEncounterTablesDb zones = loadZoneEncounterTablesFromFile("content/data/zone_encounters.json");
+	std::cout << "Loaded zones: " << zones.byZoneId.size() << "\n";
+
 
 	//---------------------------------------
 
