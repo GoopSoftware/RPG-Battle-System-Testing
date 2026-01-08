@@ -135,6 +135,8 @@
     <ClCompile Include="architecture_demo.cpp" />
     <ClCompile Include="BattleSystem.cpp" />
     <ClCompile Include="DebugSystem.cpp" />
+    <ClCompile Include="EncounterGenerator.cpp" />
+    <ClCompile Include="EncounterSpawner.cpp" />
     <ClCompile Include="EncounterTemplatesLoader.cpp" />
     <ClCompile Include="EnemyBlueprintsLoader.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -154,6 +156,8 @@
     <ClInclude Include="ContentDatabase.h" />
     <ClInclude Include="DebugSystem.h" />
     <ClInclude Include="Encounter.h" />
+    <ClInclude Include="EncounterGenerator.h" />
+    <ClInclude Include="EncounterSpawner.h" />
     <ClInclude Include="EncounterTemplatesLoader.h" />
     <ClInclude Include="EncounterTypes.h" />
     <ClInclude Include="EncounterTemplates.h" />

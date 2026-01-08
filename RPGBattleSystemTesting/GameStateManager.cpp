@@ -5,6 +5,8 @@
 #include "ZoneEncounterTables.h"
 #include "EncounterTemplatesLoader.h"
 #include "ZoneEncounterTablesLoader.h"
+#include "EncounterGenerator.h"
+#include "EncounterSpawner.h"
 
 
 /*
@@ -57,37 +59,45 @@ GameStateManager::~GameStateManager() {
 
 
 void GameStateManager::init() {
+
 	auto& TM = TextureManager::Get();
 	TM.Load("Goblin", "assets/Orc.png");
 	TM.Load("BattleBG", "assets/battlebg.png");
 	// TODO: This stays in init() for now then when we have multiple overworld maps to load from we develop a system to change based on location
 	OverworldMapLoader::Load("assets/maps/TestMapjson.json", overworldMap);
 
-	// -------------Enemy Loading Logic -------------
 
-	EnemyBlueprintsDb enemies = loadEnemyBlueprintsFromFile("content/data/enemy_blueprints.json");
-	std::cout << "Loaded enemies: " << enemies.byId.size() << "\n";
+	contentDb.enemyBlueprints = loadEnemyBlueprintsFromFile("content/data/enemy_blueprints.json");
+	contentDb.encounterTemplates = loadEncounterTemplatesFromFile("content/data/encounter_templates.json");
+	contentDb.zoneTables = loadZoneEncounterTablesFromFile("content/data/zone_encounters.json");
 
-	EncounterTemplatesDb templates = loadEncounterTemplatesFromFile("content/data/encounter_templates.json");
-	std::cout << "Loaded templates: " << templates.byId.size() << "\n";
+	std::cout << "Loaded enemies: " << contentDb.enemyBlueprints.byId.size() << "\n";
+	std::cout << "Loaded templates: " << contentDb.encounterTemplates.byId.size() << "\n";
+	std::cout << "Loaded zones: " << contentDb.zoneTables.byZoneId.size() << "\n";
 
-	ZoneEncounterTablesDb zones = loadZoneEncounterTablesFromFile("content/data/zone_encounters.json");
-	std::cout << "Loaded zones: " << zones.byZoneId.size() << "\n";
-
-
-	//---------------------------------------
+	encounterGenerator = std::make_unique<EncounterGenerator>(contentDb);
+	encounterSpawner = std::make_unique<EncounterSpawner>(
+		contentDb, healthStore, statsStore, nameStore, spriteStore, positionStore
+	);
 
 	overworld.initializePlayer();
 }
 
 void GameStateManager::triggerEncounter() {
-	// This functions creates the actual battle using the generated values from generateEncounter()
-	// Creates a unique pointer of a BattleSystem
-	currentEncounter = overworld.generateEncounter();
 
-	for (int i = 0; i < players.size(); i++) {
-		std::cout << players[i];
+	EncounterResult r = encounterGenerator->generate("Forest"); // later: dynamic zone
+
+
+	std::cout << "[Encounter] " << r.encounterName
+		<< " template=" << r.templateId
+		<< " enemies=" << r.enemyIds.size()
+		<< " formation=" << r.formation << "\n";
+	for (auto& id : r.enemyIds) {
+		std::cout << "  enemyId: " << id << "\n";
 	}
+
+	currentEncounter = encounterSpawner->spawn(r);
+
 	battleSystem = std::make_unique<BattleSystem>(
 		players,
 		currentEncounter.enemies,

@@ -10,9 +10,11 @@
 #include "AnimationSystem.h"
 #include "OverworldMapLoader.h"
 #include "OverworldMap.h"
+#include "ContentDatabase.h"
 
 
-
+class EncounterGenerator;
+class EncounterSpawner;
 
 enum class GameState {
 	OVERWORLD,
@@ -48,6 +50,10 @@ public:
 	PositionComponent& getPosition(Entity e) const { return positionStore.at(e); }
 
 	AnimationSystem animationSystem;
+
+	ContentDatabase contentDb;
+	std::unique_ptr<EncounterGenerator> encounterGenerator;
+	std::unique_ptr<EncounterSpawner> encounterSpawner;
 
 
 private:

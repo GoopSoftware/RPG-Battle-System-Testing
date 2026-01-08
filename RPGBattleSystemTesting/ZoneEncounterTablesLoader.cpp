@@ -23,7 +23,7 @@ ZoneEncounterTablesDb loadZoneEncounterTablesFromFile(const std::string& path) {
 	// zj = zoneJson
 	for (const auto& zj : root.at("zones")) {
 		ZoneEncounterTable zone;
-		zone.id = zj.at("id").get<std::string>();
+		zone.id = zj.at("zoneId").get<std::string>();
 
 
 		for (const auto& ej : zj.at("encounters")) {

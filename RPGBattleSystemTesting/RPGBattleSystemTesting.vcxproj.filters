@@ -78,6 +78,21 @@
     <ClCompile Include="architecture_demo.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="EncounterTemplatesLoader.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBlueprintsLoader.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ZoneEncounterTablesLoader.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EncounterGenerator.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EncounterSpawner.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleSystem.h">
@@ -131,12 +146,48 @@
     <ClInclude Include="OverworldMapLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ContentDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EncounterTemplatesLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EncounterTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EncounterTemplates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBlueprints.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBlueprintsLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ZoneEncounterTables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ZoneEncounterTablesLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EncounterGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EncounterSpawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
     <None Include="Assets\Shaders\outline.fs">
       <Filter>Assets\Shaders</Filter>
     </None>
+    <None Include="content\data\encounter_templates.json" />
+    <None Include="content\data\enemy_blueprints.json" />
+    <None Include="content\data\zone_encounters.json" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Orc-Idle.png">

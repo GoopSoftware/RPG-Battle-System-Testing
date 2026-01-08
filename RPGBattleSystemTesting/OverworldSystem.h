@@ -18,6 +18,9 @@
 
 
 class RenderSystem;
+class EncounterGenerator;
+class EncounterSpawner;
+
 
 enum class Biome {
 	FOREST,
@@ -41,7 +44,8 @@ public:
 					std::unordered_map<Entity, CombatStatsComponent>& statsStore,
 					std::unordered_map<Entity, NameComponent>& nameStore,
 					std::unordered_map<Entity, SpriteComponent>& spriteStore,
-					std::unordered_map<Entity, PositionComponent>& positionStore);
+					std::unordered_map<Entity, PositionComponent>& positionStore
+	);
 	~OverworldSystem();
 	
 	void update(const OverworldMap& map);
