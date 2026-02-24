@@ -6,7 +6,11 @@
             "encounters": [
                 {
                     "templateId": "forest_goblin_patrol",
-                    "weight": 100
+                    "weight": 50
+                },
+                {
+                    "templateId": "forest_soldier_patrol",
+                    "weight": 50
                 }
             ]
         }

@@ -59,9 +59,14 @@ GameStateManager::~GameStateManager() {
 
 
 void GameStateManager::init() {
+	// This is the master initilization of the game. When the game loads this is the first
+	// thing that is ran
 
+	// Loads all textures
+	// TODO: Make TextureLoader helper for TextureManager to load all textures in 1 one go
 	auto& TM = TextureManager::Get();
 	TM.Load("Goblin", "assets/Orc.png");
+	TM.Load("Soldier", "assets/Soldier.png");
 	TM.Load("BattleBG", "assets/battlebg.png");
 	// TODO: This stays in init() for now then when we have multiple overworld maps to load from we develop a system to change based on location
 	OverworldMapLoader::Load("assets/maps/TestMapjson.json", overworldMap);

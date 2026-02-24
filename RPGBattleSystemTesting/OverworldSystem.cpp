@@ -123,67 +123,6 @@ void OverworldSystem::initializePlayer() {
 
 }
 
-// TODO: GenerateEncoutner must have an input for difficulty, zone, enemy count logic, 
-// and a method to build the sprite of each enemy generated
-// We should probably also move the component stores into the constructor
-Encounter OverworldSystem::generateEncounter() 
-{
-	// Hard coded
-	Encounter encounter;
-	encounter.difficulty = 1;
-	encounter.zone = "Forest";
-	encounter.encounterName = "Test Battle";
-	int enemyCount = GetRandomValue(1, 4);
-	
-	std::vector<Vector2> positions = calculateEnemyEncounterPosition(enemyCount, GetScreenWidth(), GetScreenHeight());
-
-	for (int i = 0; i < enemyCount; i++) {
-		
-		Entity enemy = createEntity();
-
-		healthStore[enemy] = { 30, 30 };
-		statsStore[enemy] = { 5 + GetRandomValue(0, 3), 2, 5 };
-		nameStore[enemy] = { "Goblin_" + std::to_string(i + 1) };
-
-		// TODO Make this scalable, its currently hardcoded
-		SpriteComponent sprite;
-		sprite.texture = TextureManager::Get().Get("Goblin");
-		sprite.columns = 8;
-		sprite.rows = 6;
-		sprite.frameWidth = sprite.texture.width / sprite.columns;
-		sprite.frameHeight = sprite.texture.height / sprite.rows;
-		sprite.animations = {
-			{ AnimationState::Idle,     { 0, 5, 0.15f } },
-			{ AnimationState::Walk,     { 8, 15, 0.15f } },
-			{ AnimationState::Attack,   { 16, 21, 0.15f } },
-			{ AnimationState::Attack2,  { 24, 29, 0.15f } },
-			{ AnimationState::Hurt,     { 32, 36, 0.15f } },
-			{ AnimationState::Dead,     { 40, 44, 0.15f } }
-		};
-		sprite.scale = 3.0f;
-
-		spriteStore[enemy] = sprite;
-
-		PositionComponent pos;
-		pos.x = positions[i].x;
-		pos.y = positions[i].y;
-		positionStore[enemy] = pos;
-		std::cout << "PositionsX: " << positions[i].x << std::endl;
-		std::cout << "PosX: " << pos.x << std::endl;
-
-		auto& stats = statsStore[enemy];
-		auto& health = healthStore[enemy];
-		std::cout << "Created " << nameStore[enemy].name
-			<< " (Health: " << health.hp
-			<< " (Atk: " << stats.attack
-			<< ", Def: " << stats.defense
-			<< ", Spd: " << stats.speed << ")\n";
-
-		encounter.enemies.push_back(enemy);
-	}
-
-	return encounter;
-}
 
 std::vector<Vector2> OverworldSystem::calculateEnemyEncounterPosition(int totalEnemies, float screenWidth, float screenHeight) {
 	std::vector<Vector2> positions;

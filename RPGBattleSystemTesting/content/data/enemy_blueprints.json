@@ -58,6 +58,64 @@
                     }
                 ]
             }
+        },
+        {
+            "id": "soldier",
+            "displayName": "Soldier",
+            "baseName": "Soldier",
+            "tags": [ "forest" ],
+
+            "health": { "maxHp": 40 },
+            "stats": {
+                "attack": 7,
+                "defense": 8,
+                "speed": 7
+            },
+
+            "sprite": {
+                "textureKey": "Soldier",
+                "columns": 9,
+                "rows": 7,
+                "scale": 3.0,
+                "animations": [
+                    {
+                        "state": "Idle",
+                        "startFrame": 0,
+                        "endFrame": 5,
+                        "frameTime": 0.15
+                    },
+                    {
+                        "state": "Walk",
+                        "startFrame": 9,
+                        "endFrame": 16,
+                        "frameTime": 0.15
+                    },
+                    {
+                        "state": "Attack",
+                        "startFrame": 18,
+                        "endFrame": 23,
+                        "frameTime": 0.15
+                    },
+                    {
+                        "state": "Attack2",
+                        "startFrame": 27,
+                        "endFrame": 32,
+                        "frameTime": 0.15
+                    },
+                    {
+                        "state": "Hurt",
+                        "startFrame": 45,
+                        "endFrame": 38,
+                        "frameTime": 0.15
+                    },
+                    {
+                        "state": "Dead",
+                        "startFrame": 54,
+                        "endFrame": 58,
+                        "frameTime": 0.15
+                    }
+                ]
+            }
         }
     ]
 }

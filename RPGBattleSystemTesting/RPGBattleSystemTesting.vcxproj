@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -132,7 +132,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnimationSystem.cpp" />
-    <ClCompile Include="architecture_demo.cpp" />
     <ClCompile Include="BattleSystem.cpp" />
     <ClCompile Include="DebugSystem.cpp" />
     <ClCompile Include="EncounterGenerator.cpp" />

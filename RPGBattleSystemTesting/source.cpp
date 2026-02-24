@@ -61,8 +61,6 @@ int main() {
 	const int windowHeight = 720;
 	float deltaTime{};
 
-	// Vector purely for holding all textures to unload on game end
-	//std::vector<Texture2D> textures;
 
 	GameStateManager game(deltaTime, players, healthStore, statsStore, nameStore, spriteStore, positionStore);
 	RenderSystem renderer(windowWidth, windowHeight, windowWidth, windowHeight);
@@ -106,7 +104,6 @@ int main() {
 		game.update();
 		renderer.begin();
 		renderer.render(game);
-		//DrawTexture(testTex, 100, 100, WHITE);
 		renderer.end();
 
 	}

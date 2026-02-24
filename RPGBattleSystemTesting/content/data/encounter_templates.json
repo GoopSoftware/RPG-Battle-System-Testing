@@ -18,6 +18,24 @@
                     ]
                 }
             ]
+        },
+        {
+            "id": "forest_soldier_patrol",
+            "displayName": "Soldier Patrol",
+            "difficulty": 1,
+            "formation": "arc_front",
+            "groups": [
+                {
+                    "minCount": 1,
+                    "maxCount": 4,
+                    "choices": [
+                        {
+                            "enemyId": "soldier",
+                            "weight": 100
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }

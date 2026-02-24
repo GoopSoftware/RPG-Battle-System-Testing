@@ -55,7 +55,6 @@ public:
 
 	//void update(float deltaTime, OverworldMap)
 
-	Encounter generateEncounter();
 
 	bool getEncounter() { return encounter; }
 	MoveDirection getMoveDirection() const { return moveDirection; }

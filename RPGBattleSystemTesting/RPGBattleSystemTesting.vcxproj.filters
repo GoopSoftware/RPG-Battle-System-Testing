@@ -40,6 +40,12 @@
     <Filter Include="Resource Files\Source Files\Managers">
       <UniqueIdentifier>{59d83532-10c8-41c2-ab4d-e74248efe9c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EncounterGeneration">
+      <UniqueIdentifier>{e66b1513-5903-476e-afba-9a297ae8d90c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EncounterGeneration\JSON">
+      <UniqueIdentifier>{36c809a3-cfae-4599-8b34-cdc7cbda1502}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source.cpp">
@@ -78,20 +84,20 @@
     <ClCompile Include="architecture_demo.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="EncounterTemplatesLoader.cpp">
-      <Filter>Resource Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyBlueprintsLoader.cpp">
-      <Filter>Resource Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ZoneEncounterTablesLoader.cpp">
-      <Filter>Resource Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EncounterGenerator.cpp">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>EncounterGeneration</Filter>
     </ClCompile>
     <ClCompile Include="EncounterSpawner.cpp">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>EncounterGeneration</Filter>
+    </ClCompile>
+    <ClCompile Include="EncounterTemplatesLoader.cpp">
+      <Filter>EncounterGeneration</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBlueprintsLoader.cpp">
+      <Filter>EncounterGeneration</Filter>
+    </ClCompile>
+    <ClCompile Include="ZoneEncounterTablesLoader.cpp">
+      <Filter>EncounterGeneration</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,35 +155,35 @@
     <ClInclude Include="ContentDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EncounterTemplatesLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EncounterTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EncounterTemplates.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyBlueprints.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyBlueprintsLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadResult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ZoneEncounterTables.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ZoneEncounterTablesLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EncounterGenerator.h">
-      <Filter>Header Files</Filter>
+      <Filter>EncounterGeneration</Filter>
     </ClInclude>
     <ClInclude Include="EncounterSpawner.h">
-      <Filter>Header Files</Filter>
+      <Filter>EncounterGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="EncounterTemplates.h">
+      <Filter>EncounterGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="EncounterTemplatesLoader.h">
+      <Filter>EncounterGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="EncounterTypes.h">
+      <Filter>EncounterGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBlueprints.h">
+      <Filter>EncounterGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBlueprintsLoader.h">
+      <Filter>EncounterGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadResult.h">
+      <Filter>EncounterGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="ZoneEncounterTables.h">
+      <Filter>EncounterGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="ZoneEncounterTablesLoader.h">
+      <Filter>EncounterGeneration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,22 +191,28 @@
     <None Include="Assets\Shaders\outline.fs">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="content\data\encounter_templates.json" />
-    <None Include="content\data\enemy_blueprints.json" />
-    <None Include="content\data\zone_encounters.json" />
+    <None Include="content\data\zone_encounters.json">
+      <Filter>EncounterGeneration\JSON</Filter>
+    </None>
+    <None Include="content\data\enemy_blueprints.json">
+      <Filter>EncounterGeneration\JSON</Filter>
+    </None>
+    <None Include="content\data\encounter_templates.json">
+      <Filter>EncounterGeneration\JSON</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Orc-Idle.png">
       <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\battlebg.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\Orc.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\Soldier.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets</Filter>
     </Image>
   </ItemGroup>
 </Project>
